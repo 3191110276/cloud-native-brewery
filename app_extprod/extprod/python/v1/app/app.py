@@ -61,7 +61,7 @@ def handle_order():
     api_instance = client.BatchV1Api()
     api_response = api_instance.list_namespaced_job("automation")
     for item in api_response.items:
-        logging.warning(item)
+        logging.warning(item.metadata.name)
     
     # SEND REPLY
     reply = {
