@@ -49,19 +49,6 @@ public class Recv {
                 data = (String) json.get("data");
                 System.out.println(" [x] Received '" + data + "'");
                 
-//                try {
-//                    File myObj = new File("/etc/customization/PRODUCTION_SVC");
-//                    Scanner myReader = new Scanner(myObj);
-//                    while (myReader.hasNextLine()) {
-//                        String svc = myReader.nextLine();
-//                        System.out.println(svc);
-//                    }
-//                    myReader.close();
-//                } catch (FileNotFoundException e) {
-//                    System.out.println("An error occurred.");
-//                    e.printStackTrace();
-//                }
-                
                 HTTPConnection con = new HTTPConnection(System.getenv("PRODUCTION_SVC"));
                 HTTPResponse   rsp = con.Post("/request", data);
                 if (rsp.getStatusCode() >= 300)
