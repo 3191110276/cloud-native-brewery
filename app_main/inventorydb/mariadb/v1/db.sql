@@ -1,0 +1,43 @@
+CREATE DATABASE IF NOT EXISTS ordering;
+
+USE ordering;
+
+
+CREATE TABLE IF NOT EXISTS orders (
+  id int NOT NULL AUTO_INCREMENT,
+  ts TIMESTAMP NOT NULL,
+  customer TINYTEXT NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS order_prod (
+  id int NOT NULL AUTO_INCREMENT,
+  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  details MEDIUMTEXT NOT NULL,
+  quantity int NOT NULL,
+  order_id int NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS payment (
+  id int NOT NULL AUTO_INCREMENT,
+  provider_id TINYTEXT NOT NULL,
+  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  paytype TINYTEXT NOT NULL,
+  order_id int NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS production (
+  id VARCHAR(20) NOT NULL,
+  order_id int NOT NULL,
+  weight TINYTEXT NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS fulfilment (
+  id int NOT NULL AUTO_INCREMENT,
+  order_id int NOT NULL,
+  tracking_id TINYTEXT NOT NULL,
+  PRIMARY KEY (id)
+);

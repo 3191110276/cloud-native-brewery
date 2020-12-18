@@ -1,0 +1,80 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <script charset="UTF-8" type="text/javascript">
+    window["adrum-start-time"] = new Date().getTime();
+    
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const encoded_env = urlParams.get('env')
+    
+    if (encoded_env == '' || encoded_env == undefined) {
+        geo = undefined
+    }
+    else {
+        const decoded_env = window.atob(encoded_env).replace(/(\r\n|\n|\r)/gm,"");
+        const env = decoded_env.split('+');
+
+        geo = {
+            country: env[0],
+            region: env[1],
+            city: env[2],
+            localIP: env[3]
+        }
+    }
+
+    (function(config){
+      config.appKey = "APPD_APP_KEY";
+      config.adrumExtUrlHttp = "http://cdn.appdynamics.com";
+      config.adrumExtUrlHttps = "https://cdn.appdynamics.com";
+      config.beaconUrlHttp = "http://HTTP_BEACON";
+      config.beaconUrlHttps = "https://HTTPS_BEACON";
+      config.resTiming = {"bufSize":200,"clearResTimingOnBeaconSend":true};
+      config.geo = geo;
+      config.maxUrlLength = 512;
+      config.spa = {"spa2":true};
+    })(window["adrum-config"] || (window["adrum-config"] = {}));
+  </script>
+  <script src="//cdn.appdynamics.com/adrum/adrum-20.8.0.3230.js"></script>
+  <link rel="stylesheet" href="./styles.css">
+  <meta charset="utf-8">
+  <title>Cloud-native Brewery</title>
+</head>
+
+<body>
+    <div id="header">
+        <img />
+        <h1>Cloud-native Brewery</h1>
+    </div>
+    <div id="content">
+        <div class="product">
+            <img />
+            <h2>Beer 1</h2>
+            <input type="number" name="product1" min="1" max="9999">
+            <button>Order</button>
+        </div>
+        <div class="product">
+            <img />
+            <h2>Beer 2</h2>
+            <input type="number" name="product2" min="1" max="9999">
+            <button>Order</button>
+        </div>
+        <div class="product">
+            <img />
+            <h2>Beer 3</h2>
+            <input type="number" name="product3" min="1" max="9999">
+            <button>Order</button>
+        </div>
+        <div class="product">
+            <img />
+            <h2>Beer 4</h2>
+            <input type="number" name="product4" min="1" max="9999">
+            <button>Order</button>
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="./jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="./scripts.js"></script>
+</body>
+</html>

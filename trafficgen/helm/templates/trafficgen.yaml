@@ -1,0 +1,109 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.name }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: customization
+  namespace: {{ .Values.name }}
+data:
+  MIN_RANDOM_DELAY: "{{ .Values.min_random_delay }}"
+  MAX_RANDOM_DELAY: "{{ .Values.max_random_delay }}"
+  LAGSPIKE_PERCENTAGE: "{{ .Values.lagspike_percentage }}"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.name }}
+automountServiceAccountToken: true
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ .Values.name }}
+rules:
+- apiGroups: [""]
+  resources: ["*","services"]
+  verbs: ["*","get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.name }}
+subjects:
+- kind: ServiceAccount
+  name: {{ .Values.name }}
+  namespace: {{ .Values.name }}
+roleRef:
+  kind: ClusterRole
+  name: {{ .Values.name }}
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.name }}
+  name: {{ .Values.name }}
+  namespace: {{ .Values.name }}
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      serviceAccountName: {{ .Values.name }}
+      automountServiceAccountToken: true
+#      securityContext:
+#        runAsUser: 10000
+#        runAsGroup: 20000
+#        fsGroup: 30000
+      containers:
+      - name: trafficgen
+        image: {{ .Values.registry }}/trafficgen-python:{{ .Values.version }}
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: customization
+          mountPath: /etc/customization
+#        securityContext:
+#          runAsUser: 10001
+#          allowPrivilegeEscalation: false
+#        ports:
+#        - name: http
+#          containerPort: 80
+#          protocol: TCP
+#        - name: https
+#          containerPort: 443
+#          protocol: TCP
+#        startupProbe:
+#          periodSeconds: 5
+#          failureThreshold: 40
+#          httpGet:
+#            path: /healthz
+#            port: http
+#        livenessProbe:
+#          initialDelaySeconds: 5
+#          periodSeconds: 2
+#          failureThreshold: 4
+#          httpGet:
+#            path: /healthz
+#            port: http
+#        resources:
+#          requests:
+#            cpu: 250m
+#            memory: 32Mi
+#          limits:
+#            memory: 32Mi
+      volumes:
+      - name: customization
+        configMap:
+          name: customization  

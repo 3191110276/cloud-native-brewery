@@ -1,0 +1,63 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <script>
+    if(window.location.href.substr(-1) != '/') { window.location.replace(window.location.href + '/');   }
+  </script>
+  <script charset="UTF-8" type="text/javascript">
+    window["adrum-start-time"] = new Date().getTime();
+    (function(config){
+      config.appKey = "APPD_APP_KEY";
+      config.adrumExtUrlHttp = "http://cdn.appdynamics.com";
+      config.adrumExtUrlHttps = "https://cdn.appdynamics.com";
+      config.beaconUrlHttp = "http://HTTP_BEACON";
+      config.beaconUrlHttps = "https://HTTPS_BEACON";
+      config.resTiming = {"bufSize":200,"clearResTimingOnBeaconSend":true};
+      config.maxUrlLength = 512;
+      config.spa = {"spa2":true};
+    })(window["adrum-config"] || (window["adrum-config"] = {}));
+  </script>
+  <script src="//cdn.appdynamics.com/adrum/adrum-20.8.0.3230.js"></script>
+  <link rel="stylesheet" href="./styles.css">
+  <meta charset="utf-8">
+  <title>Admin - Cloud-native Brewery</title>
+</head>
+
+<body>
+    <div id="header">
+        <img />
+        <h1>Cloud-native Brewery Admin</h1>
+    </div>
+    <!--<div id="menu">
+        <div class="menuelement">Raw materials</div>
+        <div class="menuelement">Brewing</div>
+        <div class="menuelement">Bottling</div>
+    </div>-->
+    <div id="content">
+        <div class="product">
+            <img />
+            <h2>Beer 1</h2>
+            <div>9999</div>
+        </div>
+        <div class="product">
+            <img />
+            <h2>Beer 2</h2>
+            <div>9999</div>
+        </div>
+        <div class="product">
+            <img />
+            <h2>Beer 3</h2>
+            <div>9999</div>
+        </div>
+        <div class="product">
+            <img />
+            <h2>Beer 4</h2>
+            <div>9999</div>
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="./scripts.js"></script>
+</body>
+</html>

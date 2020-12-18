@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: appd-config
+  namespace: default
+data:
+  ACCOUNT_NAME: {{ .Values.appd_account_name }}
+  APPD_ACCOUNT_NAME: {{ .Values.appd_account_name }} #Python
+  APPDYNAMICS_AGENT_ACCOUNT_NAME: {{ .Values.appd_account_name }} #NodeJS
+  
+  CONTROLLER_HOST: {{ .Values.appd_controller_hostname }}
+  APPD_CONTROLLER_HOST: {{ .Values.appd_controller_hostname }} #Python
+  APPDYNAMICS_CONTROLLER_HOST_NAME: {{ .Values.appd_controller_hostname }} #NodeJS
+  
+  CONTROLLER_PORT: "{{ .Values.appd_controller_port }}"
+  APPD_CONTROLLER_PORT: "{{ .Values.appd_controller_port }}" #Python
+  APPDYNAMICS_CONTROLLER_PORT: "{{ .Values.appd_controller_port }}" #NodeJS
+  
+  CONTROLLER_SSL: "{{ .Values.appd_controller_ssl }}"
+  APPD_SSL_ENABLED: "on" #Python
+  APPDYNAMICS_CONTROLLER_SSL_ENABLED: "{{ .Values.appd_controller_ssl }}" #NodeJS
+  
+  ACCESS_KEY: {{ .Values.appd_controller_key }}
+  APPD_ACCOUNT_ACCESS_KEY: {{ .Values.appd_controller_key }} #Python
+  APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY: {{ .Values.appd_controller_key }} #NodeJS
+  
+  APP_NAME: {{ .Values.appname }}
+  APPDYNAMICS_AGENT_APPLICATION_NAME: {{ .Values.appname }} #NodeJS
+  
+  PROXY_HOST: {{ .Values.proxy_host }}
+  APPD_HTTP_PROXY_HOST: {{ .Values.proxy_host }} #Python
+  
+  PROXY_PORT: "{{ .Values.proxy_port }}"
+  APPD_HTTP_PROXY_PORT: "{{ .Values.proxy_port }}" #Python
+  
+  BROWSERAPP_KEY: {{ .Values.appd_browserapp_key }}
+  
+  BROWSERAPP_BEACONURL: {{ .Values.appd_browserapp_beaconurl }}
+---
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  labels:
+#    app: appd-extensions
+#  name: appd-extensions
+#  namespace: default
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: appd-extensions
+#  strategy: {}
+#  template:
+#    metadata:
+#      labels:
+#        app: appd-extensions
+#    spec:
+#      serviceAccountName: no-priv
+#      automountServiceAccountToken: false
+##      securityContext:
+##        runAsUser: 10000
+##        runAsGroup: 20000
+##        fsGroup: 30000
+#      containers:
+#      - name: appd-extensions
+#        image: {{ .Values.registry }}/appd-extensions:{{ .Values.appd_ext_version }}
+#        imagePullPolicy: Always
+#        envFrom:
+#        - configMapRef:
+#            name: appd-config
+##        securityContext:
+##          runAsUser: 10001
+##          allowPrivilegeEscalation: false
+##        ports:
+##        - name: http
+##          containerPort: 80
+##          protocol: TCP
+##        - name: https
+##          containerPort: 443
+##          protocol: TCP
+##        startupProbe:
+##          periodSeconds: 5
+##          failureThreshold: 40
+##          httpGet:
+##            path: /healthz
+##            port: http
+##        livenessProbe:
+##          initialDelaySeconds: 5
+##          periodSeconds: 2
+##          failureThreshold: 4
+##          httpGet:
+##            path: /healthz
+##            port: http
+#        resources:
+#          requests:
+#            cpu: 500m
+#            memory: 64Mi
+#          limits:
+#            memory: 64Mi

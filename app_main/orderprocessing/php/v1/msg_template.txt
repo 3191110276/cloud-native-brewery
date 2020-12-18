@@ -1,0 +1,6 @@
+Thank you for your oder! We'll let you know once we have brewed and dispatched your items.
+
+Order ID: ORDERID
+
+Below you can review your oder:
+ORDER

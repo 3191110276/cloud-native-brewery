@@ -1,0 +1,100 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.appname }}-{{ .Values.fulfilment_name }}
+  namespace: default
+  labels:
+    app: {{ .Values.appname }}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Values.appname }}
+    tier: {{ .Values.fulfilment_name }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+#    - name: https
+#      protocol: TCP
+#      port: 443
+#      targetPort: 443
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.appname }}
+    tier: {{ .Values.fulfilment_name }}
+  name: {{ .Values.appname }}-fulfilment
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: {{ .Values.appname }}
+      tier: {{ .Values.fulfilment_name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appname }}
+        tier: {{ .Values.fulfilment_name }}
+    spec:
+#      serviceAccountName: no-priv
+#      automountServiceAccountToken: false
+#      securityContext:
+#        runAsUser: 10000
+#        runAsGroup: 20000
+#        fsGroup: 30000
+      containers:
+      - name: production
+        image: {{ .Values.registry }}/fulfilment-{{ .Values.fulfilment_tech }}:{{ .Values.fulfilment_version }}
+        imagePullPolicy: Always
+#        securityContext:
+#          runAsUser: 10001
+#          allowPrivilegeEscalation: false
+        env:
+        - name: APPD_APP_NAME
+          value: {{ .Values.appname }}
+        - name: APPD_TIER_NAME
+          value: {{ .Values.fulfilment_appd }}
+        envFrom:
+        - configMapRef:
+            name: appd-config
+        - secretRef:
+            name: brewery-orderqueue-rabbitmq-admin
+        volumeMounts:
+        - name: customization
+          mountPath: /etc/customization
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        - name: https
+          containerPort: 443
+          protocol: TCP
+        startupProbe:
+          periodSeconds: 5
+          failureThreshold: 40
+          httpGet:
+            path: /healthz
+            port: http
+        livenessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 2
+          failureThreshold: 4
+          httpGet:
+            path: /healthz
+            port: http
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 400m
+            memory: 512Mi
+      volumes:
+      - name: customization
+        configMap:
+          name: customization

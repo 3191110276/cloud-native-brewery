@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+      "http": "0.0.1-security",
+      "express": "^4.16.1",
+      "body-parser": "1.19.0",
+      "json": "10.0.0"
+  }
+}

@@ -1,0 +1,346 @@
+kind: pipeline
+name: build
+
+
+steps:
+
+#ADMINFILE
+- name: publish_adminfile_nginx
+  image: plugins/docker
+  depends_on: [ clone ]
+  settings:
+   repo: mimaurer/adminfile-nginx
+   context: ./app_main/adminfile/nginx/v1/
+   dockerfile: ./app_main/adminfile/nginx/v1/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+
+
+#APPD_DBAGENT
+- name: publish_appddbagent
+  image: plugins/docker
+  depends_on: [ clone ]
+  environment:
+    APPD_USER:
+      from_secret: APPD_USERNAME
+    APPD_PW:
+      from_secret: APPD_PASSWORD
+  settings:
+   repo: mimaurer/appd-dbagent
+   context: ./appdynamics/appd_dbagent/
+   dockerfile: ./appdynamics/appd_dbagent/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+   build_args_from_env:
+   - APPD_USER
+   - APPD_PW
+
+     
+#APPD_EXTENSIONS
+#- name: publish_appdextensions
+#  image: plugins/docker
+#  depends_on: [ clone ]
+#  environment:
+#    APPD_USER:
+#      from_secret: APPD_USERNAME
+#    APPD_PW:
+#      from_secret: APPD_PASSWORD
+#  settings:
+#   repo: mimaurer/appd-extensions
+#   context: ./appd_extensions/
+#   dockerfile: ./appd_extensions/Dockerfile
+#   tags: [ "v1"]
+#   username:
+#     from_secret: DOCKERHUB_USERNAME
+#   password:
+#     from_secret: DOCKERHUB_PASSWORD
+#   build_args_from_env:
+#   - APPD_USER
+#   - APPD_PW
+   
+   
+#APPD_NODEAGENT
+- name: publish_appdnodeagent
+  image: plugins/docker
+  depends_on: [ clone ]
+  environment:
+    APPD_USER:
+      from_secret: APPD_USERNAME
+    APPD_PW:
+      from_secret: APPD_PASSWORD
+  settings:
+   repo: mimaurer/appd-nodeagent
+   context: ./appdynamics/appd_nodeagent/
+   dockerfile: ./appdynamics/appd_nodeagent/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+   build_args_from_env:
+   - APPD_USER
+   - APPD_PW
+
+
+#EXTPAYMENT
+- name: publish_extpayment_python
+  image: plugins/docker
+  depends_on: [ clone ]
+  settings:
+   repo: mimaurer/extpayment-python
+   context: ./app_extpayment/code/v1/
+   dockerfile: ./app_extpayment/code/v1/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+
+
+#EXTPROD
+- name: publish_extprod_python
+  image: plugins/docker
+  depends_on: [ clone ]
+  settings:
+   repo: mimaurer/extprod-python
+   context: ./app_extprod/extprod/python/v1/
+   dockerfile: ./app_extprod/extprod/python/v1/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+     
+     
+#EXTPRODJOB
+- name: publish_extprodjob_python
+  image: plugins/docker
+  depends_on: [ clone ]
+  settings:
+   repo: mimaurer/extprodjob-python
+   context: ./app_extprod/extprodjob/python/v1/
+   dockerfile: ./app_extprod/extprodjob/python/v1/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+
+     
+#FULFILMENT
+- name: publish_fulfilment_python
+  image: plugins/docker
+  depends_on: [ clone ]
+  settings:
+   repo: mimaurer/fulfilment-python
+   context: ./app_main/fulfilment/python/v1/
+   dockerfile: ./app_main/fulfilment/python/v1/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+
+
+#INVENTORYDB
+- name: publish_inventorydb_mariadb
+  image: plugins/docker
+  depends_on: [ clone ]
+  settings:
+   repo: mimaurer/inventorydb-mariadb
+   context: ./app_main/inventorydb/mariadb/v1/
+   dockerfile: ./app_main/inventorydb/mariadb/v1/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+     
+     
+#NOTIFICATION
+- name: publish_notification_java
+  image: plugins/docker
+  depends_on: [ clone ]
+  environment:
+    APPD_USER:
+      from_secret: APPD_USERNAME
+    APPD_PW:
+      from_secret: APPD_PASSWORD
+  settings:
+   repo: mimaurer/notification-java
+   context: ./app_main/notification/java/v1/
+   dockerfile: ./app_main/notification/java/v1/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+   build_args_from_env:
+   - APPD_USER
+   - APPD_PW
+
+
+#ORDER
+- name: publish_order_python
+  image: plugins/docker
+  depends_on: [ clone ]
+  settings:
+   repo: mimaurer/order-python
+   context: ./app_main/order/python/v1/
+   dockerfile: ./app_main/order/python/v1/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+
+
+#ORDERFILE
+- name: publish_orderfile_apache
+  image: plugins/docker
+  depends_on: [ clone ]
+  environment:
+    APPD_USER:
+      from_secret: APPD_USERNAME
+    APPD_PW:
+      from_secret: APPD_PASSWORD
+  settings:
+   repo: mimaurer/orderfile-apache
+   context: ./app_main/orderfile/apache/v1/
+   dockerfile: ./app_main/orderfile/apache/v1/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+   build_args_from_env:
+   - APPD_USER
+   - APPD_PW
+     
+     
+#ORDERPROCESSING
+- name: publish_orderprocessing_php
+  image: plugins/docker
+  depends_on: [ clone ]
+  environment:
+    APPD_USER:
+      from_secret: APPD_USERNAME
+    APPD_PW:
+      from_secret: APPD_PASSWORD
+  settings:
+   repo: mimaurer/orderprocessing-php
+   context: ./app_main/orderprocessing/php/v1/
+   dockerfile: ./app_main/orderprocessing/php/v1/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+   build_args_from_env:
+   - APPD_USER
+   - APPD_PW
+
+
+#PAYMENT
+- name: publish_payment_nodejs
+  image: plugins/docker
+  depends_on: [ clone ]
+  settings:
+   repo: mimaurer/payment-nodejs
+   context: ./app_main/payment/nodejs/v1/
+   dockerfile: ./app_main/payment/nodejs/v1/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+
+
+#PRODREQUEST
+- name: publish_prodrequest_java
+  image: plugins/docker
+  depends_on: [ clone ]
+  environment:
+    APPD_USER:
+      from_secret: APPD_USERNAME
+    APPD_PW:
+      from_secret: APPD_PASSWORD
+  settings:
+   repo: mimaurer/prodrequest-java
+   context: ./app_main/prodrequest/java/v1/
+   dockerfile: ./app_main/prodrequest/java/v1/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+   build_args_from_env:
+   - APPD_USER
+   - APPD_PW
+
+     
+#PRODUCTION
+- name: publish_production_python
+  image: plugins/docker
+  depends_on: [ clone ]
+  settings:
+   repo: mimaurer/production-python
+   context: ./app_main/production/python/v1/
+   dockerfile: ./app_main/production/python/v1/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+
+
+#TRAFFICGEN
+- name: publish_trafficgen_python
+  image: plugins/docker
+  depends_on: [ clone ]
+  settings:
+   repo: mimaurer/trafficgen-python
+   context: ./trafficgen/code/v1/
+   dockerfile: ./trafficgen/code/v1/Dockerfile
+   tags: [ "v1"]
+   username:
+     from_secret: DOCKERHUB_USERNAME
+   password:
+     from_secret: DOCKERHUB_PASSWORD
+     
+     
+#SUCCESS NOTIFICATION
+- name: success_notification
+  image: plugins/webhook
+  depends_on: [ publish_adminfile_nginx, publish_appddbagent, publish_appdnodeagent, publish_extpayment_python, publish_inventorydb_mariadb, publish_order_python, publish_orderfile_apache, publish_orderprocessing_php, publish_payment_nodejs, publish_extprod_python, publish_production_python, publish_trafficgen_python ]
+  when:
+    status:
+    - success
+  settings:
+    urls: https://webexapis.com/v1/messages 
+    content_type: application/json
+    token_value:
+      from_secret: WEBEX_TOKEN
+    token_type: Bearer
+    template: {"toPersonEmail": "mimaurer@cisco.com", "markdown": "✅ Build #{{ build.number }} for *{{repo.owner}}/{{ repo.name }}* finished with status SUCCESS \n* **Commit:** {{ build.commit }} \n* **Author:** {{ build.author }} \n **Link:** {{ build.link }}"}
+    
+#FAILURE NOTIFICATION
+- name: failure_notification
+  image: plugins/webhook
+  depends_on: [ publish_adminfile_nginx, publish_appddbagent, publish_appdnodeagent, publish_extpayment_python, publish_inventorydb_mariadb, publish_order_python, publish_orderfile_apache, publish_orderprocessing_php, publish_payment_nodejs, publish_extprod_python, publish_production_python, publish_trafficgen_python ]
+  when:
+    status:
+    - failure
+  settings:
+    urls: https://webexapis.com/v1/messages 
+    content_type: application/json
+    token_value:
+      from_secret: WEBEX_TOKEN
+    token_type: Bearer
+    template: {"toPersonEmail": "mimaurer@cisco.com", "markdown": "❌ Build #{{ build.number }} for *{{repo.owner}}/{{ repo.name }}* FAILED \n* **Commit:** {{ build.commit }} \n* **Author:** {{ build.author }} \n **Link:** {{ build.link }}"}

@@ -1,0 +1,100 @@
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: {{ .Values.appname }}-notification
+#  namespace: default
+#  labels:
+#    app: {{ .Values.appname }}
+#    tier: notification
+#spec:
+#  type: ClusterIP
+#  selector:
+#    app: {{ .Values.appname }}
+#    tier: notification
+#  ports:
+#    - name: http
+#      protocol: TCP
+#      port: 80
+#      targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.appname }}
+    tier: notification
+  name: {{ .Values.appname }}-{{ .Values.notification_name }}
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: {{ .Values.appname }}
+      tier: {{ .Values.notification_name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appname }}
+        tier: {{ .Values.notification_name }}
+    spec:
+#      serviceAccountName: no-priv
+#      automountServiceAccountToken: false
+#      securityContext:
+#        runAsUser: 10000
+#        runAsGroup: 20000
+#        fsGroup: 30000
+      containers:
+      - name: {{ .Values.notification_name }}
+        image: {{ .Values.registry }}/notification-{{ .Values.notification_tech }}:{{ .Values.notification_version }}
+        imagePullPolicy: Always
+#        securityContext:
+#          runAsUser: 10001
+#          allowPrivilegeEscalation: false
+        envFrom:
+        - configMapRef:
+            name: appd-config
+        - secretRef:
+            name: brewery-orderqueue-rabbitmq-admin
+        env:
+        - name: APPDYNAMICS_NETVIZ_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: APPDYNAMICS_NETVIZ_AGENT_PORT
+          value: "3892"
+        volumeMounts:
+        - name: customization
+          mountPath: /etc/customization
+
+#        ports:
+#        - name: http
+#          containerPort: 80
+#          protocol: TCP
+#        - name: https
+#          containerPort: 443
+#          protocol: TCP
+#        startupProbe:
+#          periodSeconds: 5
+#          failureThreshold: 40
+#          httpGet:
+#            path: /healthz
+#            port: http
+#        livenessProbe:
+#          initialDelaySeconds: 5
+#          periodSeconds: 2
+#          failureThreshold: 4
+#          httpGet:
+#            path: /healthz
+#            port: http
+        resources:
+          requests:
+            cpu: 20m
+            memory: 64Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+      volumes:
+      - name: customization
+        configMap:
+          name: customization  

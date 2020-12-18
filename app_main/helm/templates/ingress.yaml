@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1beta1 #CHANGE WITH K8s 1.19
+kind: Ingress
+metadata:
+  name: {{ .Values.appname }}-ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2$3
+spec:
+#  defaultBackend:
+#    service:
+#      name: {{ .Values.appname }}-orderfile
+#      port:
+#        number: 80
+  rules:
+  - http:
+      paths:
+      - path: /()()(.*)
+        #pathType: Prefix
+        backend:
+          serviceName: {{ .Values.appname }}-{{ .Values.orderfile_name }}
+          servicePort: 80
+          #service:
+            #name: {{ .Values.appname }}-orderfile
+            #port:
+              #number: 80
+      - path: /(admin)(/|$)(.*)
+        #pathType: Prefix
+        backend:
+          serviceName: {{ .Values.appname }}-{{ .Values.adminfile_name }}
+          servicePort: 80
+          #service:
+            #name: {{ .Values.appname }}-adminfile
+            #port:
+              #number: 80
+      - path: /(api)(/)(order)
+        #pathType: Prefix
+        backend:
+          serviceName: {{ .Values.appname }}-{{ .Values.order_name }}
+          servicePort: 80
+          #service:
+            #name: {{ .Values.appname }}-order
+            #port:
+              #number: 80

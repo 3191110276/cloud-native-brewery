@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: prod-{{ prodid }}
+  namespace: automation
+spec:
+  ttlSecondsAfterFinished: 120
+  template:
+    spec:
+      containers:
+      - name: production
+        image: {{ registry }}/extprodjob-python:{{ version }}
+        #imagePullPolicy: Always
+        env:
+        - name: ORDERID
+          value: "{{ orderid }}"
+        - name: PRODID
+          value: "{{ prodid }}"
+        - name: WEIGHT
+          value: "{{ weight }}"
+        volumeMounts:
+        - name: customization
+          mountPath: /etc/customization
+      restartPolicy: Never
+      volumes:
+      - name: customization
+        configMap:
+          name: customization   
+  backoffLimit: 4

@@ -1,0 +1,55 @@
+# Use this only if SIM is enabled
+#metricPrefix:  "Custom Metrics|Nginx|"
+
+# If SIM is not enabled, then use this
+metricPrefix:  "Server|Component:AdminUI|Custom Metrics|Nginx|"
+#To find the <COMPONENT_ID> in your environment,
+#please follow the screenshot https://docs.appdynamics.com/display/PRO42/Build+a+Monitoring+Extension+Using+Java
+
+servers:
+  - displayName: "Nginx Server" # mandatory
+    uri: "http://127.0.0.1:80/nginx_status" # append port if needed
+    username: ""
+    password: ""
+    encryptedPassword:
+    nginx_plus: "false"  # true for nginx plus else false
+
+encryptionKey: ""
+
+connection:
+  sslCertCheckEnabled: false
+  socketTimeout: 10000
+  connectTimeout: 10000
+
+ # For each server you monitor, you will need a total of 12(by default) threads.
+ # By default we want to support 3 servers, so it is 3 * 12 = 36 threads.
+numberOfThreads: 36
+
+
+# Generate a custom dashboard based on the provided template
+customDashboard:
+  enabled: true
+  dashboardName: "Nginx Dashboard"
+  # Update the path to the dashboard file.
+  #pathToSIMDashboard: "monitors/NginxMonitor/CustomDashboard_SIM.json"
+  pathToNormalDashboard: "monitors/NginxMonitor/CustomDashboard_App.json"
+
+controllerInfo:
+  #controllerHost: ""
+  #controllerPort: 
+  #account: ""
+  #username: ""
+  #password: ""
+  #encryptedPassword: ""
+  #encryptionKey: ""
+  #controllerSslEnabled: true
+  #enableOrchestration: false
+  #uniqueHostId: ""
+  #accountAccessKey: ""
+  #machinePath: ""
+  #simEnabled: false
+  #applicationName: ""
+  #tierName: ""
+  #nodeName: ""
+
+enableHealthChecks: true

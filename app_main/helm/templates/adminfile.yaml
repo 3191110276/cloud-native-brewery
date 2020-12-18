@@ -1,0 +1,125 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.appname }}-{{ .Values.adminfile_name }}
+  namespace: default
+  labels:
+    app: {{ .Values.appname }}
+    tier: {{ .Values.adminfile_name }}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Values.appname }}
+    tier: {{ .Values.adminfile_name }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 443
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.appname }}
+    tier: adminfile
+  name: {{ .Values.appname }}-{{ .Values.adminfile_name }}
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: {{ .Values.appname }}
+      tier: {{ .Values.adminfile_name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appname }}
+        tier: {{ .Values.adminfile_name }}
+    spec:
+      serviceAccountName: no-priv
+#      automountServiceAccountToken: false
+#      securityContext:
+#        runAsUser: 10000
+#        runAsGroup: 20000
+#        fsGroup: 30000
+      containers:
+      - name: fileserver
+        image: {{ .Values.registry }}/adminfile-{{ .Values.adminfile_tech }}:{{ .Values.adminfile_version }}
+        imagePullPolicy: Always
+#        securityContext:
+#          runAsUser: 10001
+#          allowPrivilegeEscalation: false
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        - name: https
+          containerPort: 443
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: appd-config
+#        startupProbe:
+#          periodSeconds: 5
+#          failureThreshold: 40
+#          httpGet:
+#            path: /healthz
+#            port: http
+#        livenessProbe:
+#          initialDelaySeconds: 5
+#          periodSeconds: 2
+#          failureThreshold: 4
+#          httpGet:
+#            path: /healthz
+#            port: http
+        resources:
+          requests:
+            cpu: 20m
+            memory: 32Mi
+          limits:
+            cpu: 50m
+            memory: 32Mi
+#      - name: appd-extensions
+#        image: {{ .Values.registry }}/appd-extensions:{{ .Values.appd_ext_version }}
+#        imagePullPolicy: Always
+#        envFrom:
+#        - configMapRef:
+#            name: appd-config
+#        env:
+#        - name: PERSONALITY
+#          value: "local-nginx"
+#        securityContext:
+#          runAsUser: 10001
+#          allowPrivilegeEscalation: false
+#        ports:
+#        - name: http
+#          containerPort: 80
+#          protocol: TCP
+#        - name: https
+#          containerPort: 443
+#          protocol: TCP
+#        startupProbe:
+#          periodSeconds: 5
+#          failureThreshold: 40
+#          httpGet:
+#            path: /healthz
+#            port: http
+#        livenessProbe:
+#          initialDelaySeconds: 5
+#          periodSeconds: 2
+#          failureThreshold: 4
+#          httpGet:
+#            path: /healthz
+#            port: http
+#        resources:
+#          requests:
+#            cpu: 50m
+#            memory: 32Mi
+#          limits:
+#            memory: 64Mi
