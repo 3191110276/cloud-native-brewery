@@ -64,7 +64,7 @@ def handle_order():
         logging.warning(item.metadata.name)
         logging.warning(item.status.succeeded)
         
-        if item.status.succeeded == "1":
+        if item.status.succeeded == 1:
             logging.warning('Deleting job')
             api_instance.delete_namespaced_job(item.metadata.name, "automation")
 
