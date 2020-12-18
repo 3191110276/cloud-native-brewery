@@ -53,10 +53,15 @@ def handle_order():
 
     config.load_incluster_config()
     k8s_client = client.ApiClient()
+    
     utils.create_from_yaml(k8s_client, './job_{}.yaml'.format(prodid), namespace="automation")
     
     os.remove('./job_{}.yaml'.format(prodid))
     
+    with kubernetes.client.ApiClient(configuration) as api_client:
+        api_instance = kubernetes.client.BatchV1Api(api_client)
+        api_response = api_instance.list_namespaced_job("automation")
+        logging.warning(api_response)
     
     # SEND REPLY
     reply = {
