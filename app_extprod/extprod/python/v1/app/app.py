@@ -62,7 +62,12 @@ def handle_order():
     api_response = api_instance.list_namespaced_job("automation")
     for item in api_response.items:
         logging.warning(item.metadata.name)
-        logging.warning(item.status)
+        logging.warning(item.status.succeeded)
+        
+        if item.status.succeeded == "1":
+            logging.warning('Deleting job')
+            api_instance.delete_namespaced_job(item.metadata.name, "automation")
+
     
     # SEND REPLY
     reply = {
