@@ -26,6 +26,8 @@ def handle_request():
         'products': req_json['products']
     })
     
+    logging.warning('decoding json')
+    
     logging.info(r.json())
     
     return json.dumps({'status': 'success'})
