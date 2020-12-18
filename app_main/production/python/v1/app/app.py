@@ -19,6 +19,7 @@ def load_env_file(name):
 def handle_request():
     
     req_json = request.get_json(force=True)
+    logging.warning(req_json)
     
     r = requests.post('http://{}'.format(load_env_file("EXTPROD_SVC")), json = {
         'orderid': req_json['orderid'],

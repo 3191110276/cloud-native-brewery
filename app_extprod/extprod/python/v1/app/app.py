@@ -58,8 +58,8 @@ def handle_order():
     
     os.remove('./job_{}.yaml'.format(prodid))
     
-    with kubernetes.client.ApiClient(configuration) as api_client:
-        api_instance = kubernetes.client.BatchV1Api(api_client)
+    with client.ApiClient(configuration) as api_client:
+        api_instance = client.BatchV1Api(api_client)
         api_response = api_instance.list_namespaced_job("automation")
         logging.warning(api_response)
     

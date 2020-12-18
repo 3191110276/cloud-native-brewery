@@ -35,7 +35,6 @@ app.post('/', (req, res) => {
     })
     
     var svc = fs.readFileSync('/etc/customization/EXTPAYMENT_SVC', 'utf8');
-    console.log(svc)
     
     const options = {
         hostname: svc,
@@ -61,12 +60,15 @@ app.post('/', (req, res) => {
                 'status': 'success',
                 'id': rcvd_json['id']
             }
+            
+            console.log('Finishing payment request')
 
             res.json(response);
         });
     })
 
     pay_req.on('error', error => {
+      console.log('Encountered error')
       console.error(error)
     })
 
