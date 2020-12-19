@@ -14,6 +14,7 @@ data:
   JOB_MIN: "{{ .Values.job_min_delay }}"
   JOB_MAX: "{{ .Values.job_max_delay }}"
   PRODUCTION_SVC: "{{ .Values.production_svc }}"
+  NAMESPACE: "{{ .Values.namespace }}"
 ---
 apiVersion: v1
 kind: ServiceAccount

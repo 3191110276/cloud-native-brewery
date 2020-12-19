@@ -50,27 +50,30 @@ def handle_order():
     )
  
     f.close()
+    
+    ns = load_env_file("NAMESPACE")
 
     config.load_incluster_config()
     k8s_client = client.ApiClient()
     
-    utils.create_from_yaml(k8s_client, './job_{}.yaml'.format(prodid), namespace="automation")
+    utils.create_from_yaml(k8s_client, './job_{}.yaml'.format(prodid), namespace=ns)
     
     os.remove('./job_{}.yaml'.format(prodid))
     
     api_instance = client.BatchV1Api()
-    api_response = api_instance.list_namespaced_job("automation")
+    api_response = api_instance.list_namespaced_job(ns)
     for item in api_response.items:
         if item.status.succeeded == 1:
             logging.warning('Deleting succeeded job {}'.format(item.metadata.name))
-            api_instance.delete_namespaced_job(item.metadata.name, "automation")
+            api_instance.delete_namespaced_job(item.metadata.name, ns)
 
     api_instance = client.CoreV1Api()
-    api_response = api_instance.list_namespaced_pod("automation")
+    api_response = api_instance.list_namespaced_pod(ns)
     for item in api_response.items:
         logging.warning(item.metadata.name)
-        logging.warning(item.status)
-        #api_instance.delete_namespaced_pod(name, "automation")
+        logging.warning(item.status.phase)
+        if item.status.phase == "Completed":
+            api_instance.delete_namespaced_pod(name, ns)
     
     
     # SEND REPLY
