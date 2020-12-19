@@ -21,10 +21,12 @@ data = {
 
 time.sleep(random.randint(int(load_env_file("JOB_MIN")), int(load_env_file("JOB_MAX"))))
 
+logging.info('Starting contact to system')
+
 request_success = False
 while request_success == False:
     try:
-        logging.info('Trying to contact system')
+        logging.warning('Trying to contact system')
         r = requests.post(url=url, json=data)
         request_success = True
         break

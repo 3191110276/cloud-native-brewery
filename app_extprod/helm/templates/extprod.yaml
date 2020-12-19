@@ -1,32 +1,32 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ .Values.namespace }}
+  name: {{ .Values.namespace | default "automation" }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: customization
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespace | default "automation" }}
 data:
   MIN_RANDOM: "{{ .Values.min_delay }}"
   MAX_RANDOM: "{{ .Values.max_delay }}"
   JOB_MIN: "{{ .Values.job_min_delay }}"
   JOB_MAX: "{{ .Values.job_max_delay }}"
   PRODUCTION_SVC: "{{ .Values.production_svc }}"
-  NAMESPACE: "{{ .Values.namespace }}"
+  NAMESPACE: {{ .Values.namespace | default "automation" }}
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: factory
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespace | default "automation" }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: Role
 metadata:
   name: factory
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespace | default "automation" }}
 rules:
 - apiGroups:      ['']
   resources:      ['pods']
@@ -39,7 +39,7 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
 metadata:
   name: factory
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespace | default "automation" }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -47,13 +47,13 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: factory
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespace | default "automation" }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.name }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespace | default "automation" }}
   labels:
     tier: {{ .Values.name }}
 spec:

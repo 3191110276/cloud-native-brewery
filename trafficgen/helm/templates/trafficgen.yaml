@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ .Release.Namespace | default "trafficgen" }}
+  name: {{ .Values.namespace | default "trafficgen" }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: customization
-  namespace: {{ .Release.Namespace | default "trafficgen" }}
+  namespace: {{ .Values.namespace | default "trafficgen" }}
 data:
   MIN_RANDOM_DELAY: "{{ .Values.min_random_delay }}"
   MAX_RANDOM_DELAY: "{{ .Values.max_random_delay }}"
@@ -17,7 +17,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ .Values.name }}
-  namespace: {{ .Release.Namespace | default "trafficgen" }}
+  namespace: {{ .Values.namespace | default "trafficgen" }}
 automountServiceAccountToken: true
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -33,11 +33,11 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: {{ .Values.name }}
-  namespace: {{ .Release.Namespace | default "trafficgen" }}
+  namespace: {{ .Values.namespace | default "trafficgen" }}
 subjects:
 - kind: ServiceAccount
   name: {{ .Values.name }}
-  namespace: {{ .Release.Namespace | default "trafficgen" }}
+  namespace: {{ .Values.namespace | default "trafficgen" }}
 roleRef:
   kind: ClusterRole
   name: {{ .Values.name }}
@@ -49,7 +49,7 @@ metadata:
   labels:
     app: {{ .Values.name }}
   name: {{ .Values.name }}
-  namespace: {{ .Release.Namespace | default "trafficgen" }}
+  namespace: {{ .Values.namespace | default "trafficgen" }}
 spec:
   replicas: 6
   selector:
