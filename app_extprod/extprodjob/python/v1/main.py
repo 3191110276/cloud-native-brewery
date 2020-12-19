@@ -32,5 +32,5 @@ while request_success == False:
         break
     except Exception as e:
         logging.warning('Contact failed, repeating in one minute')
-        logging.error(e.message)
+        logging.error(e)
         time.sleep(60)

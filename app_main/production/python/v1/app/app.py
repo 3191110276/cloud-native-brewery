@@ -28,7 +28,9 @@ def handle_request():
     
     logging.warning('decoding json')
     
-    logging.info(r.json())
+    logging.warning(r.text)
+    
+    #logging.info(r.json())
     
     return json.dumps({'status': 'success'})
 
@@ -51,10 +53,14 @@ def handle_production():
         db="ordering"
     )
     
-    cursor = conn.cursor()
-    cursor.execute("""INSERT INTO production (id,order_id,weight) VALUES (%s,%s,%s)""",(prodid,orderid,weight))
-    cursor.close()
-    conn.close()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""INSERT INTO production (id,order_id,weight) VALUES (%s,%s,%s)""",(prodid,orderid,weight))
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        logging.error('DB Error')
+        logging.error(e)
         
     r = requests.post('http://{}/'.format(load_env_file("FULFILMENT_SVC")), json = {
         'orderid': orderid,

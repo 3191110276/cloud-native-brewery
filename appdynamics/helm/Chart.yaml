@@ -1,5 +1,5 @@
 apiVersion: v2
-name: cloud-native-brewery
+name: cloud-native-brewery-appd
 description: Cloud-native brewery - AppD
 type: application
 version: 1.0.0

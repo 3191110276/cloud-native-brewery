@@ -1,5 +1,5 @@
 apiVersion: v2
-name: cloud-native-brewery
+name: cloud-native-brewery-trafficgen
 description: Cloud-native brewery - TrafficGen
 type: application
 version: 1.0.0

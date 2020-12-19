@@ -1,5 +1,5 @@
 apiVersion: v2
-name: iwo-cloud-native-brewery
+name: cloud-native-brewery-iwo
 description: Cloud-native brewery - IWO
 type: application
 version: 1.0.0
