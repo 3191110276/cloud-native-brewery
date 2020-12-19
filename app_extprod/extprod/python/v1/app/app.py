@@ -65,6 +65,13 @@ def handle_order():
             logging.warning('Deleting succeeded job {}'.format(item.metadata.name))
             api_instance.delete_namespaced_job(item.metadata.name, "automation")
 
+    api_instance = client.CoreV1Api()
+    api_response = api_instance.list_namespaced_pod("automation")
+    for item in api_response.items:
+        logging.warning(item.metadata.name)
+        logging.warning(item.status)
+        #api_instance.delete_namespaced_pod(name, "automation")
+    
     
     # SEND REPLY
     reply = {
