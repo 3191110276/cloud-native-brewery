@@ -35,6 +35,7 @@ def handle_request():
 
 @app.route("/production", methods = ['POST'])
 def handle_production():
+    logging.warning('Input received from production')
     
     orderid = request.json['orderid']
     prodid = request.json['prodid']
