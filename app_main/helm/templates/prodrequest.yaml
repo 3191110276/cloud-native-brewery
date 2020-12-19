@@ -60,7 +60,7 @@ spec:
         - name: APPD_APP_NAME
           value: {{ .Values.appname }}
         - name: APPD_TIER_NAME
-          value: {{ .Values.orderprocessing_appd }}
+          value: {{ .Values.prodrequest_appd }}
         - name: APPDYNAMICS_NETVIZ_AGENT_HOST
           valueFrom:
             fieldRef:
