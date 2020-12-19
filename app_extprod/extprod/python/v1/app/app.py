@@ -72,8 +72,8 @@ def handle_order():
     for item in api_response.items:
         logging.warning(item.metadata.name)
         logging.warning(item.status.phase)
-        if item.status.phase == "Completed":
-            api_instance.delete_namespaced_pod(name, ns)
+        if item.status.phase == "Succeeded":
+            api_instance.delete_namespaced_pod(item.metadata.name, ns)
     
     
     # SEND REPLY
