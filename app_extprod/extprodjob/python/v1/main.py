@@ -21,4 +21,14 @@ data = {
 
 time.sleep(random.randint(int(load_env_file("JOB_MIN")), int(load_env_file("JOB_MAX"))))
 
-r = requests.post(url=url, json=data)
+request_success = False
+while request_success == False:
+    try:
+        logging.info('Trying to contact system')
+        r = requests.post(url=url, json=data)
+        request_success = True
+        break
+    except Exception as e:
+        logging.warning('Contact failed, repeating in one minute')
+        logging.error(e.message)
+        time.sleep(60)
