@@ -17,6 +17,7 @@ def load_env_file(name):
 
 @app.route("/request", methods = ['POST'])
 def handle_request():
+    logging.info('New order received')
     
     req_json = request.get_json(force=True)
     logging.warning(req_json)
@@ -37,7 +38,7 @@ def handle_request():
 
 @app.route("/production", methods = ['POST'])
 def handle_production():
-    logging.warning('Input received from production')
+    logging.info('Input received from production')
     
     orderid = request.json['orderid']
     prodid = request.json['prodid']
