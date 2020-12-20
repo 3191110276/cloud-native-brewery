@@ -1,3 +1,3 @@
 from .app import app
 
-app.config['DEBUG'] = False
+app.config['DEBUG'] = True

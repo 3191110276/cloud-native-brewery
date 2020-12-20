@@ -1,13 +1,8 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: appdynamics
----
-apiVersion: v1
 kind: Secret
 metadata:
   name: cluster-agent-secret
-  namespace: appdynamics
+  namespace: {{ .Release.Namespace }}
 stringData:
   controller-key: {{ .Values.appd_controller_key }}
   api-user: {{ .Values.appd_username }}@{{ .Values.appd_account_name }}:{{ .Values.appd_password }}
@@ -16,13 +11,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: appdynamics-operator
-  namespace: appdynamics
+  namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: appdynamics-operator
-  namespace: appdynamics
+  namespace: {{ .Release.Namespace }}
 rules:
   - apiGroups:
       - ""
@@ -97,7 +92,7 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: appdynamics-operator
-  namespace: appdynamics
+  namespace: {{ .Release.Namespace }}
 subjects:
   - kind: ServiceAccount
     name: appdynamics-operator
@@ -110,7 +105,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: appdynamics-operator
-  namespace: appdynamics
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
@@ -154,7 +149,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: appdynamics-cluster-agent
-  namespace: appdynamics
+  namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -252,7 +247,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: appdynamics-cluster-agent
-    namespace: appdynamics
+    namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
   name: appdynamics-cluster-agent
@@ -265,7 +260,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: appdynamics-cluster-agent
-    namespace: appdynamics
+    namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
   name: appdynamics-cluster-agent-instrumentation
@@ -275,7 +270,7 @@ apiVersion: appdynamics.com/v1alpha1
 kind: Clusteragent
 metadata:
   name: k8s-cluster-agent
-  namespace: appdynamics
+  namespace: {{ .Release.Namespace }}
 spec:
   controllerUrl: https://{{ .Values.appd_controller_hostname }}:443
   account: {{ .Values.appd_account_name }}
@@ -301,7 +296,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: appdynamics-infraviz
-  namespace: appdynamics
+  namespace: {{ .Release.Namespace }}
 ---
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
@@ -376,7 +371,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: appdynamics-infraviz
-  namespace: appdynamics
+  namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
   name: appdynamics-infraviz
@@ -386,7 +381,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: appdynamics-infraviz
-  namespace: appdynamics
+  namespace: {{ .Release.Namespace }}
 rules:
 - apiGroups:
   - extensions
@@ -401,7 +396,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: appdynamics-infraviz
-  namespace: appdynamics
+  namespace: {{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -409,13 +404,13 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: appdynamics-infraviz
-  namespace: appdynamics
+  namespace: {{ .Release.Namespace }}
 ---
 apiVersion: appdynamics.com/v1alpha1
 kind: InfraViz
 metadata:
   name: appd-infraviz
-  namespace: appdynamics
+  namespace: {{ .Release.Namespace }}
 spec:
   controllerUrl: https://{{ .Values.appd_controller_hostname }}:443
   image: {{ .Values.registry }}/appd-nodeagent:v1

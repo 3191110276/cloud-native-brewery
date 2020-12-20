@@ -1,14 +1,9 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: stealthwatch
----
-apiVersion: v1
 kind: Secret
 metadata:
   creationTimestamp: null
   name: obsrvbl
-  namespace: stealthwatch
+  namespace: {{ .Release.Namespace }}
 data:
   service_key: {{ .Values.stlth_service_key }}
 ---
@@ -16,7 +11,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: obsrvbl
-  namespace: stealthwatch
+  namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -29,13 +24,13 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: obsrvbl
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 ---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: obsrvbl-ona
-  namespace: stealthwatch
+  namespace: {{ .Release.Namespace }}
 spec:
   selector:
     matchLabels:

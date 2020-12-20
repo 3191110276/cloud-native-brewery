@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: appd-config
-  namespace: appdynamics
+  namespace: {{ .Release.Namespace }}
 data:
   ACCOUNT_NAME: "{{ .Values.appd_account_name }}"
   CONTROLLER_HOST: "{{ .Values.appd_controller_hostname }}"
@@ -19,7 +19,7 @@ metadata:
   labels:
     app: appd-dbagent
   name: appd-dbagent
-  namespace: appdynamics
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:

@@ -1,4 +1,4 @@
 bind = "0.0.0.0:80"
-workers = 4
-threads = 4
+workers = 8
+threads = 8
 timeout = 25

@@ -4,6 +4,7 @@ import time
 import os
 import logging
 import json
+from kubernetes import client, config, utils
 
 
 def load_env_file(name):
@@ -18,6 +19,26 @@ data = {
     'prodid': os.getenv('PRODID'),
     'weight': os.getenv('WEIGHT')
 }
+
+
+ns = load_env_file("NAMESPACE")
+config.load_incluster_config()
+
+
+api_instance = client.BatchV1Api()
+api_response = api_instance.list_namespaced_job(ns)
+for item in api_response.items:
+    if item.status.succeeded == 1:
+        logging.warning('Deleting succeeded Job {}'.format(item.metadata.name))
+        api_instance.delete_namespaced_job(item.metadata.name, ns)
+
+api_instance = client.CoreV1Api()
+api_response = api_instance.list_namespaced_pod(ns)
+for item in api_response.items:
+    if item.status.phase == "Succeeded":
+        logging.warning('Deleting succeeded Pod {}'.format(item.metadata.name))
+        api_instance.delete_namespaced_pod(item.metadata.name, ns)
+
 
 time.sleep(random.randint(int(load_env_file("JOB_MIN")), int(load_env_file("JOB_MAX"))))
 

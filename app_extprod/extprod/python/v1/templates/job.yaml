@@ -7,6 +7,7 @@ spec:
   ttlSecondsAfterFinished: 120
   template:
     spec:
+      serviceAccountName: factory
       containers:
       - name: production
         image: {{ registry }}/extprodjob-python:{{ version }}

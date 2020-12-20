@@ -1203,7 +1203,7 @@ def run_trafficgen():
     )
     env_base64 = base64.b64encode(env_string.encode('ascii')).decode()
     
-    logging.info('Created locatoin string: {}'.format(env_string))
+    logging.info('Created location string: {}'.format(env_string))
     
     driver.get("http://{}?env={}".format(host, env_base64))
     
@@ -1227,12 +1227,8 @@ def run_trafficgen():
     driver.close()
 
 while True:
-    run_trafficgen()
-
-    
-    
-    
-# TODOs:
-# - change admin UI to be view only
-# - change node agent to include monitors
-# - build appd extension for Intersight to get VM and HX information
+    try:
+        run_trafficgen()
+    except Exception as e:
+        logging.warning('Encountered error while running request')
+        logging.warning(e)

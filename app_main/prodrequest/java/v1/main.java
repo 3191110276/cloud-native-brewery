@@ -47,11 +47,10 @@ public class Recv {
                 transaction = AppdynamicsAgent.startTransaction("ProdRequest", correlation, EntryTypes.POJO, true);
                 
                 data = (String) json.get("data");
+                System.out.println("------------------------------------")
                 System.out.println(" [x] Received '" + data + "'");
                 
                 HTTPConnection con = new HTTPConnection(System.getenv("PRODUCTION_SVC"));
-                
-                //HTTPConnection con = new HTTPConnection("brewery-production");
                 HTTPResponse   rsp = con.Post("/request", data);
                 if (rsp.getStatusCode() >= 300)
                 {

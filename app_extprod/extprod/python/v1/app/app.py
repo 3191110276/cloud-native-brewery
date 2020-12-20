@@ -38,6 +38,8 @@ def handle_order():
     weight = int(request.json['products'][0]['amount'])*700
     prodid = create_random_prod()
     
+    logging.warning('Received Order with ID {}'.format(orderid))
+    
     f = open("job_{}.yaml".format(prodid), "a")
     f.write(
         job_template.render(
@@ -59,21 +61,6 @@ def handle_order():
     utils.create_from_yaml(k8s_client, './job_{}.yaml'.format(prodid), namespace=ns)
     
     os.remove('./job_{}.yaml'.format(prodid))
-    
-    api_instance = client.BatchV1Api()
-    api_response = api_instance.list_namespaced_job(ns)
-    for item in api_response.items:
-        if item.status.succeeded == 1:
-            logging.warning('Deleting succeeded job {}'.format(item.metadata.name))
-            api_instance.delete_namespaced_job(item.metadata.name, ns)
-
-    api_instance = client.CoreV1Api()
-    api_response = api_instance.list_namespaced_pod(ns)
-    for item in api_response.items:
-        logging.warning(item.metadata.name)
-        logging.warning(item.status.phase)
-        if item.status.phase == "Succeeded":
-            api_instance.delete_namespaced_pod(item.metadata.name, ns)
     
     
     # SEND REPLY

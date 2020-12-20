@@ -1,13 +1,8 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: {{ .Values.namespace | default "ext" }}
----
-apiVersion: v1
 kind: ConfigMap
 metadata:
   name: customization
-  namespace: {{ .Values.namespace | default "ext" }}
+  namespace: {{ .Release.Namespace }}
 data:
   MIN_RANDOM_DELAY: "{{ .Values.min_random_delay }}"
   MAX_RANDOM_DELAY: "{{ .Values.max_random_delay }}"
@@ -17,7 +12,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.name }}
-  namespace: {{ .Values.namespace | default "ext" }}
+  namespace: {{ .Release.Namespace }}
   labels:
     app: ext
     tier: {{ .Values.name }}
@@ -36,7 +31,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: no-priv
-  namespace: {{ .Values.namespace | default "ext" }}
+  namespace: {{ .Release.Namespace }}
 automountServiceAccountToken: false
 ---
 apiVersion: apps/v1
@@ -46,7 +41,7 @@ metadata:
     app: ext
     tier: {{ .Values.name }}
   name: {{ .Values.name }}
-  namespace: {{ .Values.namespace | default "ext" }}
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 2
   selector:
