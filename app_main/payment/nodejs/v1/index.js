@@ -35,9 +35,10 @@ app.post('/', (req, res) => {
     })
     
     var svc = fs.readFileSync('/etc/customization/EXTPAYMENT_SVC', 'utf8');
+    console.log(svc)
     
     const options = {
-        hostname: svc,
+        hostname: fs.readFileSync('/etc/customization/EXTPAYMENT_SVC', 'utf8'),
         port: 80,
         path: '/',
         method: 'POST',
@@ -46,19 +47,12 @@ app.post('/', (req, res) => {
         }
     }
     
-    response = {
-        'status': 'success',
-        'id': 1
-    }
-    
-    res.json(response);
-    
-//    const pay_req = http.request(options, pay_res => {
-//        rcvd = ''
-//
-//        pay_res.on('data', function (chunk) {
-//            rcvd += chunk;
-//        });
+    const pay_req = http.request(options, pay_res => {
+        rcvd = ''
+
+        pay_res.on('data', function (chunk) {
+            rcvd += chunk;
+        });
 //
 //        pay_res.on('end', function () {
 //            rcvd_json = JSON.parse(rcvd);
@@ -72,13 +66,20 @@ app.post('/', (req, res) => {
 //
 //            res.json(response);
 //        });
-//    })
-//
-//    pay_req.on('error', error => {
-//      console.log('Encountered error')
-//      console.error(error)
-//    })
-//
+    })
+
+    pay_req.on('error', error => {
+      console.log('Encountered error')
+      console.error(error)
+    })
+    
+    const response = {
+        'status': 'success',
+        'id': 1
+    }
+    
+    res.json(response);
+
 //    pay_req.write(data)
 //    pay_req.end()    
 });
