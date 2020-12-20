@@ -73,15 +73,15 @@ app.post('/', (req, res) => {
       console.error(error)
     })
     
-    const response = {
-        'status': 'success',
-        'id': 1
-    }
-    
-    res.json(response);
+//    const response = {
+//        'status': 'success',
+//        'id': 1
+//    }
+//    
+//    res.json(response);
 
-//    pay_req.write(data)
-//    pay_req.end()    
+    pay_req.write(data)
+    pay_req.end()    
 });
 
 app.get('/healthz', (req, res) => {

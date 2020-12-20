@@ -28,15 +28,15 @@ def payment():
         'status': 'success'
     }
     
-    processing_time = random.randint(
-        load_env_file("MIN_RANDOM_DELAY"),
-        load_env_file("MAX_RANDOM_DELAY")
-    )
-    
-    if random.randint(1, 1000) == float(load_env_file("LAGSPIKE_PERCENTAGE"))*100:
-        processing_time += 1500
-    
-    time.sleep(processing_time/1000)
+#    processing_time = random.randint(
+#        load_env_file("MIN_RANDOM_DELAY"),
+#        load_env_file("MAX_RANDOM_DELAY")
+#    )
+#    
+#    if random.randint(1, 1000) == float(load_env_file("LAGSPIKE_PERCENTAGE"))*100:
+#        processing_time += 1500
+#    
+#    time.sleep(processing_time/1000)
     
     return json.dumps(payment)
 
