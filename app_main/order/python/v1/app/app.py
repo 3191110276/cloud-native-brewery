@@ -41,23 +41,26 @@ def handle_order():
     
     
     # PROCESS PAYMENT
-#    logging.info('Sending to Payment')
-#    to_pay = int(request.form['quantity'])*2
+    logging.info('Sending to Payment')
+    to_pay = int(request.form['quantity'])*2
 #    r = requests.post(
 #        'http://{}/'.format(load_env_file("PAYMENT_SVC")),
 #        json = {'payment':to_pay}
 #    )
 #    
-#    logging.info('Received Response from Payment')
+    logging.info('Received Response from Payment')
 #    payment = r.json()
-#    logging.info(payment)
+     payment = {
+         'id': 1
+     }
+    logging.info(payment)
 #    
-#    logging.info('Saving payment to database')
-#    cursor.execute("""INSERT INTO payment (provider_id,paytype,order_id) VALUES (%s,%s,%s)""",(payment['id'],'creditcard',orderid))
+    logging.info('Saving payment to database')
+    cursor.execute("""INSERT INTO payment (provider_id,paytype,order_id) VALUES (%s,%s,%s)""",(payment['id'],'creditcard',orderid))
     
     
     # CLOSE CONNECTION
-#    conn.commit()
+    conn.commit()
     
     cursor.close()
     conn.close()
