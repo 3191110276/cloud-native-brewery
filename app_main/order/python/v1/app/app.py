@@ -43,11 +43,11 @@ def handle_order():
     # PROCESS PAYMENT
     logging.info('Sending to Payment')
     to_pay = int(request.form['quantity'])*2
-#    r = requests.post(
-#        'http://{}/'.format(load_env_file("PAYMENT_SVC")),
-#        json = {'payment':to_pay}
-#    )
-#    
+    r = requests.post(
+        'http://{}/'.format(load_env_file("PAYMENT_SVC")),
+        json = {'payment':to_pay}
+    )
+    
     logging.info('Received Response from Payment')
 #    payment = r.json()
     payment = {
