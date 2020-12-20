@@ -50,9 +50,9 @@ def handle_order():
 #    
     logging.info('Received Response from Payment')
 #    payment = r.json()
-     payment = {
+    payment = {
          'id': 1
-     }
+    }
     logging.info(payment)
 #    
     logging.info('Saving payment to database')
