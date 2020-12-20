@@ -6,6 +6,8 @@ import MySQLdb
 
 app = Flask(__name__)
 
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+
 
 def load_env_file(name):
     with open("/etc/customization/{}".format(name), "r") as f:
@@ -14,8 +16,11 @@ def load_env_file(name):
 
 @app.route("/order", methods = ['POST'])
 def handle_order():
+    logging.info('Received request')
+    logging.info(request.form)
     
     # SAVE ORDER TO ORDERS DB
+    logging.info('Saving Order')
     conn = MySQLdb.connect(
         host=load_env_file("INVENTORYDB_SVC"),
         port=80,
@@ -35,6 +40,7 @@ def handle_order():
     
     
     # PROCESS PAYMENT
+    logging.info('Sending to Payment')
     to_pay = int(request.form['quantity'])*2
     r = requests.post(
         'http://{}/'.format(load_env_file("PAYMENT_SVC")),
@@ -54,6 +60,7 @@ def handle_order():
     
     
     # INITIATE ORDER PROCESSING
+    logging.info('Sending to OrderProcessing')
     r = requests.post(
         'http://{}/orderprocessing'.format(load_env_file("ORDERPROCESSING_SVC")),
         json = {
@@ -66,6 +73,7 @@ def handle_order():
 
     
     # SEND REPLY
+    logging.info('Closing Order request - sending reply')
     reply = {
         'id': orderid,
         'status': 'success'

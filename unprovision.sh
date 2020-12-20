@@ -10,9 +10,9 @@ helm uninstall stealthwatch -n swc
 helm uninstall app -n default
 helm uninstall appd -n appdynamics
 
-k delete ns automation --wait=False
-k delete ns ext --wait=False
-k delete ns trafficgen --wait=False
-k delete ns iwo --wait=False
-k delete ns swc --wait=False
-k delete ns appdynamics --wait=False
+kubectl delete ns automation --wait=False
+kubectl delete ns ext --wait=False
+kubectl delete ns trafficgen --wait=False
+kubectl delete ns iwo --wait=False
+kubectl delete ns swc --wait=False
+kubectl delete ns appdynamics --wait=False
