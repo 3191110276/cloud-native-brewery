@@ -1,6 +1,2 @@
 [agent]
 node = NODENAME
-
-[controller:http-proxy]
-host = proxy-wsa.esl.cisco.com
-port = 80
