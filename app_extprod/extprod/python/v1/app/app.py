@@ -52,9 +52,9 @@ def handle_order():
 #    )
 # 
 #    f.close()
-#    
-#    ns = load_env_file("NAMESPACE")
-#
+    
+    ns = load_env_file("NAMESPACE")
+
 #    config.load_incluster_config()
 #    k8s_client = client.ApiClient()
 #    
