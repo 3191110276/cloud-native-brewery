@@ -29,8 +29,8 @@ def payment():
     }
     
     processing_time = random.randint(
-        load_env_file("MIN_RANDOM_DELAY"),
-        load_env_file("MAX_RANDOM_DELAY")
+        int(load_env_file("MIN_RANDOM_DELAY")),
+        int(load_env_file("MAX_RANDOM_DELAY"))
     )
     
     if random.randint(1, 1000) == float(load_env_file("LAGSPIKE_PERCENTAGE"))*100:
