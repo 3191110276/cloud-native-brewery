@@ -19,6 +19,8 @@ def load_env_file(name):
 def handle_request():
     logging.info('New order received')
     
+    logging.warning(request.headers)
+    
     req_json = request.get_json(force=True)
     logging.warning(req_json)
     
