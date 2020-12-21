@@ -35,10 +35,8 @@ def payment():
     
     if random.randint(1, 1000) == float(load_env_file("LAGSPIKE_PERCENTAGE"))*100:
         processing_time += 1500
-        
-    logging.warning(processing_time)
     
-#    time.sleep(processing_time/1000)
+    time.sleep(processing_time/1000)
     
     return json.dumps(payment)
 
