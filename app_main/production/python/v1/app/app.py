@@ -33,6 +33,9 @@ def handle_request():
     
     #logging.info(r.json())
     
+    import time
+    time.sleep(2)
+    
     return json.dumps({'status': 'success'})
 
 
