@@ -40,18 +40,18 @@ def handle_order():
     
     logging.warning('Received Order with ID {}'.format(orderid))
     
-#    f = open("job_{}.yaml".format(prodid), "a")
-#    f.write(
-#        job_template.render(
-#            prodid=prodid.lower(),
-#            registry="mimaurer",
-#            version="v1",
-#            orderid=orderid,
-#            weight=weight
-#        )
-#    )
-# 
-#    f.close()
+    f = open("job_{}.yaml".format(prodid), "a")
+    f.write(
+        job_template.render(
+            prodid=prodid.lower(),
+            registry="mimaurer",
+            version="v1",
+            orderid=orderid,
+            weight=weight
+        )
+    )
+ 
+    f.close()
     
     ns = load_env_file("NAMESPACE")
 
@@ -60,7 +60,7 @@ def handle_order():
 #    
 #    utils.create_from_yaml(k8s_client, './job_{}.yaml'.format(prodid), namespace=ns)
 #    
-#    os.remove('./job_{}.yaml'.format(prodid))
+    os.remove('./job_{}.yaml'.format(prodid))
     
     
     # SEND REPLY
