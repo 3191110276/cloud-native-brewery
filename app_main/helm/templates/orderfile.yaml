@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.appname }}-{{ .Values.orderfile_name }}
-  namespace: default
+  namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.appname }}
     tier: {{ .Values.orderfile_name }}
@@ -28,7 +28,7 @@ metadata:
     app: {{ .Values.appname }}
     tier: {{ .Values.orderfile_name }}
   name: {{ .Values.appname }}-{{ .Values.orderfile_name }}
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:

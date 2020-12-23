@@ -3,14 +3,14 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: mariadb-operator
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   creationTimestamp: null
   name: mariadb-operator
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 rules:
 - apiGroups:
   - ""
@@ -104,7 +104,7 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: mariadb-operator
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 subjects:
 - kind: ServiceAccount
   name: mariadb-operator
@@ -117,7 +117,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: mariadb-operator-cl-role
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 rules:
 - apiGroups: [""]
   resources:
@@ -153,7 +153,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: mariadb-operator-cl-binding
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -183,7 +183,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mariadb-pv-claim
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 spec:
   storageClassName: standard
   accessModes:
@@ -196,7 +196,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mariadb-operator
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
@@ -236,7 +236,7 @@ apiVersion: mariadb.persistentsys/v1alpha1
 kind: MariaDB
 metadata:
   name: {{ .Values.appname }}-{{ .Values.inventorydb_name }}
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 spec:
   # Keep this parameter value unchanged.
   size: 1

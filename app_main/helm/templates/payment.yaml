@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.appname }}-{{ .Values.payment_name }}
-  namespace: default
+  namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.appname }}
     tier: {{ .Values.payment_name }}
@@ -29,7 +29,7 @@ metadata:
     tier: {{ .Values.payment_name }}
     appd-appname: {{ .Values.payment_appd }}
   name: {{ .Values.appname }}-{{ .Values.payment_name }}
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 2
   selector:

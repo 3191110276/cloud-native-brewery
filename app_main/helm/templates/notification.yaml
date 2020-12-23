@@ -1,30 +1,30 @@
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: {{ .Values.appname }}-notification
-#  namespace: default
-#  labels:
-#    app: {{ .Values.appname }}
-#    tier: notification
-#spec:
-#  type: ClusterIP
-#  selector:
-#    app: {{ .Values.appname }}
-#    tier: notification
-#  ports:
-#    - name: http
-#      protocol: TCP
-#      port: 80
-#      targetPort: 80
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.appname }}-{{ .Values.notification_name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.appname }}
+    tier: notification
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Values.appname }}
+    tier: {{ .Values.notification_name }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app: {{ .Values.appname }}
-    tier: notification
+    tier: {{ .Values.notification_name }}
   name: {{ .Values.appname }}-{{ .Values.notification_name }}
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 2
   selector:
@@ -54,8 +54,8 @@ spec:
         envFrom:
         - configMapRef:
             name: appd-config
-        - secretRef:
-            name: brewery-orderqueue-rabbitmq-admin
+#        - secretRef:
+#            name: brewery-orderqueue-rabbitmq-admin
         env:
         - name: APPD_APP_NAME
           value: {{ .Values.appname }}

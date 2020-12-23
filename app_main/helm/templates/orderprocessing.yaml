@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.appname }}-{{ .Values.orderprocessing_name }}
-  namespace: default
+  namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.appname }}
     tier: {{ .Values.orderprocessing_name }}
@@ -23,8 +23,8 @@ metadata:
   labels:
     app: {{ .Values.appname }}
     tier: {{ .Values.orderprocessing_name }}
-  name: {{ .Values.appname }}-orderprocessing
-  namespace: default
+  name: {{ .Values.appname }}-{{ .Values.orderprocessing_name }}
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 2
   selector:
@@ -59,8 +59,8 @@ spec:
         envFrom:
         - configMapRef:
             name: appd-config
-        - secretRef:
-            name: brewery-orderqueue-rabbitmq-admin
+#        - secretRef:
+#            name: brewery-orderqueue-rabbitmq-admin
         volumeMounts:
         - name: customization
           mountPath: /etc/customization

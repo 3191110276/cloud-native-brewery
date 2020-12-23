@@ -16,8 +16,14 @@ $mq_svc = file_get_contents('/etc/customization/INITQUEUE_SVC');
 $data = file_get_contents('php://input');
 
 
+# USER DEFINITION
+# $user = getenv("username");
+# $password = getenv("password");
+$user = "user";
+$password = "user";
+
 # AMQP SERVER CONNECTION
-$connection = new AMQPStreamConnection('brewery-orderqueue-rabbitmq-client', 5672, getenv("username"), getenv("password"));
+$connection = new AMQPStreamConnection('brewery-orderqueue-rabbitmq-client', 5672, $user, $password);
 
 
 #######################################################

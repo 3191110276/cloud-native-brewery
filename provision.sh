@@ -19,4 +19,4 @@ sleep 5s
 helm install stealthwatch ./stealthwatch_cloud/helm/ -n swc --create-namespace
 sleep 5s
 
-helm install app ./app_main/helm/ -n default --create-namespace
+helm install app ./app_main/helm/ -n app --create-namespace

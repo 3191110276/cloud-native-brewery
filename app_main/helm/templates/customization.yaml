@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: customization
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 data:
   INVENTORYDB_SVC: "{{ .Values.appname }}-{{ .Values.inventorydb_name }}-service"
   PAYMENT_SVC: "{{ .Values.appname }}-{{ .Values.payment_name }}"

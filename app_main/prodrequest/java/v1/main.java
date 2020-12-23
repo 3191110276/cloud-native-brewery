@@ -22,8 +22,10 @@ public class Recv {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("brewery-orderqueue-rabbitmq-client");
         factory.setPort(5672);
-        factory.setUsername(System.getenv("username"));
-        factory.setPassword(System.getenv("password"));
+//        factory.setUsername(System.getenv("username"));
+//        factory.setPassword(System.getenv("password"));
+        factory.setUsername("user");
+        factory.setPassword("user");
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 

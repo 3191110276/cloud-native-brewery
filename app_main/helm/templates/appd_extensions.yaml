@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: appd-config
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 data:
   ACCOUNT_NAME: {{ .Values.appd_account_name }}
   APPD_ACCOUNT_NAME: {{ .Values.appd_account_name }} #Python

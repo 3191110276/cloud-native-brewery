@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.appname }}-{{ .Values.adminfile_name }}
-  namespace: default
+  namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.appname }}
     tier: {{ .Values.adminfile_name }}
@@ -28,7 +28,7 @@ metadata:
     app: {{ .Values.appname }}
     tier: adminfile
   name: {{ .Values.appname }}-{{ .Values.adminfile_name }}
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 2
   selector:

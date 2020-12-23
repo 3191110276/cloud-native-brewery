@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1beta1 #CHANGE WITH K8s 1.19
 kind: Ingress
 metadata:
   name: {{ .Values.appname }}-ingress
-  namespace: default
+  namespace: {{ .Release.Namespace }}
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2$3
 spec:
