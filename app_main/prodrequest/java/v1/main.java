@@ -20,7 +20,7 @@ public class Recv {
 
     public static void main(String[] argv) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("brewery-orderqueue-rabbitmq-client");
+        factory.setHost("brewery-orderqueue-rabbitmq");
         factory.setPort(5672);
 //        factory.setUsername(System.getenv("username"));
 //        factory.setPassword(System.getenv("password"));

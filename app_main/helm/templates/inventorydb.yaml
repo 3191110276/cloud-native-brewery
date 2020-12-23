@@ -224,7 +224,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: WATCH_NAMESPACE
-              value: default
+              value: {{ .Release.Namespace }}
             - name: POD_NAME
               valueFrom:
                 fieldRef:

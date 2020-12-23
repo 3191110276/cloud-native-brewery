@@ -23,7 +23,7 @@ $user = "user";
 $password = "user";
 
 # AMQP SERVER CONNECTION
-$connection = new AMQPStreamConnection('brewery-orderqueue-rabbitmq-client', 5672, $user, $password);
+$connection = new AMQPStreamConnection('brewery-orderqueue-rabbitmq', 5672, $user, $password);
 
 
 #######################################################

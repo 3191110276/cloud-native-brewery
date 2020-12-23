@@ -62,8 +62,6 @@ spec:
         envFrom:
         - configMapRef:
             name: appd-config
-        - secretRef:
-            name: brewery-orderqueue-rabbitmq-admin
         volumeMounts:
         - name: customization
           mountPath: /etc/customization
