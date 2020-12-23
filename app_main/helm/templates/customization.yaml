@@ -7,7 +7,7 @@ data:
   INVENTORYDB_SVC: "{{ .Values.appname }}-{{ .Values.inventorydb_name }}-service"
   PAYMENT_SVC: "{{ .Values.appname }}-{{ .Values.payment_name }}"
   EXTPAYMENT_SVC: "{{ .Values.extpayment_svc }}"
-  INITQUEUE_SVC: "{{ .Values.payment_name }}-{{ .Values.initqueue_name }}-rabbitmq-client"
+  INITQUEUE_SVC: "{{ .Values.appname }}-{{ .Values.initqueue_name }}-rabbitmq"
   ORDERPROCESSING_SVC: "{{ .Values.appname }}-{{ .Values.orderprocessing_name }}"
   PRODUCTION_SVC: "{{ .Values.appname }}-{{ .Values.production_name }}"
   EXTPROD_SVC: "{{ .Values.extprod_name }}.{{ .Values.extprod_namespace }}"
