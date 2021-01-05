@@ -75,7 +75,7 @@ data:
     # queue master locator
     queue_master_locator = min-masters
     # enable guest user
-    loopback_users.guest = false
+    loopback_users.guest = true
     #default_vhost = {{ .Values.appname }}-{{ .Values.initqueue_name }}-vhost
     #disk_free_limit.absolute = 50MB
     #load_definitions = /app/load_definition.json

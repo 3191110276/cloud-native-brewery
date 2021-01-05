@@ -19,8 +19,8 @@ $data = file_get_contents('php://input');
 # USER DEFINITION
 # $user = getenv("username");
 # $password = getenv("password");
-$user = "guest";
-$password = "guest";
+$user = "user";
+$password = "user";
 
 # AMQP SERVER CONNECTION
 $connection = new AMQPStreamConnection('brewery-orderqueue-rabbitmq', 5672, $user, $password);
