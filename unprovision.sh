@@ -1,7 +1,5 @@
 #!/bin/bash
 
-kubectl delete rabbitmqcluster brewery-orderqueue
-
 helm uninstall extprod -n automation
 helm uninstall extpayment -n ext
 helm uninstall trafficgen -n trafficgen

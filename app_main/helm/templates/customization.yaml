@@ -10,5 +10,5 @@ data:
   INITQUEUE_SVC: "{{ .Values.appname }}-{{ .Values.initqueue_name }}-rabbitmq"
   ORDERPROCESSING_SVC: "{{ .Values.appname }}-{{ .Values.orderprocessing_name }}"
   PRODUCTION_SVC: "{{ .Values.appname }}-{{ .Values.production_name }}"
-  EXTPROD_SVC: "{{ .Values.extprod_name }}.{{ .Values.extprod_namespace }}"
+  EXTPROD_SVC: "{{ .Values.extprod_svc }}"
   FULFILMENT_SVC: "{{ .Values.appname }}-{{ .Values.fulfilment_name }}"
