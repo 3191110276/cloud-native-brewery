@@ -64,8 +64,10 @@ metadata:
 data:
   rabbitmq.conf: |-
     ## Username and password
-    default_user = user
-    default_pass = user
+#    default_user = user
+#    default_pass = user
+    default_user = guest
+    default_pass = guest
     ## Clustering
     cluster_formation.peer_discovery_backend  = rabbit_peer_discovery_k8s
     cluster_formation.k8s.host = kubernetes.default.svc.cluster.local
@@ -75,7 +77,7 @@ data:
     # queue master locator
     queue_master_locator = min-masters
     # enable guest user
-    loopback_users.guest = true
+    loopback_users.guest = false
     #default_vhost = {{ .Values.appname }}-{{ .Values.initqueue_name }}-vhost
     #disk_free_limit.absolute = 50MB
     #load_definitions = /app/load_definition.json
@@ -244,12 +246,14 @@ spec:
                   name: {{ .Values.appname }}-{{ .Values.initqueue_name }}-rabbitmq
                   key: rabbitmq-erlang-cookie
             - name: RABBITMQ_USERNAME
-              value: "user"
+#              value: "user"
+              value: "guest"
             - name: RABBITMQ_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.appname }}-{{ .Values.initqueue_name }}-rabbitmq
-                  key: rabbitmq-password
+              value: "guest"
+#              valueFrom:
+#                secretKeyRef:
+#                  name: {{ .Values.appname }}-{{ .Values.initqueue_name }}-rabbitmq
+#                  key: rabbitmq-password
             - name: RABBITMQ_PLUGINS
               value: "rabbitmq_management, rabbitmq_peer_discovery_k8s, rabbitmq_auth_backend_ldap"
           ports:

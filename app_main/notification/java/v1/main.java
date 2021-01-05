@@ -18,8 +18,8 @@ public class Recv {
         factory.setPort(5672);
 //        factory.setUsername(System.getenv("username"));
 //        factory.setPassword(System.getenv("password"));
-        factory.setUsername("user");
-        factory.setPassword("user");
+        factory.setUsername("guest");
+        factory.setPassword("guest");
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
