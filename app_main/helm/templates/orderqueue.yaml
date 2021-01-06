@@ -53,7 +53,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 type: Opaque
 data:
-  rabbitmq-password: "dXNlcgo=" # user
+  rabbitmq-password: "Z3Vlc3QK" # guest
+#  rabbitmq-password: "dXNlcgo=" # user
   rabbitmq-erlang-cookie: "OWU2SE1ZMTRwa2NMTVZIQjhiUnlmNzFPempwSnBRSDE="
 ---
 apiVersion: v1
@@ -64,10 +65,10 @@ metadata:
 data:
   rabbitmq.conf: |-
     ## Username and password
-#    default_user = user
-#    default_pass = user
     default_user = guest
     default_pass = guest
+    #default_user = user
+    #default_pass = user
     ## Clustering
     cluster_formation.peer_discovery_backend  = rabbit_peer_discovery_k8s
     cluster_formation.k8s.host = kubernetes.default.svc.cluster.local
