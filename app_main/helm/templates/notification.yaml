@@ -54,8 +54,6 @@ spec:
         envFrom:
         - configMapRef:
             name: appd-config
-#        - secretRef:
-#            name: brewery-orderqueue-rabbitmq-admin
         env:
         - name: APPD_APP_NAME
           value: {{ .Values.appname }}
@@ -67,6 +65,8 @@ spec:
               fieldPath: status.hostIP
         - name: APPDYNAMICS_NETVIZ_AGENT_PORT
           value: "3892"
+        - name: INITQUEUE_SVC
+          value: "{{ .Values.appname }}-{{ .Values.initqueue_name }}-rabbitmq"
         volumeMounts:
         - name: customization
           mountPath: /etc/customization

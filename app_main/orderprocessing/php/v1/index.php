@@ -17,8 +17,6 @@ $data = file_get_contents('php://input');
 
 
 # USER DEFINITION
-# $user = getenv("username");
-# $password = getenv("password");
 $user = "guest";
 $password = "guest";
 
