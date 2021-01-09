@@ -24,7 +24,7 @@ spec:
     requests.memory: 10Gi
     limits.cpu: "10"
     limits.memory: 12Gi
-    requests.storage: 10Gi
+    requests.storage: 40Gi
     persistentvolumeclaims: 10
     requests.nvidia.com/gpu: 0
     pods: "200"
