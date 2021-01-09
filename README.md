@@ -4,7 +4,9 @@ the application can be easily renamed to reflect a different use-case.
 
 ## Provision Script 
 The provision script will install seven components through separate helm charts.
-Every chart installs several components:
+To work properly the helm chart will require a values.yaml file in the respective helm directory. 
+
+Every chart installs several pods:
 - Appdynamics Components: appd cluster agent, appd db agent, metrics server.
 - Traffic Generator: a container that simulates user requests from different regions
 - External Payment: a container that simulates an external payment service (ie. credit card, paypal, ...)
