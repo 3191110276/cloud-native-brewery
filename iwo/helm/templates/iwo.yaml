@@ -25,7 +25,6 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   iwo.config: |-
-  iwo.config: |-
     {
       "communicationConfig": {
         "serverMeta": {
@@ -36,24 +35,11 @@ data:
       },
       "HANodeConfig": {
         "nodeRoles": ["master"]
+      },
+      "targetConfig": {
+        "targetName":"{{ .Values.app }}-cluster"
       }
     }
-#    {
-#        "communicationConfig": {
-#            "serverMeta": {
-#                "version": "8",
-#                "turboServer": "http://topology-processor:8080",
-#                "proxy": "http://localhost:9004"
-#            },
-#            "restAPIConfig": {
-#                "opsManagerUserName": "username",
-#                "opsManagerPassword": "password"
-#            }
-#        },
-#        "targetConfig": {
-#            "targetName":"{{ .Values.appname }}-cluster"
-#        }
-#    }
 ---
 apiVersion: apps/v1
 kind: Deployment
