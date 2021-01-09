@@ -47,34 +47,40 @@ app.post('/', (req, res) => {
         }
     }
     
-    const pay_req = http.request(options, pay_res => {
-        rcvd = ''
-
-        pay_res.on('data', function (chunk) {
-            rcvd += chunk;
-        });
-
-        pay_res.on('end', function () {
-            rcvd_json = JSON.parse(rcvd);
-
-            response = {
-                'status': 'success',
-                'id': rcvd_json['id']
-            }
-            
-            console.log('Finishing payment request')
-
-            res.json(response);
-        });
-    })
-
-    pay_req.on('error', error => {
-      console.log('Encountered error')
-      console.error(error)
-    })
-
-    pay_req.write(data)
-    pay_req.end()    
+    response = {
+        'status': 'success',
+        'id': rcvd_json['id']
+    }
+    res.json(response);
+    
+//    const pay_req = http.request(options, pay_res => {
+//        rcvd = ''
+//
+//        pay_res.on('data', function (chunk) {
+//            rcvd += chunk;
+//        });
+//
+//        pay_res.on('end', function () {
+//            rcvd_json = JSON.parse(rcvd);
+//
+//            response = {
+//                'status': 'success',
+//                'id': rcvd_json['id']
+//            }
+//            
+//            console.log('Finishing payment request')
+//
+//            res.json(response);
+//        });
+//    })
+//
+//    pay_req.on('error', error => {
+//      console.log('Encountered error')
+//      console.error(error)
+//    })
+//
+//    pay_req.write(data)
+//    pay_req.end()    
 });
 
 app.get('/healthz', (req, res) => {
