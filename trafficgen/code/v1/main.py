@@ -17,7 +17,7 @@ except:
     logging.info('Kubeconfig could not be loaded, loading in-cluster Kubeconfig')
     config.load_incluster_config()
 api_instance = client.CoreV1Api()
-api_response = api_instance.read_namespaced_service("nginx-ingress-controller", "ccp")
+api_response = api_instance.read_namespaced_service("ingress-nginx-controller", "ccp")
 host = api_response.spec.load_balancer_ip
 logging.info('Fetched LoadBalancer IP: {}'.format(api_response.spec.load_balancer_ip))
 
