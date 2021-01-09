@@ -49,7 +49,7 @@ app.post('/', (req, res) => {
     
     response = {
         'status': 'success',
-        'id': rcvd_json['id']
+        'id': 1
     }
     res.json(response);
     
