@@ -8,7 +8,12 @@ import time
 import sys
 
 
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    stream=sys.stdout,
+    level=logging.INFO
+)
 
 try:
     logging.info('Trying to load Kubeconfig')
@@ -1205,18 +1210,25 @@ def run_trafficgen():
     
     logging.info('Created location string: {}'.format(env_string))
     
+    logging.info('Loading web page')
     driver.get("http://{}?env={}".format(host, env_base64))
     
     time.sleep(random.randint(1500, 4000)/1000)
 
+    logging.info('Locating input field')
     elem = driver.find_element_by_xpath("//*[@id=\"content\"]/div[1]/input")
+    
+    logging.info('Clearing input field')
     elem.clear()
     elem.send_keys(random.randint(1, 50))
 
 
     time.sleep(random.randint(1500, 4000)/1000)
 
+    logging.info('Locating button')
     elem = driver.find_element_by_xpath("//*[@id=\"content\"]/div[1]/button")
+    
+    logging.info('Clicking button')
     elem.click();
     
     time.sleep(random.randint(14000, 16000)/1000)
