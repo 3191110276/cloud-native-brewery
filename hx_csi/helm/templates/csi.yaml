@@ -1,4 +1,27 @@
 ---
+# HX CSI CONFIGURATION
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hxcsi-config
+  namespace: {{ .Release.Namespace }}
+data:
+  hxapi_clientId: ""
+  hxapi_delay_seconds: "0"
+  hxapi_api_timeout_seconds: "30"
+  hxapi_umount_retry: "3"
+  hxapi_udev_retry_count: "30"
+  hxapi_cmd_retry: "3"
+  hxapi_delete_retry: "30"
+  hxapi_statsCache_expire_time: "30"
+  hxapi_statsCache_purge_time: "10"
+  hxapi_statsCache_enabled: "true"
+  
+  hxapi_url: "{{ .Values.hx_admin_ip }}"
+  hxapi_iscsiurl: "{{ .Values.hx_iscsi_ip }}"
+  hxapi_image: "{{ .Values.hx_iscsi_ip }}"
+---
 # CSI ATTACHER RBAC
 ---
 apiVersion: v1
@@ -210,3 +233,18 @@ roleRef:
   name: external-resizer-cfg
   apiGroup: rbac.authorization.k8s.io
 ---
+# CSI ATTACHER
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: csi-attacher-hxcsi
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: csi-attacher-hxcsi
+spec:
+  selector:
+    app: csi-attacher-hxcsi
+  ports:
+    - name: dummy
+      port: 12346
