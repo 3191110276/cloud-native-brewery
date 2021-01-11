@@ -41,3 +41,7 @@ spec:
             #name: {{ .Values.appname }}-order
             #port:
               #number: 80
+      - path: /(rabbitmq)(/|$)(.*)
+        backend:
+          serviceName: {{ .Values.appname }}-{{ .Values.order_name }}
+          servicePort: 15672
