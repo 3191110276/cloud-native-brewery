@@ -12,8 +12,7 @@ steps:
    repo: mimaurer/adminfile-nginx
    context: ./app_main/adminfile/nginx/v1/
    dockerfile: ./app_main/adminfile/nginx/v1/Dockerfile
-   #auto_tag: true
-   tags: [ "v${build.number}", "latest" ]
+   tags: [ "v1", "latest" ]
    username:
      from_secret: DOCKERHUB_USERNAME
    password:
