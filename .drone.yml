@@ -285,7 +285,8 @@ steps:
    repo: mimaurer/trafficgen-python
    context: ./trafficgen/code/v1/
    dockerfile: ./trafficgen/code/v1/Dockerfile
-   tags: [ "v1", "latest" ]
+   auto_tag: true
+   #tags: [ "v1", "latest" ]
    username:
      from_secret: DOCKERHUB_USERNAME
    password:

@@ -1238,6 +1238,7 @@ def run_trafficgen():
 
     driver.close()
 
+
 while True:
     try:
         run_trafficgen()
