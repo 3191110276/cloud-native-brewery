@@ -12,12 +12,11 @@ steps:
    repo: mimaurer/adminfile-nginx
    context: ./app_main/adminfile/nginx/v1/
    dockerfile: ./app_main/adminfile/nginx/v1/Dockerfile
-   tags: [ "v1", "latest" ]
+   tags: [ "v{{ DRONE_BUILD_NUMBER }}", "latest" ]
    username:
      from_secret: DOCKERHUB_USERNAME
    password:
      from_secret: DOCKERHUB_PASSWORD
-
 
 #APPD_DBAGENT
 - name: publish_appddbagent
