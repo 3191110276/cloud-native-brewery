@@ -748,11 +748,12 @@ spec:
       port: 80
       protocol: TCP
       targetPort: 9090
+      nodePort: 32101
   selector:
     component: "server"
     app: prometheus
   sessionAffinity: None
-  type: "ClusterIP"
+  type: "NodePort"
 ---
 apiVersion: apps/v1
 kind: DaemonSet
