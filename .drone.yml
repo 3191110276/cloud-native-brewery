@@ -12,7 +12,7 @@ steps:
    repo: mimaurer/adminfile-nginx
    context: ./app_main/adminfile/nginx/v1/
    dockerfile: ./app_main/adminfile/nginx/v1/Dockerfile
-   auto_tag: true
+   tags: [ "v{{ build.number }}", "latest" ]
    username:
      from_secret: DOCKERHUB_USERNAME
    password:
@@ -31,8 +31,7 @@ steps:
    repo: mimaurer/appd-dbagent
    context: ./appdynamics/appd_dbagent/
    dockerfile: ./appdynamics/appd_dbagent/Dockerfile
-   auto_tag: true
-   #tags: [ "v1", "latest" ]
+   tags: [ "v1", "latest" ]
    username:
      from_secret: DOCKERHUB_USERNAME
    password:
@@ -285,8 +284,7 @@ steps:
    repo: mimaurer/trafficgen-python
    context: ./trafficgen/code/v1/
    dockerfile: ./trafficgen/code/v1/Dockerfile
-   auto_tag: true
-   #tags: [ "v1", "latest" ]
+   tags: [ "v1", "latest" ]
    username:
      from_secret: DOCKERHUB_USERNAME
    password:

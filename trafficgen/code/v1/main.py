@@ -1240,7 +1240,6 @@ def run_trafficgen():
 
 
 while True:
-    print('temporary change')
     try:
         run_trafficgen()
     except Exception as e:
