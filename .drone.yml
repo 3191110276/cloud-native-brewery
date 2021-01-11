@@ -32,7 +32,8 @@ steps:
    repo: mimaurer/appd-dbagent
    context: ./appdynamics/appd_dbagent/
    dockerfile: ./appdynamics/appd_dbagent/Dockerfile
-   tags: [ "v1", "latest" ]
+   auto_tag: true
+   #tags: [ "v1", "latest" ]
    username:
      from_secret: DOCKERHUB_USERNAME
    password:
