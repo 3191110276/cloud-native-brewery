@@ -46,7 +46,7 @@ metadata:
   name: {{ .Values.name }}
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 6
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
       app: {{ .Values.name }}
