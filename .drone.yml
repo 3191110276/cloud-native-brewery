@@ -12,7 +12,7 @@ steps:
    repo: mimaurer/adminfile-nginx
    context: ./app_main/adminfile/nginx/v1/
    dockerfile: ./app_main/adminfile/nginx/v1/Dockerfile
-   tags: [ "v{{ build.number }}", "latest" ]
+   tags: [ "$DRONE_BUILD_NUMBER", "latest" ]
    username:
      from_secret: DOCKERHUB_USERNAME
    password:
