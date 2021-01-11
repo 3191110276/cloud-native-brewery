@@ -13,7 +13,7 @@ steps:
    context: ./app_main/adminfile/nginx/v1/
    dockerfile: ./app_main/adminfile/nginx/v1/Dockerfile
    #auto_tag: true
-   tags: [ "v${DRONE_BUILD_NUMBER }", "latest" ]
+   tags: [ "v${build.number}", "latest" ]
    username:
      from_secret: DOCKERHUB_USERNAME
    password:
