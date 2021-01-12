@@ -44,7 +44,7 @@ function create_external_payment(data) {
     
     console.log(data);
     
-//    const pay_req = http.request(options, pay_res => {
+    const pay_req = http.request(options, pay_res => {
 //        var rcvd = '';
 //        
 //        pay_res.on('data', function (chunk) {
@@ -65,13 +65,13 @@ function create_external_payment(data) {
 //
 //            res.send('test')
 //        });
-//    })
-//
-//    pay_req.on('error', error => {
-//      console.log('Encountered error')
-//      console.error(error)
-//    })
-//
+    })
+
+    pay_req.on('error', error => {
+      console.log('Encountered error')
+      console.error(error)
+    })
+
 //    pay_req.write(data)
 //    pay_req.end() 
     
