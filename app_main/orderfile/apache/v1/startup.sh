@@ -15,6 +15,6 @@ sed -i -e "s/APPD_APP_KEY/$BROWSERAPP_KEY/g" /usr/local/apache2/htdocs/index.htm
 sed -i -e "s/HTTP_BEACON/$BROWSERAPP_BEACONURL/g" /usr/local/apache2/htdocs/index.html
 sed -i -e "s/HTTPS_BEACON/$BROWSERAPP_BEACONURL/g" /usr/local/apache2/htdocs/index.html
 
-nohup /opt/appdynamics-sdk-native/runSDKProxy.sh >>/dev/null 2>/opt/appdynamics-sdk-native/logs/proxy.out &
+#nohup /opt/appdynamics-sdk-native/runSDKProxy.sh >>/dev/null 2>/opt/appdynamics-sdk-native/logs/proxy.out &
 
 apachectl -D FOREGROUND

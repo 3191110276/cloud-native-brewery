@@ -10,8 +10,12 @@ data:
   CONTROLLER_SSL: "{{ .Values.appd_controller_ssl }}"
   ACCESS_KEY: "{{ .Values.appd_controller_key }}"
   APP_NAME: "{{ .Values.appname }}"
+  {{- if .Values.proxy_host -}}
   PROXY_HOST: "{{ .Values.proxy_host }}"
+  {{- end -}}
+  {{- if .Values.proxy_port -}}
   PROXY_PORT: "{{ .Values.proxy_port }}"
+  {{- end -}}
 ---
 apiVersion: apps/v1
 kind: Deployment

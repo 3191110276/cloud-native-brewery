@@ -418,10 +418,12 @@ spec:
   #netVizImage: "appdynamics/machine-agent-netviz:latest"
   account: {{ .Values.appd_account_name }}
   globalAccount: {{ .Values.appd_global_account }}
-  proxyUrl: {{ .Values.proxy_url }}
   netVizPort: 3892
   enableServerViz: "true"
   enableDockerViz: "true"
   enableMasters: true
   stdoutLogging: false
   uniqueHostId: spec.nodeName
+  {{- if .Values.proxy_url -}}
+  proxyUrl: {{ .Values.proxy_url }}
+  {{- end -}}
