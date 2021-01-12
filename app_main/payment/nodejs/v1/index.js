@@ -35,11 +35,8 @@ app.post('/', (req, res) => {
         amount: req.body.payment
     })
     
-    var svc = fs.readFileSync('/etc/customization/EXTPAYMENT_SVC', 'utf8');
-    console.log(svc)
-    
     const options = {
-        hostname: fs.readFileSync('/etc/customization/EXTPAYMENT_SVC', 'utf8'),
+        hostname: "payment.ext", //fs.readFileSync('/etc/customization/EXTPAYMENT_SVC', 'utf8'),
         port: 80,
         path: '/',
         method: 'POST',
@@ -47,6 +44,8 @@ app.post('/', (req, res) => {
             'Content-Type': 'application/json'
         }
     }
+    
+    console.log(options)
     
     const pay_req = http.request(options, pay_res => {
         rcvd = ''
