@@ -64,7 +64,8 @@ app.post('/', (req, res) => {
             
             console.log('Finishing payment request')
 
-            res.send(response);
+            //res.send(response);
+            res.send('test')
         });
     })
 

@@ -424,6 +424,6 @@ spec:
   enableMasters: true
   stdoutLogging: false
   uniqueHostId: spec.nodeName
-  {{- if .Values.proxy_url -}}
+  {{- if .Values.proxy_url }}
   proxyUrl: {{ .Values.proxy_url }}
-  {{- end -}}
+  {{- end }}
