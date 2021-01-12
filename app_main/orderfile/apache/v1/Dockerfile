@@ -52,8 +52,8 @@ ENV LC_ALL=$LANG
 
 
 # Add AppD conf
-COPY appdynamics_agent.conf /usr/local/apache2/conf/appdynamics_agent.conf
-RUN echo Include conf/appdynamics_agent.conf >> /usr/local/apache2/conf/httpd.conf
+#COPY appdynamics_agent.conf /usr/local/apache2/conf/appdynamics_agent.conf
+#RUN echo Include conf/appdynamics_agent.conf >> /usr/local/apache2/conf/httpd.conf
 
 
 # Start container
