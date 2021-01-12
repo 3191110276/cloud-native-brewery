@@ -84,7 +84,8 @@ def handle_order():
     # SEND REPLY
     logging.info('Closing Order request - sending reply')
     reply = {
-        'id': orderid,
+        'id': 1,
+        #'id': orderid,
         'status': 'success'
     }
     
