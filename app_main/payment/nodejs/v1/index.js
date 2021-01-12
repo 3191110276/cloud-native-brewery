@@ -28,6 +28,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(express.json());
 
+
 app.post('/', (req, res) => {
     console.log('Received request for payment')
     var data = JSON.stringify({
@@ -77,10 +78,11 @@ app.post('/', (req, res) => {
     pay_req.end()    
 });
 
+
 app.get('/healthz', (req, res) => {
   res.send('ok');
 });
 
-app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
 
+app.listen(PORT, HOST);
+console.log('Running on http://${HOST}:${PORT}');
