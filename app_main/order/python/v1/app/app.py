@@ -7,7 +7,12 @@ import MySQLdb
 
 app = Flask(__name__)
 
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    stream=sys.stdout,
+    level=logging.INFO
+)
 
 
 def load_env_file(name):
@@ -17,7 +22,7 @@ def load_env_file(name):
 
 @app.route("/order", methods = ['POST'])
 def handle_order():
-    logging.info('Received request')
+    logging.info('Received order request')
     logging.info(request.form)
     
     # SAVE ORDER TO ORDERS DB

@@ -1,4 +1,4 @@
-# Connect IWO to Intersight
+# Connect Kubernetes Cluster to Intersight
 
 Detailed information can be found in the Cisco Intersight Workload Optimizer Target Configuration Guide:   
 https://cdn.intersight.com/components/an-hulk/1.0.9-679/docs/cloud/data/resources/iwo/Cisco_Intersight_Workload_Optimizer_Target_Configuration_Guide.pdf  

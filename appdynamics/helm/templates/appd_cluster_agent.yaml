@@ -286,7 +286,7 @@ spec:
   #metadataSyncInterval: 50
   #containerBatchSize: 8
   #podBatchSize: 10
-  nsToMonitor: [appdynamics,default,kube-system]
+  nsToMonitor: {{ .Values.ns_to_monitor }}
 #  instrumentationMethod: Env
 #  nsToInstrumentRegex: "default"
 #  appNameStrategy: "label"

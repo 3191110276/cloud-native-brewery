@@ -41,7 +41,7 @@ $corrHeader_fulfil = $exitcall_fulfil->getCorrelationHeader();
 
 # CREATE AND OPEN CHANNEL
 $channel = $connection->channel();
-$channel->queue_declare('fulfillment', false, false, false, false);
+#$channel->queue_declare('prodrequest', false, false, false, false);
 
 
 # PUSH AMQP MESSAGE TO CHANNEL
@@ -86,7 +86,7 @@ $corrHeader_notif = $exitcall_notif->getCorrelationHeader();
 
 # CREATE AND OPEN CHANNEL
 $channel = $connection->channel();
-$channel->queue_declare('notifications', false, false, false, false);
+#$channel->queue_declare('notifications', false, false, false, false);
 
 
 # PUSH AMQP MESSAGE TO CHANNEL

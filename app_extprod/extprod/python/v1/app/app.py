@@ -55,11 +55,11 @@ def handle_order():
     
     ns = load_env_file("NAMESPACE")
 
-#    config.load_incluster_config()
-#    k8s_client = client.ApiClient()
-#    
-#    utils.create_from_yaml(k8s_client, './job_{}.yaml'.format(prodid), namespace=ns)
-#    
+    config.load_incluster_config()
+    k8s_client = client.ApiClient()
+    
+    utils.create_from_yaml(k8s_client, './job_{}.yaml'.format(prodid), namespace=ns)
+    
     os.remove('./job_{}.yaml'.format(prodid))
     
     

@@ -1,7 +1,12 @@
 #!/bin/bash
 
+helm install hxcsi ./hx_csi/helm/ -n hx --create-namespace
+sleep 5s
 
 helm install appd ./appdynamics/helm/ -n appdynamics --create-namespace
+sleep 5s
+
+helm install observability ./observability/helm/ -n observability --create-namespace
 sleep 5s
 
 helm install trafficgen ./trafficgen/helm/ -n trafficgen --create-namespace

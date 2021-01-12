@@ -3,8 +3,11 @@ import json
 import random
 import time
 import logging
+import sys
 
 app = Flask(__name__)
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 
 def load_env_file(name):
@@ -23,6 +26,8 @@ def create_random_payment():
 
 @app.route("/", methods = ['POST'])
 def payment():
+    logging.info('Payment request received')
+    
     payment = {
         'id': create_random_payment(),
         'status': 'success'
@@ -35,8 +40,12 @@ def payment():
     
     if random.randint(1, 1000) == float(load_env_file("LAGSPIKE_PERCENTAGE"))*100:
         processing_time += 1500
+        
+    logging.info('Processing time set to {}'.format(processing_time))
     
     time.sleep(processing_time/1000)
+    
+    logging.info('Replying to payment request')
     
     return json.dumps(payment)
 

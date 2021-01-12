@@ -21,9 +21,9 @@ metadata:
 spec:
   hard:
     requests.cpu: "10"
-    requests.memory: 10Gi
+    requests.memory: 12Gi
     limits.cpu: "10"
-    limits.memory: 12Gi
+    limits.memory: 20Gi
     requests.storage: 40Gi
     persistentvolumeclaims: 10
     requests.nvidia.com/gpu: 0

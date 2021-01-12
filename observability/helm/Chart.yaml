@@ -1,0 +1,6 @@
+apiVersion: v2
+name: cloud-native-brewery-observability
+description: Cloud-native brewery - Observability
+type: application
+version: 1.0.0
+appVersion: 1.0.0
