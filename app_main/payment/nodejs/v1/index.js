@@ -29,12 +29,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 
-app.post('/', (req, res) => {
-    console.log('Received request for payment')
-    var data = JSON.stringify({
-        amount: req.body.payment
-    })
-    
+function create_external_payment(data) {
     const options = {
         hostname: fs.readFileSync('/etc/customization/EXTPAYMENT_SVC', 'utf8'),
         port: 80,
@@ -45,37 +40,59 @@ app.post('/', (req, res) => {
         }
     }
     
-    const pay_req = http.request(options, pay_res => {
-        var rcvd = '';
-        
-        pay_res.on('data', function (chunk) {
-            rcvd += chunk;
-        });
+    console.log(options)
+    
+    console.log(data);
+    
+//    const pay_req = http.request(options, pay_res => {
+//        var rcvd = '';
+//        
+//        pay_res.on('data', function (chunk) {
+//            rcvd += chunk;
+//        });
+//
+//        pay_res.on('end', function () {
+//            rcvd_json = JSON.parse(rcvd);
+//
+//            response = {
+//                'status': 'success',
+//                'id': rcvd_json['id']
+//            }
+//            
+//            console.log(response)
+//            
+//            console.log('Finishing payment request')
+//
+//            res.send('test')
+//        });
+//    })
+//
+//    pay_req.on('error', error => {
+//      console.log('Encountered error')
+//      console.error(error)
+//    })
+//
+//    pay_req.write(data)
+//    pay_req.end() 
+    
+    return 1;
+}
 
-        pay_res.on('end', function () {
-            rcvd_json = JSON.parse(rcvd);
 
-            response = {
-                'status': 'success',
-                'id': rcvd_json['id']
-            }
-            
-            console.log(response)
-            
-            console.log('Finishing payment request')
-
-            //res.send(response);
-            res.send('test')
-        });
+app.post('/', (req, res) => {
+    console.log('Received request for payment')
+    var data = JSON.stringify({
+        amount: req.body.payment
     })
-
-    pay_req.on('error', error => {
-      console.log('Encountered error')
-      console.error(error)
-    })
-
-    pay_req.write(data)
-    pay_req.end()    
+    
+    x = create_external_payment(data)
+    
+    console.log(x)
+    
+    res.json({
+        'status': 'success',
+        'id': 1
+    })   
 });
 
 
