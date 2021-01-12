@@ -48,19 +48,23 @@ app.post('/', (req, res) => {
     console.log(options)
     
     const pay_req = http.request(options, pay_res => {
-        rcvd = ''
-
+        var rcvd = '';
+        
         pay_res.on('data', function (chunk) {
             rcvd += chunk;
         });
 
         pay_res.on('end', function () {
+            console.log(rcvd)
             rcvd_json = JSON.parse(rcvd);
+            console.log(rcvd_json)
 
             response = {
                 'status': 'success',
                 'id': rcvd_json['id']
             }
+            
+            console.log(response)
             
             console.log('Finishing payment request')
 
