@@ -84,11 +84,11 @@ spec:
 #            port: http
         resources:
           requests:
-            cpu: 20m
-            memory: 80Mi
+            cpu: {{ .Values.orderprocessing_cpurequest }} #20m
+            memory: {{ .Values.orderprocessing_memrequest }} #80Mi
           limits:
-            cpu: 250m
-            memory: 280Mi
+            cpu: {{ .Values.orderprocessing_cpulimit }} #250m
+            memory: {{ .Values.orderprocessing_memlimit }} #280Mi
       volumes:
       - name: customization
         configMap:
