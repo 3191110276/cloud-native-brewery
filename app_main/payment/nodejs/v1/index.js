@@ -36,7 +36,7 @@ app.post('/', (req, res) => {
     })
     
     const options = {
-        hostname: "payment.ext", //fs.readFileSync('/etc/customization/EXTPAYMENT_SVC', 'utf8'),
+        hostname: fs.readFileSync('/etc/customization/EXTPAYMENT_SVC', 'utf8'),
         port: 80,
         path: '/',
         method: 'POST',
