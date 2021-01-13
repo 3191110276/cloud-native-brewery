@@ -24,14 +24,14 @@ def handle_request():
     req_json = request.get_json(force=True)
     logging.warning(req_json)
     
-    r = requests.post('http://{}'.format(load_env_file("EXTPROD_SVC")), json = {
-        'orderid': req_json['orderid'],
-        'products': req_json['products']
-    })
-    
-    logging.warning('decoding json')
-    
-    logging.warning(r.text)
+#    r = requests.post('http://{}'.format(load_env_file("EXTPROD_SVC")), json = {
+#        'orderid': req_json['orderid'],
+#        'products': req_json['products']
+#    })
+#    
+#    logging.warning('decoding json')
+#    
+#    logging.warning(r.text)
     
     import time
     time.sleep(1)
