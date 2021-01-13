@@ -1,105 +1,105 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Values.appname }}-{{ .Values.prodrequest_name }}
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ .Values.appname }}
-    tier: {{ .Values.prodrequest_name }}
-spec:
-  type: ClusterIP
-  selector:
-    app: {{ .Values.appname }}
-    tier: {{ .Values.prodrequest_name }}
-  ports:
-    - name: http
-      protocol: TCP
-      port: 80
-      targetPort: 80
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: {{ .Values.appname }}
-    tier: {{ .Values.prodrequest_name }}
-  name: {{ .Values.appname }}-{{ .Values.prodrequest_name }}
-  namespace: {{ .Release.Namespace }}
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: {{ .Values.appname }}
-      tier: {{ .Values.prodrequest_name }}
-  strategy: {}
-  template:
-    metadata:
-      labels:
-        app: {{ .Values.appname }}
-        tier: {{ .Values.prodrequest_name }}
-    spec:
-#      serviceAccountName: no-priv
-#      automountServiceAccountToken: false
-#      securityContext:
-#        runAsUser: 10000
-#        runAsGroup: 20000
-#        fsGroup: 30000
-      containers:
-      - name: {{ .Values.prodrequest_name }}
-        image: {{ .Values.registry }}/prodrequest-{{ .Values.prodrequest_tech }}:{{ .Values.prodrequest_version }}
-        imagePullPolicy: Always
-#        securityContext:
-#          runAsUser: 10001
-#          allowPrivilegeEscalation: false
-        envFrom:
-        - configMapRef:
-            name: appd-config
-        env:
-        - name: APPD_APP_NAME
-          value: {{ .Values.appname }}
-        - name: APPD_TIER_NAME
-          value: {{ .Values.prodrequest_appd }}
-        - name: APPDYNAMICS_NETVIZ_AGENT_HOST
-          valueFrom:
-            fieldRef:
-              fieldPath: status.hostIP
-        - name: APPDYNAMICS_NETVIZ_AGENT_PORT
-          value: "3892"
-        - name: PRODUCTION_SVC
-          value: "{{ .Values.appname }}-{{ .Values.production_name }}"
-        - name: INITQUEUE_SVC
-          value: "{{ .Values.appname }}-{{ .Values.initqueue_name }}-rabbitmq"
-        volumeMounts:
-        - name: customization
-          mountPath: /etc/customization
-#        ports:
-#        - name: http
-#          containerPort: 80
-#          protocol: TCP
-#        - name: https
-#          containerPort: 443
-#          protocol: TCP
-#        startupProbe:
-#          periodSeconds: 5
-#          failureThreshold: 40
-#          httpGet:
-#            path: /healthz
-#            port: http
-#        livenessProbe:
-#          initialDelaySeconds: 5
-#          periodSeconds: 2
-#          failureThreshold: 4
-#          httpGet:
-#            path: /healthz
-#            port: http
-        resources:
-          requests:
-            cpu: 20m
-            memory: 80Mi
-          limits:
-            cpu: 250m
-            memory: 280Mi
-      volumes:
-      - name: customization
-        configMap:
-          name: customization  
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: {{ .Values.appname }}-{{ .Values.prodrequest_name }}
+#  namespace: {{ .Release.Namespace }}
+#  labels:
+#    app: {{ .Values.appname }}
+#    tier: {{ .Values.prodrequest_name }}
+#spec:
+#  type: ClusterIP
+#  selector:
+#    app: {{ .Values.appname }}
+#    tier: {{ .Values.prodrequest_name }}
+#  ports:
+#    - name: http
+#      protocol: TCP
+#      port: 80
+#      targetPort: 80
+#---
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  labels:
+#    app: {{ .Values.appname }}
+#    tier: {{ .Values.prodrequest_name }}
+#  name: {{ .Values.appname }}-{{ .Values.prodrequest_name }}
+#  namespace: {{ .Release.Namespace }}
+#spec:
+#  replicas: 2
+#  selector:
+#    matchLabels:
+#      app: {{ .Values.appname }}
+#      tier: {{ .Values.prodrequest_name }}
+#  strategy: {}
+#  template:
+#    metadata:
+#      labels:
+#        app: {{ .Values.appname }}
+#        tier: {{ .Values.prodrequest_name }}
+#    spec:
+##      serviceAccountName: no-priv
+##      automountServiceAccountToken: false
+##      securityContext:
+##        runAsUser: 10000
+##        runAsGroup: 20000
+##        fsGroup: 30000
+#      containers:
+#      - name: {{ .Values.prodrequest_name }}
+#        image: {{ .Values.registry }}/prodrequest-{{ .Values.prodrequest_tech }}:{{ .Values.prodrequest_version }}
+#        imagePullPolicy: Always
+##        securityContext:
+##          runAsUser: 10001
+##          allowPrivilegeEscalation: false
+#        envFrom:
+#        - configMapRef:
+#            name: appd-config
+#        env:
+#        - name: APPD_APP_NAME
+#          value: {{ .Values.appname }}
+#        - name: APPD_TIER_NAME
+#          value: {{ .Values.prodrequest_appd }}
+#        - name: APPDYNAMICS_NETVIZ_AGENT_HOST
+#          valueFrom:
+#            fieldRef:
+#              fieldPath: status.hostIP
+#        - name: APPDYNAMICS_NETVIZ_AGENT_PORT
+#          value: "3892"
+#        - name: PRODUCTION_SVC
+#          value: "{{ .Values.appname }}-{{ .Values.production_name }}"
+#        - name: INITQUEUE_SVC
+#          value: "{{ .Values.appname }}-{{ .Values.initqueue_name }}-rabbitmq"
+#        volumeMounts:
+#        - name: customization
+#          mountPath: /etc/customization
+##        ports:
+##        - name: http
+##          containerPort: 80
+##          protocol: TCP
+##        - name: https
+##          containerPort: 443
+##          protocol: TCP
+##        startupProbe:
+##          periodSeconds: 5
+##          failureThreshold: 40
+##          httpGet:
+##            path: /healthz
+##            port: http
+##        livenessProbe:
+##          initialDelaySeconds: 5
+##          periodSeconds: 2
+##          failureThreshold: 4
+##          httpGet:
+##            path: /healthz
+##            port: http
+#        resources:
+#          requests:
+#            cpu: 20m
+#            memory: 80Mi
+#          limits:
+#            cpu: 250m
+#            memory: 280Mi
+#      volumes:
+#      - name: customization
+#        configMap:
+#          name: customization  
