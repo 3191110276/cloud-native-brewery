@@ -25,24 +25,24 @@ def handle_order():
     logging.info('Received order request')
     logging.info(request.form)
     
-    # SAVE ORDER TO ORDERS DB
-    logging.info('Saving Order')
-    conn = MySQLdb.connect(
-        host=load_env_file("INVENTORYDB_SVC"),
-        port=80,
-        user="root",
-        passwd="root",
-        db="ordering"
-    )
-    
-    cursor = conn.cursor()
-    
-    cursor.execute("""INSERT INTO orders (customer) VALUES ('undefined')""")
-    orderid = cursor.lastrowid
-    
-    cursor.execute("""INSERT INTO order_prod (details,quantity,order_id) VALUES (%s,%s,%s)""",(request.form['product'],request.form['quantity'],orderid))
-    
-    conn.commit()
+#    # SAVE ORDER TO ORDERS DB
+#    logging.info('Saving Order')
+#    conn = MySQLdb.connect(
+#        host=load_env_file("INVENTORYDB_SVC"),
+#        port=80,
+#        user="root",
+#        passwd="root",
+#        db="ordering"
+#    )
+#    
+#    cursor = conn.cursor()
+#    
+#    cursor.execute("""INSERT INTO orders (customer) VALUES ('undefined')""")
+#    orderid = cursor.lastrowid
+#    
+#    cursor.execute("""INSERT INTO order_prod (details,quantity,order_id) VALUES (%s,%s,%s)""",(request.form['product'],request.form['quantity'],orderid))
+#    
+#    conn.commit()
     
     
     # PROCESS PAYMENT
@@ -53,19 +53,19 @@ def handle_order():
         json = {'payment':to_pay}
     )
     
-    logging.info('Received Response from Payment')
-    payment = r.json()
-    logging.info(payment)
-    
-    logging.info('Saving payment to database')
-    cursor.execute("""INSERT INTO payment (provider_id,paytype,order_id) VALUES (%s,%s,%s)""",(payment['id'],'creditcard',orderid))
-    
-    
-    # CLOSE CONNECTION
-    conn.commit()
-    
-    cursor.close()
-    conn.close()
+#    logging.info('Received Response from Payment')
+#    payment = r.json()
+#    logging.info(payment)
+#    
+#    logging.info('Saving payment to database')
+#    cursor.execute("""INSERT INTO payment (provider_id,paytype,order_id) VALUES (%s,%s,%s)""",(payment['id'],'creditcard',orderid))
+#    
+#    
+#    # CLOSE CONNECTION
+#    conn.commit()
+#    
+#    cursor.close()
+#    conn.close()
     
     
     # INITIATE ORDER PROCESSING
@@ -73,7 +73,7 @@ def handle_order():
     r = requests.post(
         'http://{}/orderprocessing'.format(load_env_file("ORDERPROCESSING_SVC")),
         json = {
-            'orderid':orderid,
+            'orderid': 1,#orderid,
             'products': [{
                     'configuration': request.form['product'],
                     'amount': request.form['quantity']
@@ -84,7 +84,7 @@ def handle_order():
     # SEND REPLY
     logging.info('Closing Order request - sending reply')
     reply = {
-        'id': orderid,
+        'id': 1, #orderid,
         'status': 'success'
     }
     
