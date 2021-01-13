@@ -68,17 +68,17 @@ def handle_order():
 #    conn.close()
     
     
-    # INITIATE ORDER PROCESSING
-    logging.info('Sending to OrderProcessing')
-    r = requests.post(
-        'http://{}/orderprocessing'.format(load_env_file("ORDERPROCESSING_SVC")),
-        json = {
-            'orderid': 1,#orderid,
-            'products': [{
-                    'configuration': request.form['product'],
-                    'amount': request.form['quantity']
-                }]
-    })
+#    # INITIATE ORDER PROCESSING
+#    logging.info('Sending to OrderProcessing')
+#    r = requests.post(
+#        'http://{}/orderprocessing'.format(load_env_file("ORDERPROCESSING_SVC")),
+#        json = {
+#            'orderid': 1,#orderid,
+#            'products': [{
+#                    'configuration': request.form['product'],
+#                    'amount': request.form['quantity']
+#                }]
+#    })
 
     
     # SEND REPLY
