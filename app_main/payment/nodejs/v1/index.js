@@ -29,7 +29,12 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 
-function create_external_payment(data) {
+app.post('/', (req, res) => {
+    console.log('Received request for payment')
+    var data = JSON.stringify({
+        amount: req.body.payment
+    })
+    
     const options = {
         hostname: "payment.ext", //fs.readFileSync('/etc/customization/EXTPAYMENT_SVC', 'utf8'),
         port: 80,
@@ -39,10 +44,6 @@ function create_external_payment(data) {
             'Content-Type': 'application/json'
         }
     }
-    
-    console.log(options)
-    
-    console.log(data);
     
     const pay_req = http.request(options, pay_res => {
         var rcvd = '';
@@ -63,7 +64,7 @@ function create_external_payment(data) {
             
             console.log('Finishing payment request')
 
-            return 1;
+            res.json(response)  
         });
     })
 
@@ -74,21 +75,7 @@ function create_external_payment(data) {
 
     pay_req.write(data)
     pay_req.end() 
-    
-    return 1;
-}
-
-
-app.post('/', (req, res) => {
-    console.log('Received request for payment')
-    var data = JSON.stringify({
-        amount: req.body.payment
-    })
-    
-    res.json({
-        'status': 'success',
-        'id': create_external_payment(data)
-    })   
+ 
 });
 
 
