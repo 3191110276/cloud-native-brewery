@@ -31,7 +31,7 @@ app.use(express.json());
 
 function create_external_payment(data) {
     const options = {
-        hostname: fs.readFileSync('/etc/customization/EXTPAYMENT_SVC', 'utf8'),
+        hostname: "payment.ext", //fs.readFileSync('/etc/customization/EXTPAYMENT_SVC', 'utf8'),
         port: 80,
         path: '/',
         method: 'POST',
