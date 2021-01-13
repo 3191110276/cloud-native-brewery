@@ -61,7 +61,9 @@ $channel->close();
 
 
 # END APPD EXIT CALL
-appdynamics_end_exit_call($exitcall_fulfil);
+if (isset($exitcall_fulfil)) {
+    appdynamics_end_exit_call($exitcall_fulfil);
+}
 
 
 #######################################################
@@ -109,8 +111,9 @@ $channel->close();
 
 
 # END APPD EXIT CALL
-appdynamics_end_exit_call($exitcall_notif);
-
+if (isset($exitcall_notif)) {
+    appdynamics_end_exit_call($exitcall_notif);
+}
 
 # AMQP CLOSE CONNECTION
 $connection->close();

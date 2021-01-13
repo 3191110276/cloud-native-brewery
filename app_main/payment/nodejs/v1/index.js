@@ -72,8 +72,8 @@ function create_external_payment(data) {
       console.error(error)
     })
 
-//    pay_req.write(data)
-//    pay_req.end() 
+    pay_req.write(data)
+    pay_req.end() 
     
     return 1;
 }
