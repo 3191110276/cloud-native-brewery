@@ -45,26 +45,26 @@ function create_external_payment(data) {
     console.log(data);
     
     const pay_req = http.request(options, pay_res => {
-//        var rcvd = '';
-//        
-//        pay_res.on('data', function (chunk) {
-//            rcvd += chunk;
-//        });
-//
-//        pay_res.on('end', function () {
-//            rcvd_json = JSON.parse(rcvd);
-//
-//            response = {
-//                'status': 'success',
-//                'id': rcvd_json['id']
-//            }
-//            
-//            console.log(response)
-//            
-//            console.log('Finishing payment request')
-//
-//            res.send('test')
-//        });
+        var rcvd = '';
+        
+        pay_res.on('data', function (chunk) {
+            rcvd += chunk;
+        });
+
+        pay_res.on('end', function () {
+            rcvd_json = JSON.parse(rcvd);
+
+            response = {
+                'status': 'success',
+                'id': rcvd_json['id']
+            }
+            
+            console.log(response)
+            
+            console.log('Finishing payment request')
+
+            return 1;
+        });
     })
 
     pay_req.on('error', error => {
