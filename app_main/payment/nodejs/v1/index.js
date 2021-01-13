@@ -85,10 +85,6 @@ app.post('/', (req, res) => {
         amount: req.body.payment
     })
     
-    x = 
-    
-    console.log(x)
-    
     res.json({
         'status': 'success',
         'id': create_external_payment(data)
