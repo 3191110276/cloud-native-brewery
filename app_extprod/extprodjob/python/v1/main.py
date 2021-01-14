@@ -29,7 +29,7 @@ api_instance = client.BatchV1Api()
 api_response = api_instance.list_namespaced_job(ns)
 for item in api_response.items:
     if item.status.succeeded == 1:
-        logging.warning('Deleting succeeded Job {}'.format(item.metadata.name))
+        logging.warning('Deleting Job {}'.format(item.metadata.name))
         try:
             api_instance.delete_namespaced_job(item.metadata.name, ns)
         except Exception as e:

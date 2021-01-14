@@ -21,7 +21,7 @@ sleep 5s
 helm install iwo ./iwo/helm/ -n iwo --create-namespace
 sleep 5s
 
-helm install stealthwatch ./stealthwatch_cloud/helm/ -n swc --create-namespace
-sleep 5s
+#helm install stealthwatch ./stealthwatch_cloud/helm/ -n swc --create-namespace
+#sleep 5s
 
 helm install app ./app_main/helm/ -n app --create-namespace
