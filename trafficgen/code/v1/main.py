@@ -1248,9 +1248,9 @@ def run_trafficgen():
     driver.close()
 
 
-while True:
-    try:
-        run_trafficgen()
-    except Exception as e:
-        logging.warning('Encountered error while running request')
-        logging.warning(e)
+#while True:
+try:
+    run_trafficgen()
+except Exception as e:
+    logging.warning('Encountered error while running request')
+    logging.warning(e)
