@@ -111,15 +111,15 @@ metadata:
   name: trafficgen
 spec:
   schedule: "* * * * *"
-  parallelism: 10
-  completions: 1000
   concurrencyPolicy: Allow
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2
-  backoffLimit: 2
+  #backoffLimit: 2
   startingDeadlineSeconds: 59
   jobTemplate:
     spec:
+      parallelism: 10
+      completions: 10
       template:
         spec:
           serviceAccountName: {{ .Values.name }}
@@ -127,7 +127,7 @@ spec:
           containers:
           - name: trafficgen
             image: {{ .Values.registry }}/trafficgen-python:{{ .Values.version }}
-            imagePullPolicy: Always
+            imagePullPolicy: IfNotPresent #Always
             volumeMounts:
             - name: customization
               mountPath: /etc/customization

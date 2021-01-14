@@ -38,8 +38,6 @@ for item in api_response.items:
 api_instance = client.CoreV1Api()
 api_response = api_instance.list_namespaced_pod(ns)
 for item in api_response.items:
-    logging.warning(item.metadata)
-    logging.warning(item.status.phase)
     if item.status.phase == "Succeeded" or item.status.phase == "Error":
         logging.warning('Deleting Pod {}'.format(item.metadata.name))
         try:
