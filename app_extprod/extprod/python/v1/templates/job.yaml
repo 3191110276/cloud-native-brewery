@@ -11,7 +11,7 @@ spec:
       containers:
       - name: production
         image: {{ registry }}/extprodjob-python:{{ version }}
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent #Always
         env:
         - name: ORDERID
           value: "{{ orderid }}"
