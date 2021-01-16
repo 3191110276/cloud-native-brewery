@@ -1248,7 +1248,7 @@ def run_trafficgen():
     driver.close()
 
 
-#while True:
+time.sleep(random.randint(0, 8000)/1000)
 try:
     run_trafficgen()
 except Exception as e:

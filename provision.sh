@@ -1,15 +1,12 @@
 #!/bin/bash
 
-helm install hxcsi ./hx_csi/helm/ -n hx --create-namespace
+#helm install hxcsi ./hx_csi/helm/ -n hx --create-namespace
 sleep 5s
 
 helm install appd ./appdynamics/helm/ -n appdynamics --create-namespace
 sleep 5s
 
 helm install observability ./observability/helm/ -n observability --create-namespace
-sleep 5s
-
-helm install trafficgen ./trafficgen/helm/ -n trafficgen --create-namespace
 sleep 5s
 
 helm install extpayment ./app_extpayment/helm/ -n ext --create-namespace
@@ -25,3 +22,6 @@ sleep 5s
 #sleep 5s
 
 helm install app ./app_main/helm/ -n app --create-namespace
+sleep 5s
+
+helm install trafficgen ./trafficgen/helm/ -n trafficgen --create-namespace

@@ -30,7 +30,7 @@ metadata:
   name: {{ .Values.appname }}-{{ .Values.order_name }}
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 2
+  replicas: 4
   selector:
     matchLabels:
       app: {{ .Values.appname }}
