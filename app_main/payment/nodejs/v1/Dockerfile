@@ -13,7 +13,7 @@ COPY . .
 
 RUN npm install
 
-#RUN npm install --appd_include_java_proxy=true appdynamics
+RUN npm install --appd_include_java_proxy=true appdynamics
 
 RUN chmod +x startup.sh
 
