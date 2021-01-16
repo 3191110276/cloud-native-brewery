@@ -1,15 +1,15 @@
 const appd = require('appdynamics');
 appd.profile({
-  controllerHostName: process.env.CONTROLLER_HOST,
-  controllerPort: process.env.CONTROLLER_PORT,
-  controllerSslEnabled: process.env.CONTROLLER_SSL,
-  accountName: process.env.ACCOUNT_NAME,
-  accountAccessKey: process.env.ACCESS_KEY,
-  appName: process.env.APPD_APP_NAME,
-  tierName: process.env.APPD_TIER_NAME,
-  nodeName: process.env.HOSTNAME,
-  proxyHost: process.env.PROXY_HOST,
-  proxyPort: process.env.PROXY_PORT
+  //controllerHostName: process.env.CONTROLLER_HOST,
+  //controllerPort: process.env.CONTROLLER_PORT,
+  //controllerSslEnabled: process.env.CONTROLLER_SSL,
+  //accountName: process.env.ACCOUNT_NAME,
+  //accountAccessKey: process.env.ACCESS_KEY,
+  //appName: process.env.APPD_APP_NAME,
+  //tierName: process.env.APPD_TIER_NAME,
+  //nodeName: process.env.HOSTNAME,
+  //proxyHost: process.env.PROXY_HOST,
+  //proxyPort: process.env.PROXY_PORT
 });
 
 
