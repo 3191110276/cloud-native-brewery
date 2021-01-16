@@ -1,5 +1,5 @@
 const appd = require('appdynamics');
-appd.profile({
+//appd.profile({
   //controllerHostName: process.env.CONTROLLER_HOST,
   //controllerPort: process.env.CONTROLLER_PORT,
   //controllerSslEnabled: process.env.CONTROLLER_SSL,
@@ -10,7 +10,7 @@ appd.profile({
   //nodeName: process.env.HOSTNAME,
   //proxyHost: process.env.PROXY_HOST,
   //proxyPort: process.env.PROXY_PORT
-});
+//});
 
 
 const http = require('http');

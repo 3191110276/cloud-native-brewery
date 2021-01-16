@@ -110,7 +110,7 @@ kind: CronJob
 metadata:
   name: trafficgen
 spec:
-  schedule: "* * * * *"
+  schedule: "*/10 * * * *"
   concurrencyPolicy: Allow
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2
@@ -118,8 +118,8 @@ spec:
   startingDeadlineSeconds: 59
   jobTemplate:
     spec:
-      parallelism: {{ .Values.replicas }} # 12
-      completions: {{ mul .Values.replicas 2 }} # 24
+      parallelism: {{ .Values.replicas }}
+      completions: {{ .Values.replicas }} #{{ mul .Values.replicas 2 }}
       template:
         spec:
           serviceAccountName: {{ .Values.name }}
