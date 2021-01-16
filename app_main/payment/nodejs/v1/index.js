@@ -1,4 +1,4 @@
-//const appd = require('appdynamics');
+const appd = require('appdynamics');
 //appd.profile({
 //  controllerHostName: process.env.CONTROLLER_HOST,
 //  controllerPort: process.env.CONTROLLER_PORT,
