@@ -37,11 +37,6 @@ $properties = array(
 );
 $exitcall_fulfil = appdynamics_begin_exit_call(AD_EXIT_RABBITMQ, "ProdRequest", $properties, $exclusive=false);
 $corrHeader_fulfil = $exitcall_fulfil->getCorrelationHeader();
-//if (isset($exitcall_fulfil)) {
-//  $corrHeader_fulfil = $exitcall_fulfil->getCorrelationHeader();
-//} else {
-//    $corrHeader_fulfil = "";
-//}
 
 # CREATE AND OPEN CHANNEL
 $channel = $connection->channel();
@@ -87,11 +82,7 @@ $properties = array(
     'ROUTING KEY' => 'notifications'
 );
 $exitcall_notif = appdynamics_begin_exit_call(AD_EXIT_RABBITMQ, "Notifications", $properties, $exclusive=false);
-if (isset($exitcall_notif)) {
-  $corrHeader_notif = $exitcall_fulfil->getCorrelationHeader();
-} else {
-    $corrHeader_notif = "";
-}
+$corrHeader_notif = $exitcall_fulfil->getCorrelationHeader();
 
 # CREATE AND OPEN CHANNEL
 $channel = $connection->channel();
