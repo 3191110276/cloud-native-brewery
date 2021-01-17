@@ -1249,7 +1249,6 @@ def run_trafficgen():
 
 
 time.sleep(random.randint(0, 8000)/1000)
-#for i in range(20):
 try:
     run_trafficgen()
 except Exception as e:

@@ -119,7 +119,7 @@ spec:
   jobTemplate:
     spec:
       parallelism: {{ .Values.replicas }}
-      completions: {{ .Values.replicas }} #{{ mul .Values.replicas 2 }}
+      completions: {{ mul .Values.replicas 2 }}
       template:
         spec:
           serviceAccountName: {{ .Values.name }}
