@@ -8,4 +8,4 @@ APPDYNAMICS_AGENT_REUSE_NODE_NAME_PREFIX=false
 APPDYNAMICS_AGENT_NODE_NAME=${HOST%%.*}
 
 
-node index.js 80 #-Dappdynamics.dockerMonitoring=true
+node index.js 80 -Dappdynamics.dockerMonitoring=true

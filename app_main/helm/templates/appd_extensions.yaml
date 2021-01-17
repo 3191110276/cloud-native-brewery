@@ -27,15 +27,18 @@ data:
   APP_NAME: {{ .Values.appname }}
   APPDYNAMICS_AGENT_APPLICATION_NAME: {{ .Values.appname }} #NodeJS
   
-  {{- if .Values.proxy_host -}}
+  {{- if .Values.proxy_host }}
+  # PROXY HOST
   PROXY_HOST: {{ .Values.proxy_host }}
   APPD_HTTP_PROXY_HOST: {{ .Values.proxy_host }} #Python
-  {{- end -}}
+  {{- end }}
   
-  {{- if .Values.proxy_port -}}
+  {{- if .Values.proxy_port }}
+  # PROXY PORT
   PROXY_PORT: "{{ .Values.proxy_port }}"
   APPD_HTTP_PROXY_PORT: "{{ .Values.proxy_port }}" #Python
-  {{- end -}}
+  
+  {{- end }}
   
   BROWSERAPP_KEY: {{ .Values.appd_browserapp_key }}
   

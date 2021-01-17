@@ -36,11 +36,12 @@ $properties = array(
     'ROUTING KEY' => 'prodrequest'
 );
 $exitcall_fulfil = appdynamics_begin_exit_call(AD_EXIT_RABBITMQ, "ProdRequest", $properties, $exclusive=false);
-if (isset($exitcall_fulfil)) {
-  $corrHeader_fulfil = $exitcall_fulfil->getCorrelationHeader();
-} else {
-    $corrHeader_fulfil = "";
-}
+$corrHeader_fulfil = $exitcall_fulfil->getCorrelationHeader();
+//if (isset($exitcall_fulfil)) {
+//  $corrHeader_fulfil = $exitcall_fulfil->getCorrelationHeader();
+//} else {
+//    $corrHeader_fulfil = "";
+//}
 
 # CREATE AND OPEN CHANNEL
 $channel = $connection->channel();
