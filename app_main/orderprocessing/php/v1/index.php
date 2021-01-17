@@ -82,7 +82,7 @@ $properties = array(
     'ROUTING KEY' => 'notifications'
 );
 $exitcall_notif = appdynamics_begin_exit_call(AD_EXIT_RABBITMQ, "Notifications", $properties, $exclusive=false);
-$corrHeader_notif = $exitcall_fulfil->getCorrelationHeader();
+$corrHeader_notif = $exitcall_notif->getCorrelationHeader();
 
 # CREATE AND OPEN CHANNEL
 $channel = $connection->channel();
