@@ -110,7 +110,7 @@ kind: CronJob
 metadata:
   name: trafficgen
 spec:
-  schedule: "*/10 * * * *"
+  schedule: "* * * * *"
   concurrencyPolicy: Allow
   successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 1
