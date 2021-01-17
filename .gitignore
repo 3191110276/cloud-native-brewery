@@ -9,4 +9,4 @@
 /trafficgen/helm/values.yaml
 /terraform.tfstate
 /terraform.lock.hcl
-/terraform/
+/.terraform/
