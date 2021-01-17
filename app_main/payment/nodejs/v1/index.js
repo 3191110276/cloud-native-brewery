@@ -18,7 +18,7 @@ appd.profile({
         'level': 'TRACE',
         'max_size': 5242880,
         'max_files': 10,
-        'outputType': 'console'  // Set this parameter if you want to log to STDOUT/STDERR. Omit this parameter if you want to log to a file.
+        //'outputType': 'console'  // Set this parameter if you want to log to STDOUT/STDERR. Omit this parameter if you want to log to a file.
       }
     ]
   }
