@@ -8,5 +8,5 @@
 /stealthwatch_cloud/helm/values.yaml
 /trafficgen/helm/values.yaml
 /terraform.tfstate
-/terraform.lock.hcl
+/.terraform.lock.hcl
 /.terraform/
