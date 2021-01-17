@@ -1,5 +1,5 @@
 const appd = require('appdynamics');
-//appd.profile({
+appd.profile({
   //controllerHostName: process.env.CONTROLLER_HOST,
   //controllerPort: process.env.CONTROLLER_PORT,
   //controllerSslEnabled: process.env.CONTROLLER_SSL,
@@ -10,7 +10,19 @@ const appd = require('appdynamics');
   //nodeName: process.env.HOSTNAME,
   //proxyHost: process.env.PROXY_HOST,
   //proxyPort: process.env.PROXY_PORT
-//});
+  logging: {
+    'logfiles': [
+      {
+        'root_directory': '/tmp/appd',
+        'filename': 'echo_%N.log',
+        'level': 'TRACE',
+        'max_size': 5242880,
+        'max_files': 10,
+        'outputType': 'console'  // Set this parameter if you want to log to STDOUT/STDERR. Omit this parameter if you want to log to a file.
+      }
+    ]
+  }
+});
 
 
 const http = require('http');
