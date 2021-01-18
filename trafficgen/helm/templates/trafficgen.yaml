@@ -7,8 +7,7 @@ data:
   MIN_RANDOM_DELAY: "{{ .Values.min_random_delay }}"
   MAX_RANDOM_DELAY: "{{ .Values.max_random_delay }}"
   LAGSPIKE_PERCENTAGE: "{{ .Values.lagspike_percentage }}"
-  INGRESS_DNS: "{{ .Values.ingress_dns }}"
-  INGRESS_NS: "{{ .Values.ingress_ns }}"
+  APP_ENDPOINT: "{{ .Values.app_endpoint }}"
 ---
 apiVersion: v1
 kind: ServiceAccount

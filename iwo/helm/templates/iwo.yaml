@@ -37,7 +37,7 @@ data:
         "nodeRoles": ["master"]
       },
       "targetConfig": {
-        "targetName":"{{ .Values.app }}-cluster"
+        "targetName":"{{ .Values.clustername }}-cluster"
       }
     }
 ---

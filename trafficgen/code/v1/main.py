@@ -27,13 +27,14 @@ try:
 except:
     logging.info('Kubeconfig could not be loaded, loading in-cluster Kubeconfig')
     config.load_incluster_config()
-api_instance = client.CoreV1Api()
-api_response = api_instance.read_namespaced_service(
-    load_env_file("INGRESS_DNS"),
-    load_env_file("INGRESS_NS")
-)
-host = api_response.spec.load_balancer_ip
-logging.info('Fetched LoadBalancer IP: {}'.format(api_response.spec.load_balancer_ip))
+#api_instance = client.CoreV1Api()
+#api_response = api_instance.read_namespaced_service(
+#    load_env_file("INGRESS_DNS"),
+#    load_env_file("INGRESS_NS")
+#)
+#host = api_response.spec.load_balancer_ip
+#logging.info('Fetched LoadBalancer IP: {}'.format(api_response.spec.load_balancer_ip))
+host = load_env_file("APP_ENDPOINT")
 
 run = 1
 
