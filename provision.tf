@@ -61,6 +61,10 @@ variable "image_tag" {
   default = "dev"
 }
 
+variable "stlth_service_key" {
+  type    = string
+}
+
 variable "trafficgen_name" {
   type    = string
   default = "trafficgen"
@@ -178,13 +182,22 @@ resource "kubernetes_namespace" "trafficgen" {
 }
 
 
-# TODO: CREATE APP IN APPD
+############################################################
+# CREATE APP IN APPD
+############################################################
+# TODO
 
 
-# TODO: CREATE EUM APP IN APPD
+############################################################
+# CREATE EUM APP IN APPD
+############################################################
+# TODO
 
 
-# TODO: CREATE DB IN APPD
+############################################################
+# CREATE DB IN APPD
+############################################################
+# TODO
 
 
 ############################################################
@@ -210,6 +223,11 @@ resource "helm_release" "appdynamics" {
   chart      = "./appdynamics/helm"
   
   namespace  = var.appd_namespace
+  
+  set {
+    name  = "registry"
+    value = var.registry
+  }
 }
 
 
@@ -231,10 +249,16 @@ resource "helm_release" "iwo" {
 }
 
 
-# TODO: GET TOKEN FOR IWO CLAIM
+############################################################
+# GET TOKEN FOR IWO CLAIM
+############################################################
+# TODO
 
 
-# TODO: CLAIM IWO IN INTERSIGHT
+############################################################
+# CLAIM IWO DEVICE CONNECTOR IN INTERSIGHT
+############################################################
+# TODO
 
 
 ############################################################
@@ -260,6 +284,11 @@ resource "helm_release" "stealthwatch" {
   chart      = "./stealthwatch_cloud/helm"
   
   namespace  = var.stealthwatch_namespace
+  
+  set {
+    name  = "stlth_service_key"
+    value = var.stlth_service_key
+  }
 }
 
 
@@ -273,6 +302,11 @@ resource "helm_release" "extpayment" {
   chart      = "./app_extpayment/helm"
   
   namespace  = var.extpayment_namespace
+  
+  set {
+    name  = "registry"
+    value = var.registry
+  }
 }
 
 
@@ -286,6 +320,11 @@ resource "helm_release" "extprod" {
   chart      = "./app_extprod/helm"
   
   namespace  = var.extprod_namespace
+  
+  set {
+    name  = "registry"
+    value = var.registry
+  }
 }
 
 
@@ -299,6 +338,11 @@ resource "helm_release" "app" {
   chart      = "./app_main/helm"
   
   namespace  = var.app_namespace
+  
+  set {
+    name  = "registry"
+    value = var.registry
+  }
 }
 
 
