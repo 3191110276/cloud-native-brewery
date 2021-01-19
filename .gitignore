@@ -10,4 +10,5 @@
 /terraform.tfstate
 /.terraform.lock.hcl
 /.terraform/
+/terraform.tfstate.backup
 /variables.tfvars
