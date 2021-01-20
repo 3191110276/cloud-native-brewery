@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: action-response-services
+data:
+  APPDYNAMICS_LOGGER_LEVEL: "debug"
+  APPDYNAMICS_LOGGER_OUTPUT_TYPE: "console"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: action-response-services
+spec:
+  selector:
+    matchLabels:
+      name: action-response-services
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: action-response-services
+        app: action-response-services
+    spec:
+      serviceAccountName: appdynamics-cluster-agent
+      containers:
+        - name: action-response-services
+          image: astoklas/apm-game-nodejs:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 80
+          env:
+          - name: APP_CONFIG
+            value: '{"type": "nodejs","agent": "no","port": 3009,"endpoints": {"http": {"actionResponseServices/updateAction": ["cache,1024", {"call": "slow,800","probability": 0.1}],"actionResponseServices/chat": ["cache,128", {"call": "slow,800","probability": 0.1}],"AuthServices/login": ["cache,128", {"call": "slow,800","probability": 0.1}],"BillingServices/purchaseGamePass": ["cache,128", {"call": "slow,800","probability": 0.1}],"/health": ["cache,128"]}},"name": "backend","nodeid": 0}'
+          - name: APM_CONFIG
+            value: '{"controller":"http://a.b.c.d:8090","accountName":"customer1","accountAccessKey":"secret_to_be_insert_here","applicationName":"apm_game","eventsService":"http://a.b.c.d:9080","globalAccountName":"customer1_","eum":{"appKey":"XXX-XXX-XXX","adrumExtUrlHttp":"http://cdn.appdynamics.com","adrumExtUrlHttps":"https://cdn.appdynamics.com","beaconUrlHttp":"http://a.b.c.d:7001","beaconUrlHttps":"https://a.b.c.d:7002"}}'
+          - name: WITH_AGENT
+            value: "0"
+          - name: CUSTOM_CODE_DIR
+            value: "/scripts"
+          - name: LOG_DIRECTORY
+            value: "logs/nodejs/backend-0/"
+          - name: WITH_ANALYTICS
+            value: "1"
+          envFrom:
+          - configMapRef:
+              name: action-response-services
+          command: ["/app/node.sh"]
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: action-response-services
+spec:
+  ports:
+  - name: http
+    port: 8001
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: action-response-services
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: billing-services
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: action-response-services
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-services
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: action-response-services
