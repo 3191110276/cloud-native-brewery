@@ -687,17 +687,134 @@ resource "helm_release" "appdynamics" {
 ############################################################
 # INSTALL IWO HELM CHART
 ############################################################
-resource "helm_release" "iwo" {
-  name       = "iwo"
+resource "kubernetes_service_account" "iwo-user" {
   depends_on = [kubernetes_namespace.iwo]
+  metadata {
+    name = "iwo-user"
+    namespace = var.iwo_namespace
+  }
+}
 
-  chart      = "./iwo/helm"
-  
-  namespace  = var.iwo_namespace
+resource "kubernetes_cluster_role_binding" "iwo-all-binding" {
+  depends_on = [kubernetes_service_account.iwo-user]
+  metadata {
+    name = "iwo-all-binding"
+    #namespace = var.iwo_namespace
+  }
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = "cluster-admin"
+  }
+  subject {
+    kind      = "ServiceAccount"
+    name      = "iwo-user"
+    namespace = var.iwo_namespace
+    #api_group = "rbac.authorization.k8s.io"
+  }
+}
 
-  set {
-    name  = "clustername"
-    value = var.app_name
+resource "kubernetes_config_map" "iwo-config" {
+  depends_on = [kubernetes_namespace.iwo]
+  metadata {
+    name = "iwo-config"
+    namespace = var.iwo_namespace
+  }
+
+  data = {
+    "iwo.config" = <<EOT
+    {
+      "communicationConfig": {
+        "serverMeta": {
+          "proxy": "http://localhost:9004",
+          "version": "8",
+          "turboServer": "http://topology-processor:8080"
+        }
+      },
+      "HANodeConfig": {
+        "nodeRoles": ["master"]
+      },
+      "targetConfig": {
+        "targetName":"${var.app_name}-cluster"
+      }
+    }
+    EOT
+  }
+}
+
+resource "kubernetes_deployment" "iwok8scollector" {
+  depends_on = [kubernetes_config_map.iwo-config]
+  metadata {
+    name = "iwok8scollector"
+    namespace = var.iwo_namespace
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        "app.kubernetes.io/name" = "iwok8scollector"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          "app.kubernetes.io/name" = "iwok8scollector"
+        }
+        annotations = {
+          "kubeturbo.io/controllable" = "false"
+        }
+      }
+
+      spec {
+        service_account_name = "iwo-user"
+        automount_service_account_token = "true"
+        image_pull_secrets {
+          name = "dockerhub.cisco.comdockerhub.cisco.com"
+        }
+        container {
+          image = "intersight/kubeturbo:8.0.1"
+          name  = "iwo-k8s-collector"
+          image_pull_policy = "IfNotPresent"
+          args = ["--turboconfig=/etc/iwo/iwo.config", "--v=2", "--kubelet-https=true", "--kubelet-port=10250"]
+          volume_mount {
+            name = "iwo-volume"
+            mount_path = "/etc/iwo"
+            read_only = "true"
+          }
+          volume_mount {
+            name = "varlog"
+            mount_path = "/var/log"
+          }
+        }
+        container {
+          image = "intersight/pasadena:1.0.9-1"
+          name  = "iwo-k8s-dc"
+          image_pull_policy = "IfNotPresent"
+          volume_mount {
+            name = "varlog"
+            mount_path = "/cisco/pasadena/logs"
+          }
+          env {
+            name = "PROXY_PORT"
+            value = "9004"
+          }
+        }
+        volume {
+          name = "iwo-volume"
+          config_map {
+            name = "iwo-config"
+          }
+        }
+        volume {
+          name = "varlog"
+          empty_dir {}
+        }
+        restart_policy = "Always"
+      }
+    }
   }
 }
 
@@ -705,6 +822,15 @@ resource "helm_release" "iwo" {
 ############################################################
 # GET TOKEN FOR IWO CLAIM
 ############################################################
+data "external" "iwo_token" {
+  depends_on = [kubernetes_deployment.iwok8scollector]
+  program = ["bash", "./iwo/register.sh"]
+  query = {
+    proxy_host = var.proxy_host
+    proxy_port = var.proxy_port
+  }
+}
+
 #data "kubernetes_pod" "test" {
 #  depends_on = [helm_release.iwo]
 #
@@ -715,10 +841,7 @@ resource "helm_release" "iwo" {
 #}
 # TODO
 
-#data "external" "iwo_token" {
-#  depends_on = [helm_release.iwo]
-#  program = ["kubectl get pod -n iwo | grep iwo | awk '{print $1}'"]
-#}
+
 
 #$(kubectl -n iwo exec -it $POD -- curl -s http://localhost:9110/SecurityTokens | jq '.[].Token')
 
@@ -726,17 +849,17 @@ resource "helm_release" "iwo" {
 # CLAIM IWO DEVICE CONNECTOR IN INTERSIGHT
 ############################################################
 # TODO
-#resource "null_resource" "debug" {
-#    provisioner "local-exec" {
-#        command = "echo \"blub\" > debug"
-#    }
-#}
 
 #resource "intersight_asset_target" "iwo-dc" {
 #  depends_on = [external.iwo_token]
+#  
+#  target_type = "Kubernetes"
 #}
 
-# data.external.iwo_token
+# data.external.result.iwo_token
+
+#curl 'https://intersight.com/api/v1/asset/DeviceClaims' \
+#  --data-raw '{"SerialNumber":"616aa0f5-0fed-42e3-8bfb-1387f66b43de","SecurityToken":"F393D1A69CA0"}' \
 
 
 ############################################################
