@@ -45,7 +45,7 @@ def handle_order():
         job_template.render(
             prodid=prodid.lower(),
             registry="mimaurer",
-            version="v1",
+            version="dev",
             orderid=orderid,
             weight=weight
         )

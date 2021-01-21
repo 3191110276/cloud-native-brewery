@@ -7,6 +7,7 @@ data:
   MIN_RANDOM_DELAY: "{{ .Values.min_random_delay }}"
   MAX_RANDOM_DELAY: "{{ .Values.max_random_delay }}"
   LAGSPIKE_PERCENTAGE: "{{ .Values.lagspike_percentage }}"
+  APP_ENDPOINT: "{{ .Values.app_endpoint }}"
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -38,67 +39,99 @@ roleRef:
   name: {{ .Values.name }}
   apiGroup: rbac.authorization.k8s.io
 ---
-apiVersion: apps/v1
-kind: Deployment
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  labels:
+#    app: {{ .Values.name }}
+#  name: {{ .Values.name }}
+#  namespace: {{ .Release.Namespace }}
+#spec:
+#  replicas: {{ .Values.replicas }}
+#  selector:
+#    matchLabels:
+#      app: {{ .Values.name }}
+#  strategy: {}
+#  template:
+#    metadata:
+#      labels:
+#        app: {{ .Values.name }}
+#    spec:
+#      serviceAccountName: {{ .Values.name }}
+#      automountServiceAccountToken: true
+##      securityContext:
+##        runAsUser: 10000
+##        runAsGroup: 20000
+##        fsGroup: 30000
+#      containers:
+#      - name: trafficgen
+#        image: {{ .Values.registry }}/trafficgen-python:{{ .Values.version }}
+#        imagePullPolicy: Always
+#        volumeMounts:
+#        - name: customization
+#          mountPath: /etc/customization
+##        securityContext:
+##          runAsUser: 10001
+##          allowPrivilegeEscalation: false
+##        ports:
+##        - name: http
+##          containerPort: 80
+##          protocol: TCP
+##        - name: https
+##          containerPort: 443
+##          protocol: TCP
+##        startupProbe:
+##          periodSeconds: 5
+##          failureThreshold: 40
+##          httpGet:
+##            path: /healthz
+##            port: http
+##        livenessProbe:
+##          initialDelaySeconds: 5
+##          periodSeconds: 2
+##          failureThreshold: 4
+##          httpGet:
+##            path: /healthz
+##            port: http
+##        resources:
+##          requests:
+##            cpu: 250m
+##            memory: 32Mi
+##          limits:
+##            memory: 32Mi
+#      volumes:
+#      - name: customization
+#        configMap:
+#          name: customization  
+---
+apiVersion: batch/v1beta1
+kind: CronJob
 metadata:
-  labels:
-    app: {{ .Values.name }}
-  name: {{ .Values.name }}
-  namespace: {{ .Release.Namespace }}
+  name: trafficgen
 spec:
-  replicas: {{ .Values.replicas }}
-  selector:
-    matchLabels:
-      app: {{ .Values.name }}
-  strategy: {}
-  template:
-    metadata:
-      labels:
-        app: {{ .Values.name }}
+  schedule: "* * * * *"
+  concurrencyPolicy: Allow
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  #backoffLimit: 2
+  startingDeadlineSeconds: 59
+  jobTemplate:
     spec:
-      serviceAccountName: {{ .Values.name }}
-      automountServiceAccountToken: true
-#      securityContext:
-#        runAsUser: 10000
-#        runAsGroup: 20000
-#        fsGroup: 30000
-      containers:
-      - name: trafficgen
-        image: {{ .Values.registry }}/trafficgen-python:{{ .Values.version }}
-        imagePullPolicy: Always
-        volumeMounts:
-        - name: customization
-          mountPath: /etc/customization
-#        securityContext:
-#          runAsUser: 10001
-#          allowPrivilegeEscalation: false
-#        ports:
-#        - name: http
-#          containerPort: 80
-#          protocol: TCP
-#        - name: https
-#          containerPort: 443
-#          protocol: TCP
-#        startupProbe:
-#          periodSeconds: 5
-#          failureThreshold: 40
-#          httpGet:
-#            path: /healthz
-#            port: http
-#        livenessProbe:
-#          initialDelaySeconds: 5
-#          periodSeconds: 2
-#          failureThreshold: 4
-#          httpGet:
-#            path: /healthz
-#            port: http
-#        resources:
-#          requests:
-#            cpu: 250m
-#            memory: 32Mi
-#          limits:
-#            memory: 32Mi
-      volumes:
-      - name: customization
-        configMap:
-          name: customization  
+      parallelism: {{ .Values.replicas }}
+      completions: {{ mul .Values.replicas 2 }}
+      template:
+        spec:
+          serviceAccountName: {{ .Values.name }}
+          automountServiceAccountToken: true
+          containers:
+          - name: trafficgen
+            image: {{ .Values.registry }}/trafficgen-python:{{ .Values.version }}
+            imagePullPolicy: IfNotPresent #Always
+            volumeMounts:
+            - name: customization
+              mountPath: /etc/customization
+          volumes:
+          - name: customization
+            configMap:
+              name: customization 
+          restartPolicy: Never

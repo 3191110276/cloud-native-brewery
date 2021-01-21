@@ -2,6 +2,13 @@
 /app_extprod/helm/values.yaml
 /app_main/helm/values.yaml
 /appdynamics/helm/values.yaml
+/hx_csi/helm/values.yaml
 /iwo/helm/values.yaml
+/observability/helm/values.yaml
 /stealthwatch_cloud/helm/values.yaml
 /trafficgen/helm/values.yaml
+/terraform.tfstate
+/.terraform.lock.hcl
+/.terraform/
+/terraform.tfstate.backup
+/variables.tfvars

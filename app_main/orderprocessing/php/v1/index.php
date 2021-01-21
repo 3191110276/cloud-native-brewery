@@ -38,7 +38,6 @@ $properties = array(
 $exitcall_fulfil = appdynamics_begin_exit_call(AD_EXIT_RABBITMQ, "ProdRequest", $properties, $exclusive=false);
 $corrHeader_fulfil = $exitcall_fulfil->getCorrelationHeader();
 
-
 # CREATE AND OPEN CHANNEL
 $channel = $connection->channel();
 #$channel->queue_declare('prodrequest', false, false, false, false);
@@ -58,7 +57,9 @@ $channel->close();
 
 
 # END APPD EXIT CALL
-appdynamics_end_exit_call($exitcall_fulfil);
+if (isset($exitcall_fulfil)) {
+    appdynamics_end_exit_call($exitcall_fulfil);
+}
 
 
 #######################################################
@@ -83,7 +84,6 @@ $properties = array(
 $exitcall_notif = appdynamics_begin_exit_call(AD_EXIT_RABBITMQ, "Notifications", $properties, $exclusive=false);
 $corrHeader_notif = $exitcall_notif->getCorrelationHeader();
 
-
 # CREATE AND OPEN CHANNEL
 $channel = $connection->channel();
 #$channel->queue_declare('notifications', false, false, false, false);
@@ -103,8 +103,9 @@ $channel->close();
 
 
 # END APPD EXIT CALL
-appdynamics_end_exit_call($exitcall_notif);
-
+if (isset($exitcall_notif)) {
+    appdynamics_end_exit_call($exitcall_notif);
+}
 
 # AMQP CLOSE CONNECTION
 $connection->close();

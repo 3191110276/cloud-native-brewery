@@ -39,40 +39,40 @@ def handle_request():
     return json.dumps({'status': 'success'})
 
 
-#@app.route("/production", methods = ['POST'])
-#def handle_production():
-#    logging.info('Input received from production')
-#    
-#    orderid = request.json['orderid']
-#    prodid = request.json['prodid']
-#    weight = request.json['weight']
-#
-#    
-#    # WRITE NEW PRODUCTS TO DB AND CALL FULFILMENT
-#    conn = MySQLdb.connect(
-#        host=load_env_file("INVENTORYDB_SVC"),
-#        port=80,
-#        user="root",
-#        passwd="root",
-#        db="ordering"
-#    )
-#    
-#    try:
-#        cursor = conn.cursor()
-#        cursor.execute("""INSERT INTO production (id,order_id,weight) VALUES (%s,%s,%s)""",(prodid,orderid,weight))
-#        cursor.close()
-#        conn.close()
-#    except Exception as e:
-#        logging.error('DB Error')
-#        logging.error(e)
-#        
-#    r = requests.post('http://{}/'.format(load_env_file("FULFILMENT_SVC")), json = {
-#        'orderid': orderid,
-#        'prodid': prodid,
-#        'weight': weight
-#    })
-#        
-#    return json.dumps({'status': 'success'})
+@app.route("/production", methods = ['POST'])
+def handle_production():
+    logging.info('Input received from production')
+    
+    orderid = request.json['orderid']
+    prodid = request.json['prodid']
+    weight = request.json['weight']
+
+    
+    # WRITE NEW PRODUCTS TO DB AND CALL FULFILMENT
+    conn = MySQLdb.connect(
+        host=load_env_file("INVENTORYDB_SVC"),
+        port=80,
+        user="root",
+        passwd="root",
+        db="ordering"
+    )
+    
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""INSERT INTO production (id,order_id,weight) VALUES (%s,%s,%s)""",(prodid,orderid,weight))
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        logging.error('DB Error')
+        logging.error(e)
+        
+    r = requests.post('http://{}/'.format(load_env_file("FULFILMENT_SVC")), json = {
+        'orderid': orderid,
+        'prodid': prodid,
+        'weight': weight
+    })
+        
+    return json.dumps({'status': 'success'})
     
 
 @app.route("/healthz")

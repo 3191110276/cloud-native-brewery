@@ -29,15 +29,21 @@ api_instance = client.BatchV1Api()
 api_response = api_instance.list_namespaced_job(ns)
 for item in api_response.items:
     if item.status.succeeded == 1:
-        logging.warning('Deleting succeeded Job {}'.format(item.metadata.name))
-        api_instance.delete_namespaced_job(item.metadata.name, ns)
+        logging.warning('Deleting Job {}'.format(item.metadata.name))
+        try:
+            api_instance.delete_namespaced_job(item.metadata.name, ns)
+        except Exception as e:
+            logging.warning(e)
 
 api_instance = client.CoreV1Api()
 api_response = api_instance.list_namespaced_pod(ns)
 for item in api_response.items:
-    if item.status.phase == "Succeeded":
-        logging.warning('Deleting succeeded Pod {}'.format(item.metadata.name))
-        api_instance.delete_namespaced_pod(item.metadata.name, ns)
+    if item.status.phase == "Succeeded" or item.status.phase == "Error":
+        logging.warning('Deleting Pod {}'.format(item.metadata.name))
+        try:
+            api_instance.delete_namespaced_pod(item.metadata.name, ns)
+        except Exception as e:
+            logging.warning(e)
 
 
 time.sleep(random.randint(int(load_env_file("JOB_MIN")), int(load_env_file("JOB_MAX"))))

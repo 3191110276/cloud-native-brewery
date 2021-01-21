@@ -56,7 +56,7 @@ def handle_order():
     logging.info('Received Response from Payment')
     payment = r.json()
     logging.info(payment)
-#    
+    
     logging.info('Saving payment to database')
     cursor.execute("""INSERT INTO payment (provider_id,paytype,order_id) VALUES (%s,%s,%s)""",(payment['id'],'creditcard',orderid))
     
@@ -73,7 +73,7 @@ def handle_order():
     r = requests.post(
         'http://{}/orderprocessing'.format(load_env_file("ORDERPROCESSING_SVC")),
         json = {
-            'orderid':orderid,
+            'orderid': orderid,
             'products': [{
                     'configuration': request.form['product'],
                     'amount': request.form['quantity']
