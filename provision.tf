@@ -373,6 +373,26 @@ variable "orderprocessing_tech" {
   default = "php"
 }
 
+variable "orderprocessing_cpurequest" {
+  type    = string
+  default = "20m"
+}
+
+variable "orderprocessing_memrequest" {
+  type    = string
+  default = "80Mi"
+}
+
+variable "orderprocessing_cpulimit" {
+  type    = string
+  default = "250m"
+}
+
+variable "orderprocessing_memlimit" {
+  type    = string
+  default = "280Mi"
+}
+
 variable "notification_name" {
   type    = string
   default = "notification"
@@ -1059,6 +1079,26 @@ resource "helm_release" "app" {
     name  = "orderprocessing_version"
     value = var.image_tag
   }
+  
+  set {
+    name  = "orderprocessing_cpurequest"
+    value = var.orderprocessing_cpurequest
+  }
+  
+  set {
+    name  = "orderprocessing_memrequest"
+    value = var.orderprocessing_memrequest
+  }
+  
+  set {
+    name  = "orderprocessing_cpulimit"
+    value = var.orderprocessing_cpulimit
+  }
+  
+  set {
+    name  = "orderprocessing_memlimit"
+    value = var.orderprocessing_memlimit
+  } 
   
   set {
     name  = "notification_version"

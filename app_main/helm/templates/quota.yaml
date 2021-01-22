@@ -20,9 +20,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   hard:
-    requests.cpu: "10"
+    requests.cpu: "5000m"
     requests.memory: 12Gi
-    limits.cpu: "10"
+    limits.cpu: "10000m"
     limits.memory: 20Gi
     requests.storage: 40Gi
     persistentvolumeclaims: 10
