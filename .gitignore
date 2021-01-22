@@ -13,3 +13,4 @@
 /terraform.tfstate.backup
 /variables.tfvars
 /crash.log
+/debug
