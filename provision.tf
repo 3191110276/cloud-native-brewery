@@ -42,6 +42,52 @@ variable "endpoint" {
 }
 
 #################
+# Apps to deploy
+#################
+variable "brewery_deploy" {
+  type    = bool
+  default = true
+}
+
+variable "world_deploy" {
+  type    = bool
+  default = true
+}
+
+variable "clusterload_deploy" {
+  type    = bool
+  default = true
+}
+
+#################
+# Components to deploy
+#################
+variable "hxcsi_deploy" {
+  type    = bool
+  default = true
+}
+
+variable "appd_deploy" {
+  type    = bool
+  default = true
+}
+
+variable "iwo_deploy" {
+  type    = bool
+  default = true
+}
+
+variable "observability_deploy" {
+  type    = bool
+  default = true
+}
+
+variable "stealthwatch_deploy" {
+  type    = bool
+  default = true
+}
+
+#################
 # Namespaces
 #################
 variable "hxcsi_namespace" {
@@ -89,9 +135,19 @@ variable "trafficgen_namespace" {
   default = "trafficgen"
 }
 
+variable "world_namespace" {
+  type    = string
+  default = "world"
+}
+
+variable "clusterload_namespace" {
+  type    = string
+  default = "clusterload"
+}
+
 variable "appd_ns_to_monitor" {
   type    = list
-  default = ["kube-system", "app", "ext", "automation"]
+  default = ["kube-system", "app", "ext", "automation", "world", "clusterload"]
 }
 
 #################
@@ -494,6 +550,76 @@ variable "trafficgen_app_endpoint" {
   default = "ingress-nginx-controller.ccp"
 }
 
+#################
+# ClusterLoad
+#################
+variable "clusterload_quota_pods" {
+  type    = string
+  default = "20"
+}
+
+variable "clusterload_quota_cpu_request" {
+  type    = string
+  default = "2"
+}
+
+variable "clusterload_quota_cpu_limit" {
+  type    = string
+  default = "4"
+}
+
+variable "clusterload_quota_memory_request" {
+  type    = string
+  default = "16Gi"
+}
+
+variable "clusterload_quota_memory_limit" {
+  type    = string
+  default = "32Gi"
+}
+
+variable "clusterload_configurtions" {
+  type    = list(object({
+    name       = string
+    replicas   = number
+    containers = list(object({
+      name = string
+      run_type = string
+      run_scaler = string
+      run_value = string
+      cpu_request = string
+      cpu_limit = string
+      mem_request = string
+      mem_limit = string
+    }))
+  }))
+  default = [{
+    name = "clusterload"
+    replicas = 1
+    containers = [
+      {
+      name = "cpuload"
+      run_type = "cpu"
+      run_scaler = "CPU_PERCENT"
+      run_value = "10"
+      cpu_request = "240m"
+      cpu_limit = "250m"
+      mem_request = "100Mi"
+      mem_limit = "128Mi"
+      },
+      {
+      name = "memload"
+      run_type= "memory"
+      run_scaler = "MEMORY_NUM"
+      run_value = "250"
+      cpu_request = "50m"
+      cpu_limit = "1"
+      mem_request = "1Gi"
+      mem_limit = "1Gi"
+      },
+    ]
+  }]
+}
 
 ############################################################
 # ADD THIRD PARTY PROVIDERS
@@ -532,56 +658,79 @@ provider "intersight" {
 # CREATE KUBERNETES NAMESPACES
 ############################################################
 resource "kubernetes_namespace" "hxcsi" {
+  count = var.hxcsi_deploy ? 1 : 0
   metadata {
     name = var.hxcsi_namespace
   }
 }
 
 resource "kubernetes_namespace" "appdynamics" {
+  count = var.appd_deploy ? 1 : 0
   metadata {
     name = var.appd_namespace
   }
 }
 
 resource "kubernetes_namespace" "iwo" {
+  count = var.iwo_deploy ? 1 : 0
   metadata {
     name = var.iwo_namespace
   }
 }
 
 resource "kubernetes_namespace" "observability" {
+  count = var.observability_deploy ? 1 : 0
   metadata {
     name = var.observability_namespace
   }
 }
 
 resource "kubernetes_namespace" "stealthwatch" {
+  count = var.stealthwatch_deploy ? 1 : 0
   metadata {
     name = var.stealthwatch_namespace
   }
 }
 
 resource "kubernetes_namespace" "extpayment" {
+  count = var.brewery_deploy ? 1 : 0
   metadata {
     name = var.extpayment_namespace
   }
 }
 
 resource "kubernetes_namespace" "extprod" {
+  count = var.brewery_deploy ? 1 : 0
   metadata {
     name = var.extprod_namespace
   }
 }
 
 resource "kubernetes_namespace" "app" {
+  count = var.brewery_deploy ? 1 : 0
   metadata {
     name = var.app_namespace
   }
 }
 
 resource "kubernetes_namespace" "trafficgen" {
+  count = var.brewery_deploy ? 1 : 0
   metadata {
     name = var.trafficgen_namespace
+  }
+}
+
+resource "kubernetes_namespace" "world" {
+  count = var.world_deploy ? 1 : 0
+  metadata {
+    name = var.world_namespace
+  }
+}
+
+resource "kubernetes_namespace" "clusterload" {
+  count = var.clusterload_deploy ? 1 : 0
+  metadata {
+    name = var.clusterload_namespace
   }
 }
 
@@ -610,6 +759,7 @@ resource "kubernetes_namespace" "trafficgen" {
 resource "helm_release" "hxcsi" {
   name       = "hxcsi"
   depends_on = [kubernetes_namespace.hxcsi]
+  count      = var.hxcsi_deploy ? 1 : 0
 
   chart      = "./hx_csi/helm"
   
@@ -623,6 +773,7 @@ resource "helm_release" "hxcsi" {
 resource "helm_release" "appdynamics" {
   name       = "appd"
   depends_on = [kubernetes_namespace.appdynamics]
+  count      = var.appd_deploy ? 1 : 0
 
   chart      = "./appdynamics/helm"
   
@@ -705,9 +856,10 @@ resource "helm_release" "appdynamics" {
 }
 
 ############################################################
-# INSTALL IWO HELM CHART
+# INSTALL IWO
 ############################################################
 resource "kubernetes_service_account" "iwo-user" {
+  count = var.iwo_deploy ? 1 : 0
   depends_on = [kubernetes_namespace.iwo]
   metadata {
     name = "iwo-user"
@@ -716,6 +868,7 @@ resource "kubernetes_service_account" "iwo-user" {
 }
 
 resource "kubernetes_cluster_role_binding" "iwo-all-binding" {
+  count = var.iwo_deploy ? 1 : 0
   depends_on = [kubernetes_service_account.iwo-user]
   metadata {
     name = "iwo-all-binding"
@@ -735,6 +888,7 @@ resource "kubernetes_cluster_role_binding" "iwo-all-binding" {
 }
 
 resource "kubernetes_config_map" "iwo-config" {
+  count = var.iwo_deploy ? 1 : 0
   depends_on = [kubernetes_namespace.iwo]
   metadata {
     name = "iwo-config"
@@ -763,6 +917,7 @@ resource "kubernetes_config_map" "iwo-config" {
 }
 
 resource "kubernetes_deployment" "iwok8scollector" {
+  count = var.iwo_deploy ? 1 : 0
   depends_on = [kubernetes_config_map.iwo-config]
   metadata {
     name = "iwok8scollector"
@@ -888,6 +1043,7 @@ data "external" "iwo_token" {
 resource "helm_release" "observability" {
   name       = "observability"
   depends_on = [kubernetes_namespace.observability]
+  count      = var.observability_deploy ? 1 : 0
 
   chart      = "./observability/helm"
   
@@ -901,6 +1057,7 @@ resource "helm_release" "observability" {
 resource "helm_release" "stealthwatch" {
   name       = "stealthwatch"
   depends_on = [kubernetes_namespace.stealthwatch]
+  count      = var.stealthwatch_deploy ? 1 : 0
 
   chart      = "./stealthwatch_cloud/helm"
   
@@ -919,6 +1076,7 @@ resource "helm_release" "stealthwatch" {
 resource "helm_release" "extpayment" {
   name       = "extpayment"
   depends_on = [kubernetes_namespace.extpayment]
+  count      = var.brewery_deploy ? 1 : 0
 
   chart      = "./app_extpayment/helm"
   
@@ -972,6 +1130,7 @@ resource "helm_release" "extpayment" {
 resource "helm_release" "extprod" {
   name       = "extprod"
   depends_on = [kubernetes_namespace.extprod]
+  count      = var.brewery_deploy ? 1 : 0
 
   chart      = "./app_extprod/helm"
   
@@ -1035,6 +1194,7 @@ resource "helm_release" "extprod" {
 resource "helm_release" "app" {
   name       = "app"
   depends_on = [kubernetes_namespace.app]
+  count      = var.brewery_deploy ? 1 : 0
 
   chart      = "./app_main/helm"
   
@@ -1392,6 +1552,7 @@ resource "helm_release" "app" {
 resource "helm_release" "trafficgen" {
   name       = "trafficgen"
   depends_on = [kubernetes_namespace.trafficgen,helm_release.app]
+  count      = var.brewery_deploy ? 1 : 0
 
   chart      = "./trafficgen/helm"
   
@@ -1432,3 +1593,101 @@ resource "helm_release" "trafficgen" {
     value = var.trafficgen_max_random_delay
   }
 }
+
+
+############################################################
+# INSTALL WORLD APP
+############################################################
+
+
+
+############################################################
+# INSTALL CLUSTER LOAD APP
+############################################################
+resource "kubernetes_resource_quota" "clusterload-quota" {
+  count = var.clusterload_deploy ? 1 : 0
+  depends_on = [kubernetes_namespace.clusterload]
+  
+  metadata {
+    name = "clusterload-quota"
+    namespace = var.clusterload_namespace
+  }
+  spec {
+    hard = {
+      pods = var.clusterload_quota_pods
+      "requests.cpu" = var.clusterload_quota_cpu_request
+      "requests.memory" = var.clusterload_quota_memory_request
+      "limits.cpu" = var.clusterload_quota_cpu_limit
+      "limits.memory" = var.clusterload_quota_memory_limit
+    }
+  }
+}
+
+resource "kubernetes_deployment" "clusterload" {
+  for_each = { for conf in var.clusterload_configurtions : conf.name => conf }
+  depends_on = [kubernetes_resource_quota.clusterload-quota]
+  
+  metadata {
+    name = each.value.name
+    namespace = var.clusterload_namespace
+    labels = {
+      app = each.value.name
+    }
+  }
+
+  spec {
+    replicas = each.value.replicas
+
+    selector {
+      match_labels = {
+        app = each.value.name
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = each.value.name
+        }
+      }
+
+      spec {
+        dynamic "container" {
+          for_each = each.value.containers
+          content {
+            name = container.value.name
+            image = "beekman9527/cpumemload:latest"
+            
+          env {
+            name  = "RUN_TYPE"
+            value = container.value.run_type
+          }
+          
+          env {
+            name  = container.value.run_scaler
+            value = container.value.run_value
+          }
+
+          resources {
+            limits {
+              cpu    = container.value.cpu_limit
+              memory = container.value.mem_limit
+            }
+            requests {
+              cpu    = container.value.cpu_request
+              memory = container.value.mem_request
+            }
+          }
+            
+            termination_message_path = "/dev/termination-log"
+            #terminationMessagePolicy: File >> default
+            image_pull_policy = "Always"
+          }
+        }
+        
+        restart_policy = "Always"
+      }
+    }
+  }
+}
+
