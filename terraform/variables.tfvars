@@ -18,6 +18,6 @@ appd_controller_key = "3gnmajormowm"
 appd_controller_hostname = "ceer.saas.appdynamics.com"
 appd_global_account = "ceer_a5109a9d-85dd-4feb-9185-4da576c211d7"
 appd_browserapp_beaconurl = "fra-col.eum-appdynamics.com"
-appd_browserapp_key = "EC-AAB-MRH"
+appd_browserapp_key = "EC-AAB-NXB"
 
 stealthwatch_service_key = "VUxoajZhNmsyQVVGc0hLTmNPMHRoNlR1WFVCbmpFeldXTmt2SUlFN2ZWZVNKTWRNWWw="

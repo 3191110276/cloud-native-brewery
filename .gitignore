@@ -7,10 +7,9 @@
 /observability/helm/values.yaml
 /stealthwatch_cloud/helm/values.yaml
 /trafficgen/helm/values.yaml
-/terraform.tfstate
-/.terraform.lock.hcl
-/.terraform/
-/terraform.tfstate.backup
-/variables.tfvars
-/crash.log
-/debug
+/terraform/terraform.tfstate
+/terraform/terraform.tfstate.backup
+/terraform/.terraform.lock.hcl
+/terraform/.terraform/
+/terraform/variables.tfvars
+/terraform/crash.log

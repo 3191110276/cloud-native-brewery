@@ -39,6 +39,10 @@ data:
       "targetConfig": {
         "targetName":"{{ .Values.clustername }}-cluster"
       }
+      "daemonPodDetectors": {
+        "namespaces": [],
+        "podNamePatterns": []
+      }
     }
 ---
 apiVersion: apps/v1
@@ -70,6 +74,7 @@ spec:
           - --v=2
           - --kubelet-https=true
           - --kubelet-port=10250
+          - --stitch-uuid=true
         volumeMounts:
           - name: iwo-volume
             mountPath: /etc/iwo

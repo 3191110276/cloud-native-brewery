@@ -53,6 +53,10 @@ resource "kubernetes_config_map" "iwo-config" {
       },
       "targetConfig": {
         "targetName":"${var.app_name}-cluster"
+      },
+      "daemonPodDetectors": {
+        "namespaces": [],
+        "podNamePatterns": []
       }
     }
     EOT
@@ -96,7 +100,7 @@ resource "kubernetes_deployment" "iwok8scollector" {
           image = "intersight/kubeturbo:8.0.1"
           name  = "iwo-k8s-collector"
           image_pull_policy = "IfNotPresent"
-          args = ["--turboconfig=/etc/iwo/iwo.config", "--v=2", "--kubelet-https=true", "--kubelet-port=10250"]
+          args = ["--turboconfig=/etc/iwo/iwo.config", "--v=2", "--kubelet-https=true", "--kubelet-port=10250","--stitch-uuid=true"]
           volume_mount {
             name = "iwo-volume"
             mount_path = "/etc/iwo"
