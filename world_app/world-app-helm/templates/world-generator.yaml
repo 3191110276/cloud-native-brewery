@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: world-generator
+  name: {{ .Values.component4 }}
 spec:
   selector:
     matchLabels:

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: world-change-services
+  name: {{ .Values.component2 }}
 spec:
   selector:
     matchLabels:

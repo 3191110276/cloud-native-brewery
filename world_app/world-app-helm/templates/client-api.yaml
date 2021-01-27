@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: client-api
+  name: {{ .Values.component1 }}
 spec:
   selector:
     matchLabels:
@@ -36,7 +36,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-api
+  name: {{ .Values.component5 }}
 spec:
   selector:
     matchLabels:

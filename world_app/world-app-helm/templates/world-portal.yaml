@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: world-portal
+  name: {{ .Values.component3 }}
 spec:
   selector:
     matchLabels:
