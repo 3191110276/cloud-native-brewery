@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: player-action-services
+  name: {{ .Values.component9 }}
 spec:
   selector:
     matchLabels:
       name: player-action-services
-  replicas: 1
+  replicas: {{ .Values.component9_replicas }}
   template:
     metadata:
       labels:

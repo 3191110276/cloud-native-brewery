@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       name: world-portal
-  replicas: 1
+  replicas: {{ .Values.component3_replicas }}
   template:
     metadata:
       labels:

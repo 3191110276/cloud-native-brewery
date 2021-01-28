@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-load
+  name: {{ .Values.component6 }}
 spec:
   selector:
     matchLabels:
       name: app-load
-  replicas: 1
+  replicas: {{ .Values.component6_replicas }}
   template:
     metadata:
       labels:

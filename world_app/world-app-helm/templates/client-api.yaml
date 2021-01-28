@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       name: client-api
-  replicas: 1
+  replicas: {{ .Values.component1_replicas }}
   template:
     metadata:
       labels:
@@ -41,7 +41,7 @@ spec:
   selector:
     matchLabels:
       name: web-api
-  replicas: 1
+  replicas: {{ .Values.component5_replicas }}
   template:
     metadata:
       labels:

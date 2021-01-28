@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ai-services
+  name: {{ .Values.component8 }}
 spec:
   selector:
     matchLabels:
       name: ai-services
-  replicas: 1
+  replicas: {{ .Values.component8_replicas }}
   template:
     metadata:
       labels:

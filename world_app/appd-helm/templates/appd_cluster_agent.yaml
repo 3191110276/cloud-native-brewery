@@ -301,19 +301,21 @@ spec:
   #containerBatchSize: 8
   #podBatchSize: 10
   nsToMonitor: 
-  - world
+  - {{ .Values.appnamespace }}
   - kube-system
+  - appdynamics
+  - iwo
   - default
   instrumentationMethod: Env
   instrumentationRules:
-    - namespaceRegex: world
+    - namespaceRegex: {{ .Values.appnamespace }}
       appName: {{ .Values.appname }}
       language: java
       imageInfo:
         image: "docker.io/appdynamics/java-agent:20.9.0"
         agentMountPath: /opt/appdynamics
         imagePullPolicy: "IfNotPresent"
-  nsToInstrumentRegex: "world"
+  nsToInstrumentRegex: "{{ .Values.appnamespace }}"
   appNameStrategy: manual
   defaultAppname: "{{ .Values.appname }}"
   #appNameLabel: "world2"

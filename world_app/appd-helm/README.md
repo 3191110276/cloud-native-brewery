@@ -1,4 +1,6 @@
 ## This helm chart will install AppDynamics Agents
+A good explanation of how the appdynamics operator can be configured can be found on the below link :wq
+https://github.com/Appdynamics/appdynamics-operator
 
 # Prerequisites
 A valid values.yaml needs to be completed

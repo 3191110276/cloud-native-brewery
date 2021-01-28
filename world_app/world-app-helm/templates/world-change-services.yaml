@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       name: world-change-services
-  replicas: 1
+  replicas: {{ .Values.component2_replicas }}
   template:
     metadata:
       labels:
