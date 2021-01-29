@@ -16,15 +16,18 @@ spec:
     spec:
       serviceAccountName: appdynamics-cluster-agent
       containers:
-        - name: player-action-services
+        - name: {{ .Values.component9 }}
           image: sashaz/java-services:v5
           imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 8080
           resources:
             requests:
-              memory: "64Mi"
-              cpu: "250m"
+              cpu: 100m
+              memory: 600M
+            limits:
+              cpu: 200m
+              memory: 900M
       restartPolicy: Always
 
 

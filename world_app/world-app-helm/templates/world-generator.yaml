@@ -16,7 +16,7 @@ spec:
     spec:
       serviceAccountName: appdynamics-cluster-agent
       containers:
-        - name: world-generator
+        - name: {{ .Values.component4 }}
           image: sashaz/java-services:v5
           imagePullPolicy: IfNotPresent
           ports:

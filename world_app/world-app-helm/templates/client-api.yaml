@@ -19,7 +19,7 @@ spec:
         runAsGroup: 2000
       serviceAccountName: appdynamics-cluster-agent
       containers:
-        - name: client-api
+        - name: {{ .Values.component1 }}
           image: sashaz/java-services:v5
           imagePullPolicy: IfNotPresent
           resources:
@@ -54,7 +54,7 @@ spec:
         runAsGroup: 2000
       serviceAccountName: appdynamics-cluster-agent
       containers:
-        - name: web-api
+        - name: {{ .Values.component5 }}
           image: sashaz/java-services:v5
           imagePullPolicy: IfNotPresent
           resources:

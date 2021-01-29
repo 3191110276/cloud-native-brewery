@@ -16,9 +16,16 @@ spec:
     spec:
       serviceAccountName: appdynamics-cluster-agent
       containers:
-        - name: world-portal
+        - name: {{ .Values.component3 }}
           image: sashaz/java-services:v5
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 200m
+              memory: 900M
+            requests:
+              cpu: 100m
+              memory: 600M
           ports:
           - containerPort: 8080
       restartPolicy: Always
