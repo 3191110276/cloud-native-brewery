@@ -13,3 +13,5 @@
 /terraform.tfstate.backup
 /variables.tfvars
 /crash.log
+/world_app/world-app-helm/values.yaml
+/world_app/appd-helm/values.yaml
