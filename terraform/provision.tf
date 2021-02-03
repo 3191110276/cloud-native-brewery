@@ -17,11 +17,9 @@ resource "appdynamics_eum_application" "main" {
   count      = var.brewery_deploy ? 1 : 0
 }
 
-
-############################################################
-# CREATE DB IN APPD
-############################################################
-# TODO
+output "eum" {
+  value = appdynamics_eum_application.main[0]
+}
 
 
 ############################################################
@@ -124,6 +122,21 @@ resource "helm_release" "appdynamics" {
     name  = "proxy_port"
     value = var.proxy_port
   }
+}
+
+
+############################################################
+# CREATE DB COLLECTOR IN APPD
+############################################################
+resource "appdynamics_db_collector" "main" {
+  depends_on = [helm_release.appdynamics]
+  name = "Inventory DB"
+  type = "MYSQL"
+  hostname = "${var.app_name}-inventorydb-service.${var.app_namespace}"
+  port = "80"
+  username = "root"
+  password = "root"
+  agent_name = var.app_name
 }
 
 

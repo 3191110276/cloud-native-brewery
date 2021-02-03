@@ -10,6 +10,7 @@ resource "kubernetes_service_account" "iwo-user" {
   }
 }
 
+
 resource "kubernetes_cluster_role_binding" "iwo-all-binding" {
   count = var.iwo_deploy ? 1 : 0
   depends_on = [kubernetes_service_account.iwo-user]
@@ -29,6 +30,7 @@ resource "kubernetes_cluster_role_binding" "iwo-all-binding" {
     #api_group = "rbac.authorization.k8s.io"
   }
 }
+
 
 resource "kubernetes_config_map" "iwo-config" {
   count = var.iwo_deploy ? 1 : 0
@@ -63,6 +65,7 @@ resource "kubernetes_config_map" "iwo-config" {
   }
 }
 
+
 resource "kubernetes_deployment" "iwok8scollector" {
   count = var.iwo_deploy ? 1 : 0
   depends_on = [kubernetes_config_map.iwo-config]
@@ -72,7 +75,7 @@ resource "kubernetes_deployment" "iwok8scollector" {
   }
 
   spec {
-    replicas = 1
+    replicas = 2
 
     selector {
       match_labels = {
@@ -100,7 +103,7 @@ resource "kubernetes_deployment" "iwok8scollector" {
           image = "intersight/kubeturbo:8.0.1"
           name  = "iwo-k8s-collector"
           image_pull_policy = "IfNotPresent"
-          args = ["--turboconfig=/etc/iwo/iwo.config", "--v=2", "--kubelet-https=true", "--kubelet-port=10250","--stitch-uuid=true"]
+          args = ["--turboconfig=/etc/iwo/iwo.config", "--v=2", "--kubelet-https=true", "--kubelet-port=10250"]
           volume_mount {
             name = "iwo-volume"
             mount_path = "/etc/iwo"

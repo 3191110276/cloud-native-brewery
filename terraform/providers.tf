@@ -9,7 +9,7 @@ terraform {
     }
     appdynamics = {
       source = "3191110276/appdynamics"
-      version = "0.0.58"
+      version = "0.1.0"
     }
   }
 }
@@ -36,5 +36,7 @@ provider "intersight" {
 
 provider "appdynamics" {
   base_url = "${var.appd_controller_protocol}://${var.appd_controller_hostname}"
+  username = "${var.appd_username}@${var.appd_account_name}"
+  password = var.appd_password
   token = var.appd_token
 }

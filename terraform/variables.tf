@@ -50,7 +50,7 @@ variable "brewery_deploy" {
 
 variable "world_deploy" {
   type    = bool
-  default = true
+  default = false
 }
 
 variable "clusterload_deploy" {
