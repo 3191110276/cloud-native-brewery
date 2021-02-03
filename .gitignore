@@ -13,3 +13,4 @@
 /terraform/.terraform/
 /terraform/variables.tfvars
 /terraform/crash.log
+/terraform/.terraform.tfstate.lock.info
