@@ -9,3 +9,5 @@ spec:
     limits.cpu: "6"
     requests.memory: 30G
     limits.memory: 30G
+    persistentvolumeclaims: 10
+    requests.storage: 100G

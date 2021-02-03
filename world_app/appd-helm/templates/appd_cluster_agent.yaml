@@ -300,22 +300,25 @@ spec:
   #metadataSyncInterval: 50
   #containerBatchSize: 8
   #podBatchSize: 10
-  nsToMonitor: 
-  - {{ .Values.appnamespace }}
+  nsToMonitor:
+  - {{ .Values.appd_appnamespace }}
   - kube-system
+  - kube-public
+  - kube-node-lease
   - appdynamics
-  - iwo
   - default
+  - ccp
+  - iwo
   instrumentationMethod: Env
   instrumentationRules:
-    - namespaceRegex: {{ .Values.appnamespace }}
+    - namespaceRegex: {{ .Values.appd_appnamespace }}
       appName: {{ .Values.appname }}
       language: java
       imageInfo:
         image: "docker.io/appdynamics/java-agent:20.9.0"
         agentMountPath: /opt/appdynamics
         imagePullPolicy: "IfNotPresent"
-  nsToInstrumentRegex: "{{ .Values.appnamespace }}"
+  nsToInstrumentRegex: "{{ .Values.appd_appnamespace }}"
   appNameStrategy: manual
   defaultAppname: "{{ .Values.appname }}"
   #appNameLabel: "world2"
@@ -382,12 +385,12 @@ rules:
   - get
   - watch
   - list
-- apiGroups: 
+- apiGroups:
   - "batch"
   - "extensions"
-  resources: 
+  resources:
   - "jobs"
-  verbs: 
+  verbs:
   - "get"
   - "list"
   - "watch"
