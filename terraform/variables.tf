@@ -11,14 +11,17 @@ variable "app_name" {
 ############################################################
 variable "proxy_url" {
   type    = string
+  default = ""
 }
 
 variable "proxy_host" {
   type    = string
+  default = ""
 }
 
 variable "proxy_port" {
-  type    = number
+  type    = string
+  default = ""
 }
 
 ############################################################
@@ -198,6 +201,11 @@ variable "appd_controller_key" {
   type    = string
 }
 
+variable "appd_controller_protocol" {
+  type    = string
+  default = "https"
+}
+
 variable "appd_controller_hostname" {
   type    = string
 }
@@ -220,7 +228,7 @@ variable "appd_browserapp_beaconurl" {
   type    = string
 }
 
-variable "appd_browserapp_key" {
+variable "appd_token" {
   type    = string
 }
 

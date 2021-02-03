@@ -74,7 +74,7 @@ spec:
           - --v=2
           - --kubelet-https=true
           - --kubelet-port=10250
-          - --stitch-uuid=true
+          #- --stitch-uuid=true
         volumeMounts:
           - name: iwo-volume
             mountPath: /etc/iwo

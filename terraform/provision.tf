@@ -1,13 +1,21 @@
 ############################################################
-# CREATE APP IN APPD
+# CREATE APM APP IN APPD
 ############################################################
-# TODO
+resource "appdynamics_apm_application" "main" {
+  name = var.app_name
+  description = "Demo Application"
+  count      = var.brewery_deploy ? 1 : 0
+}
 
 
 ############################################################
 # CREATE EUM APP IN APPD
 ############################################################
-# TODO
+resource "appdynamics_eum_application" "main" {
+  name = "${var.app_name}_eum"
+  description = "Demo Application"
+  count      = var.brewery_deploy ? 1 : 0
+}
 
 
 ############################################################
@@ -122,14 +130,14 @@ resource "helm_release" "appdynamics" {
 ############################################################
 # GET TOKEN FOR IWO CLAIM
 ############################################################
-data "external" "iwo_token" {
-  depends_on = [kubernetes_deployment.iwok8scollector]
-  program = ["bash", "../iwo/register.sh"]
-  query = {
-    proxy_host = var.proxy_host
-    proxy_port = var.proxy_port
-  }
-}
+#data "external" "iwo_token" {
+#  depends_on = [kubernetes_deployment.iwok8scollector]
+#  program = ["bash", "../iwo/register.sh"]
+#  query = {
+#    proxy_host = var.proxy_host
+#    proxy_port = var.proxy_port
+#  }
+#}
 
 #data "kubernetes_pod" "test" {
 #  depends_on = [helm_release.iwo]
@@ -318,7 +326,7 @@ resource "helm_release" "extprod" {
 ############################################################
 resource "helm_release" "app" {
   name       = "app"
-  depends_on = [kubernetes_namespace.app]
+  depends_on = [kubernetes_namespace.app,appdynamics_apm_application.main,appdynamics_eum_application.main]
   count      = var.brewery_deploy ? 1 : 0
 
   chart      = "../app_main/helm"
@@ -472,7 +480,7 @@ resource "helm_release" "app" {
   
   set {
     name  = "appd_browserapp_key"
-    value = var.appd_browserapp_key
+    value = appdynamics_eum_application.main[0].eum_key
   }
 
   set {
