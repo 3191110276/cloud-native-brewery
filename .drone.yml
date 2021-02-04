@@ -10,13 +10,14 @@ steps:
   depends_on: [ clone ]
   settings:
    repo: mimaurer/adminfile-nginx
-   context: ./app_main/adminfile/nginx/v1/
-   dockerfile: ./app_main/adminfile/nginx/v1/Dockerfile
+   context: ./images/adminfile/
+   dockerfile: ./images/adminfile/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
    password:
      from_secret: DOCKERHUB_PASSWORD
+
 
 #APPD_DBAGENT
 - name: publish_appddbagent
@@ -29,8 +30,8 @@ steps:
       from_secret: APPD_PASSWORD
   settings:
    repo: mimaurer/appd-dbagent
-   context: ./appdynamics/appd_dbagent/
-   dockerfile: ./appdynamics/appd_dbagent/Dockerfile
+   context: ./images/appd_dbagent/
+   dockerfile: ./images/appd_dbagent/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
@@ -52,8 +53,8 @@ steps:
       from_secret: APPD_PASSWORD
   settings:
    repo: mimaurer/appd-nodeagent
-   context: ./appdynamics/appd_nodeagent/
-   dockerfile: ./appdynamics/appd_nodeagent/Dockerfile
+   context: ./images/appd_nodeagent/
+   dockerfile: ./images/appd_nodeagent/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
@@ -70,8 +71,8 @@ steps:
   depends_on: [ clone ]
   settings:
    repo: mimaurer/extpayment-python
-   context: ./app_extpayment/code/v1/
-   dockerfile: ./app_extpayment/code/v1/Dockerfile
+   context: ./images/extpayment/
+   dockerfile: ./images/extpayment/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
@@ -85,8 +86,8 @@ steps:
   depends_on: [ clone ]
   settings:
    repo: mimaurer/extprod-python
-   context: ./app_extprod/extprod/python/v1/
-   dockerfile: ./app_extprod/extprod/python/v1/Dockerfile
+   context: ./images/extprod/
+   dockerfile: ./images/extprod/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
@@ -100,8 +101,8 @@ steps:
   depends_on: [ clone ]
   settings:
    repo: mimaurer/extprodjob-python
-   context: ./app_extprod/extprodjob/python/v1/
-   dockerfile: ./app_extprod/extprodjob/python/v1/Dockerfile
+   context: ./images/extprodjob/
+   dockerfile: ./images/extprodjob/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
@@ -115,8 +116,8 @@ steps:
   depends_on: [ clone ]
   settings:
    repo: mimaurer/fulfilment-python
-   context: ./app_main/fulfilment/python/v1/
-   dockerfile: ./app_main/fulfilment/python/v1/Dockerfile
+   context: ./images/fulfilment/
+   dockerfile: ./images/fulfilment/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
@@ -130,8 +131,8 @@ steps:
   depends_on: [ clone ]
   settings:
    repo: mimaurer/inventorydb-mariadb
-   context: ./app_main/inventorydb/mariadb/v1/
-   dockerfile: ./app_main/inventorydb/mariadb/v1/Dockerfile
+   context: ./images/inventorydb/
+   dockerfile: ./images/inventorydb/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
@@ -150,8 +151,8 @@ steps:
       from_secret: APPD_PASSWORD
   settings:
    repo: mimaurer/notification-java
-   context: ./app_main/notification/java/v1/
-   dockerfile: ./app_main/notification/java/v1/Dockerfile
+   context: ./images/notification/
+   dockerfile: ./images/notification/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
@@ -168,8 +169,8 @@ steps:
   depends_on: [ clone ]
   settings:
    repo: mimaurer/order-python
-   context: ./app_main/order/python/v1/
-   dockerfile: ./app_main/order/python/v1/Dockerfile
+   context: ./images/order/
+   dockerfile: ./images/order/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
@@ -188,8 +189,8 @@ steps:
       from_secret: APPD_PASSWORD
   settings:
    repo: mimaurer/orderfile-apache
-   context: ./app_main/orderfile/apache/v1/
-   dockerfile: ./app_main/orderfile/apache/v1/Dockerfile
+   context: ./images/orderfile/
+   dockerfile: ./images/orderfile/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
@@ -211,8 +212,8 @@ steps:
       from_secret: APPD_PASSWORD
   settings:
    repo: mimaurer/orderprocessing-php
-   context: ./app_main/orderprocessing/php/v1/
-   dockerfile: ./app_main/orderprocessing/php/v1/Dockerfile
+   context: ./images/orderprocessing/
+   dockerfile: ./images/orderprocessing/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
@@ -229,8 +230,8 @@ steps:
   depends_on: [ clone ]
   settings:
    repo: mimaurer/payment-nodejs
-   context: ./app_main/payment/nodejs/v1/
-   dockerfile: ./app_main/payment/nodejs/v1/Dockerfile
+   context: ./images/payment/
+   dockerfile: ./images/payment/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
@@ -249,8 +250,8 @@ steps:
       from_secret: APPD_PASSWORD
   settings:
    repo: mimaurer/prodrequest-java
-   context: ./app_main/prodrequest/java/v1/
-   dockerfile: ./app_main/prodrequest/java/v1/Dockerfile
+   context: ./images/prodrequest/
+   dockerfile: ./images/prodrequest/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
@@ -267,8 +268,8 @@ steps:
   depends_on: [ clone ]
   settings:
    repo: mimaurer/production-python
-   context: ./app_main/production/python/v1/
-   dockerfile: ./app_main/production/python/v1/Dockerfile
+   context: ./images/production/
+   dockerfile: ./images/production/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
@@ -282,8 +283,8 @@ steps:
   depends_on: [ clone ]
   settings:
    repo: mimaurer/trafficgen-python
-   context: ./trafficgen/code/v1/
-   dockerfile: ./trafficgen/code/v1/Dockerfile
+   context: ./images/trafficgen/
+   dockerfile: ./images/trafficgen/Dockerfile
    tags: [ "v${DRONE_BUILD_NUMBER}-${DRONE_COMMIT_BRANCH}", "${DRONE_COMMIT_BRANCH}" ]
    username:
      from_secret: DOCKERHUB_USERNAME
