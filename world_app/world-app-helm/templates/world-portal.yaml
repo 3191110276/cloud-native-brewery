@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: world-portal
+  name: {{ .Values.component3 }}
 spec:
   selector:
     matchLabels:
       name: world-portal
-  replicas: 1
+  replicas: {{ .Values.component3_replicas }}
   template:
     metadata:
       labels:
@@ -16,9 +16,16 @@ spec:
     spec:
       serviceAccountName: appdynamics-cluster-agent
       containers:
-        - name: world-portal
+        - name: {{ .Values.component3 }}
           image: sashaz/java-services:v5
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 200m
+              memory: 900M
+            requests:
+              cpu: 100m
+              memory: 600M
           ports:
           - containerPort: 8080
       restartPolicy: Always

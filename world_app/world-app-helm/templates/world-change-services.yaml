@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: world-change-services
+  name: {{ .Values.component2 }}
 spec:
   selector:
     matchLabels:
       name: world-change-services
-  replicas: 1
+  replicas: {{ .Values.component2_replicas }}
   template:
     metadata:
       labels:
@@ -16,9 +16,16 @@ spec:
     spec:
       serviceAccountName: appdynamics-cluster-agent
       containers:
-        - name: world-change-services
+        - name: {{ .Values.component2 }}
           image: sashaz/java-services:v5
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 200m
+              memory: 900M
+            requests:
+              cpu: 100m
+              memory: 600M
           ports:
           - containerPort: 8080
       restartPolicy: Always

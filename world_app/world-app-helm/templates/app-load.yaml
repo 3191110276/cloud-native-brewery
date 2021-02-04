@@ -1,20 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-load
+  name: {{ .Values.component6 }}
 spec:
   selector:
     matchLabels:
       name: app-load
-  replicas: 1
+  replicas: {{ .Values.component6_replicas }}
   template:
     metadata:
       labels:
         name: app-load
     spec:
       containers:
-        - name: app-load
+        - name: {{ .Values.component6 }}
+          resources:
+            limits:
+              cpu: 200m
+              memory: 900M
+            requests:
+              cpu: 100m
+              memory: 600M
           image: sashaz/app-load:v1
           imagePullPolicy: IfNotPresent
       restartPolicy: Always
-

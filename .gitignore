@@ -7,6 +7,9 @@
 /observability/helm/values.yaml
 /stealthwatch_cloud/helm/values.yaml
 /trafficgen/helm/values.yaml
+/world_app/appd-helm/values.yaml
+/world_app/world-app-helm/values.yaml
+/.terraform/
 /terraform/terraform.tfstate
 /terraform/terraform.tfstate.backup
 /terraform/.terraform.lock.hcl

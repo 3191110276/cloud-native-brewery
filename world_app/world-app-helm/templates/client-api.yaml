@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: client-api
+  name: {{ .Values.component1 }}
 spec:
   selector:
     matchLabels:
       name: client-api
-  replicas: 1
+  replicas: {{ .Values.component1_replicas }}
   template:
     metadata:
       labels:
@@ -19,7 +19,7 @@ spec:
         runAsGroup: 2000
       serviceAccountName: appdynamics-cluster-agent
       containers:
-        - name: client-api
+        - name: {{ .Values.component1 }}
           image: sashaz/java-services:v5
           imagePullPolicy: IfNotPresent
           resources:
@@ -36,12 +36,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-api
+  name: {{ .Values.component5 }}
 spec:
   selector:
     matchLabels:
       name: web-api
-  replicas: 1
+  replicas: {{ .Values.component5_replicas }}
   template:
     metadata:
       labels:
@@ -54,7 +54,7 @@ spec:
         runAsGroup: 2000
       serviceAccountName: appdynamics-cluster-agent
       containers:
-        - name: web-api
+        - name: {{ .Values.component5 }}
           image: sashaz/java-services:v5
           imagePullPolicy: IfNotPresent
           resources:

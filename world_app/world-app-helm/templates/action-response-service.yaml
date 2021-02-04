@@ -9,12 +9,12 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: action-response-services
+  name: {{ .Values.component7 }}
 spec:
   selector:
     matchLabels:
       name: action-response-services
-  replicas: 1
+  replicas: {{ .Values.component7_replicas }}
   template:
     metadata:
       labels:
@@ -23,9 +23,16 @@ spec:
     spec:
       serviceAccountName: appdynamics-cluster-agent
       containers:
-        - name: action-response-services
+        - name: {{ .Values.component7 }}
           image: astoklas/apm-game-nodejs:latest
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 200m
+              memory: 900M
+            requests:
+              cpu: 100m
+              memory: 600M
           ports:
           - containerPort: 80
           env:
