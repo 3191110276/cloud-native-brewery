@@ -275,7 +275,7 @@ spec:
   controllerUrl: https://{{ .Values.appd_controller_hostname }}:443
   account: {{ .Values.appd_account_name }}
   appName: {{ .Values.appd_clustername }}
-  proxyUrl: {{ .Values.proxy_url }}
+  # proxyUrl: {{ .Values.proxy_url }}
   serviceAccountName: appdynamics-cluster-agent
   logLevel: "INFO"
   image: "docker.io/appdynamics/cluster-agent:20.10.0" #20.11.0
@@ -449,7 +449,7 @@ spec:
   #netVizImage: "appdynamics/machine-agent-netviz:latest"
   account: {{ .Values.appd_account_name }}
   globalAccount: {{ .Values.appd_global_account }}
-  proxyUrl: {{ .Values.proxy_url }}
+  # proxyUrl: {{ .Values.proxy_url }}
   netVizPort: 3892
   enableServerViz: "true"
   enableDockerViz: "true"
