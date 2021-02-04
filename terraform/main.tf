@@ -695,48 +695,114 @@ resource "helm_release" "app" {
 ############################################################
 # INSTALL TRAFFICGENERATOR HELM CHART
 ############################################################
-resource "helm_release" "trafficgen" {
-  name       = "trafficgen"
+resource "kubernetes_config_map" "trafficgen" {
   depends_on = [kubernetes_namespace.trafficgen,helm_release.app]
   count      = var.brewery_deploy ? 1 : 0
 
-  chart      = "../trafficgen/helm"
+  metadata {
+    name = var.trafficgen_name
+    namespace = var.trafficgen_namespace
+  }
+
+  data = {
+    MIN_RANDOM_DELAY    = var.trafficgen_min_random_delay
+    MAX_RANDOM_DELAY    = var.trafficgen_max_random_delay
+    LAGSPIKE_PERCENTAGE = ""
+    APP_ENDPOINT        = var.trafficgen_app_endpoint
+  }
+}
+
+resource "kubernetes_service_account" "trafficgen" {
+  depends_on = [kubernetes_namespace.trafficgen,helm_release.app]
+  count      = var.brewery_deploy ? 1 : 0
   
-  namespace  = var.trafficgen_namespace
+  metadata {
+    name = var.trafficgen_name
+    namespace = var.trafficgen_namespace
+  }
+  automount_service_account_token = true
+}
+
+resource "kubernetes_cluster_role" "trafficgen" {
+  depends_on = [kubernetes_namespace.trafficgen,helm_release.app]
+  count      = var.brewery_deploy ? 1 : 0
   
-  set {
-    name  = "registry"
-    value = var.registry
+  metadata {
+    name = var.trafficgen_name
+  }
+
+  rule {
+    api_groups = [""]
+    resources  = ["*","services"]
+    verbs      = ["*","get", "watch", "list"]
+  }
+}
+
+resource "kubernetes_cluster_role_binding" "trafficgen" {
+  depends_on = [kubernetes_service_account.trafficgen,kubernetes_cluster_role.trafficgen]
+  count      = var.brewery_deploy ? 1 : 0
+  
+  metadata {
+    name = var.trafficgen_name
   }
   
-  set {
-    name  = "name"
-    value = var.trafficgen_name
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = "trafficgen"
   }
   
-  set {
-    name  = "version"
-    value = var.image_tag
+  subject {
+    kind      = "ServiceAccount"
+    name      = "trafficgen"
+  }
+}
+
+resource "kubernetes_cron_job" "demo" {
+  depends_on = [kubernetes_config_map.trafficgen,kubernetes_cluster_role_binding.trafficgen]
+  count      = var.brewery_deploy ? 1 : 0
+  
+  metadata {
+    name = var.trafficgen_name
+    namespace = var.trafficgen_namespace
   }
   
-  set {
-    name  = "app_endpoint"
-    value = var.trafficgen_app_endpoint
-  }
-  
-  set {
-    name  = "replicas"
-    value = var.trafficgen_replicas
-  }
-  
-  set {
-    name  = "min_random_delay"
-    value = var.trafficgen_min_random_delay
-  }
-  
-  set {
-    name  = "max_random_delay"
-    value = var.trafficgen_max_random_delay
+  spec {
+    schedule                      = "* * * * *"
+    concurrency_policy            = "Allow"
+    successful_jobs_history_limit = 0
+    failed_jobs_history_limit     = 1
+    starting_deadline_seconds     = 59
+    job_template {
+      metadata {}
+      spec {
+        parallelism = var.trafficgen_replicas
+        completions = var.trafficgen_replicas * 2
+        template {
+          metadata {}
+          spec {
+            service_account_name = var.trafficgen_name
+            automount_service_account_token = true
+            restart_policy = "Never"
+            container {
+              name    = "trafficgen"
+              image   = "${var.registry}/trafficgen-python:${var.image_tag}"
+              image_pull_policy = "IfNotPresent"
+              volume_mount {
+                name = "customization"
+                mount_path = "/etc/customization"
+              }
+            }
+            volume {
+              name = "customization"
+              config_map {
+                name = "customization"
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 
@@ -744,13 +810,11 @@ resource "helm_release" "trafficgen" {
 ############################################################
 # INSTALL WORLD APP
 ############################################################
-resource "helm_release" "world_app" {
-  name       = "worldapp"
-  depends_on = [kubernetes_namespace.world]
+module "world" {
   count      = var.world_deploy ? 1 : 0
-
-  chart      = "../world_app/world-app-helm"
+  depends_on = [kubernetes_namespace.world]
   
-  namespace  = var.world_namespace
-}
+  source = "./modules/world/"
 
+  namespace = var.world_namespace
+}

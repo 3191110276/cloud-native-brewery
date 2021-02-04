@@ -63,7 +63,7 @@ variable "clusterload_deploy" {
 ############################################################
 variable "hxcsi_deploy" {
   type    = bool
-  default = true
+  default = false
 }
 
 variable "appd_deploy" {
@@ -78,12 +78,12 @@ variable "iwo_deploy" {
 
 variable "observability_deploy" {
   type    = bool
-  default = true
+  default = false
 }
 
 variable "stealthwatch_deploy" {
   type    = bool
-  default = true
+  default = false
 }
 
 ############################################################
