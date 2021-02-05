@@ -23,105 +23,38 @@ resource "appdynamics_apm_application" "main" {
 
 
 ############################################################
-# INSTALL HX-CSI HELM CHART
+# INSTALL APPDYNAMICS
 ############################################################
-resource "helm_release" "hxcsi" {
-  name       = "hxcsi"
-  depends_on = [kubernetes_namespace.hxcsi]
-  count      = var.hxcsi_deploy ? 1 : 0
-
-  chart      = "../hx_csi/helm"
-  
-  namespace  = var.hxcsi_namespace
-}
-
-
-############################################################
-# INSTALL APPDYNAMICS HELM CHART
-############################################################
-resource "helm_release" "appdynamics" {
-  name       = "appd"
-  depends_on = [kubernetes_namespace.appdynamics]
+module "appdynamics" {
   count      = var.appd_deploy ? 1 : 0
-
-  chart      = "../appdynamics/helm"
+  depends_on = [kubernetes_namespace.appdynamics]
   
-  namespace  = var.appd_namespace
+  source = "./modules/appdynamics/"
   
-  set {
-    name  = "registry"
-    value = var.registry
-  }
+  app_name = var.app_name
   
-  set {
-    name  = "appname"
-    value = var.app_name
-  }
+  registry = var.registry
+  image_tag = var.image_tag
   
-  set {
-    name  = "appd_controller_port"
-    value = var.appd_controller_port
-  }
+  appd_namespace = var.appd_namespace
   
-  set {
-    name  = "appd_controller_ssl"
-    value = var.appd_controller_ssl
-  }
+  appd_account_name = var.appd_account_name
+  appd_username = var.appd_username
+  appd_password = var.appd_password
+  appd_controller_key = var.appd_controller_key
+  appd_controller_protocol = var.appd_controller_protocol
+  appd_controller_hostname = var.appd_controller_hostname
+  appd_global_account = var.appd_global_account
+  appd_controller_port = var.appd_controller_port
+  appd_controller_ssl = var.appd_controller_ssl
+  appd_browserapp_beaconurl = var.appd_browserapp_beaconurl
+  appd_token = var.appd_token
   
-  set {
-    name  = "dbagent_version"
-    value = var.image_tag
-  }
+  appd_ns_to_monitor = var.appd_ns_to_monitor
   
-  set {
-    name  = "appd_account_name"
-    value = var.appd_account_name
-  }
-  
-  set {
-    name  = "appd_username"
-    value = var.appd_username
-  }
-  
-  set {
-    name  = "appd_password"
-    value = var.appd_password
-  }
-  
-  set {
-    name  = "appd_controller_key"
-    value = var.appd_controller_key
-  }
-  
-  set {
-    name  = "appd_controller_hostname"
-    value = var.appd_controller_hostname
-  }
-  
-  set {
-    name  = "appd_global_account"
-    value = var.appd_global_account
-  }
-  
-  set {
-    name  = "ns_to_monitor"
-    value = "{${join(",", var.appd_ns_to_monitor)}}"
-  }
-  
-  set {
-    name  = "proxy_url"
-    value = var.proxy_url
-  }
-  
-  set {
-    name  = "proxy_host"
-    value = var.proxy_host
-  }
-  
-  set {
-    name  = "proxy_port"
-    value = var.proxy_port
-  }
+  proxy_url = var.proxy_url
+  proxy_host = var.proxy_host
+  proxy_port = var.proxy_port
 }
 
 
@@ -129,7 +62,7 @@ resource "helm_release" "appdynamics" {
 # CREATE DB COLLECTOR IN APPD
 ############################################################
 resource "appdynamics_db_collector" "main" {
-  depends_on = [helm_release.appdynamics]
+  depends_on = [module.appdynamics]
   name = "Inventory DB"
   type = "MYSQL"
   hostname = "${var.app_name}-inventorydb-service.${var.app_namespace}"
@@ -194,25 +127,6 @@ resource "helm_release" "observability" {
   chart      = "../observability/helm"
   
   namespace  = var.observability_namespace
-}
-
-
-############################################################
-# INSTALL STEALTHWATCH HELM CHART
-############################################################
-resource "helm_release" "stealthwatch" {
-  name       = "stealthwatch"
-  depends_on = [kubernetes_namespace.stealthwatch]
-  count      = var.stealthwatch_deploy ? 1 : 0
-
-  chart      = "../stealthwatch_cloud/helm"
-  
-  namespace  = var.stealthwatch_namespace
-  
-  set {
-    name  = "stlth_service_key"
-    value = var.stealthwatch_service_key
-  }
 }
 
 
@@ -693,7 +607,7 @@ resource "helm_release" "app" {
 }
 
 ############################################################
-# INSTALL TRAFFICGENERATOR HELM CHART
+# INSTALL TRAFFICGENERATOR
 ############################################################
 resource "kubernetes_config_map" "trafficgen" {
   depends_on = [kubernetes_namespace.trafficgen,helm_release.app]
@@ -804,6 +718,67 @@ resource "kubernetes_cron_job" "demo" {
       }
     }
   }
+}
+
+
+############################################################
+# INSTALL IWO
+############################################################
+module "iwo" {
+  depends_on = [kubernetes_namespace.iwo]
+  count      = var.iwo_deploy ? 1 : 0
+  
+  source = "./modules/iwo/"
+
+  namespace = var.iwo_namespace
+}
+
+
+############################################################
+# INSTALL HX-CSI
+############################################################
+module "hxcsi" {
+  depends_on = [kubernetes_namespace.hxcsi]
+  count      = var.hxcsi_deploy ? 1 : 0
+  
+  source = "./modules/hx_csi/"
+
+  namespace = var.hxcsi_namespace
+}
+
+
+############################################################
+# INSTALL STEALTHWATCH
+############################################################
+module "swc" {
+  count      = var.stealthwatch_deploy ? 1 : 0
+  depends_on = [kubernetes_namespace.stealthwatch]
+  
+  source = "./modules/stealthwatch_cloud/"
+
+  namespace = var.stealthwatch_namespace
+  
+  stealthwatch_service_key = var.stealthwatch_service_key
+}
+
+
+############################################################
+# INSTALL CLUSTERLOAD APP
+############################################################
+module "clusterload" {
+  count      = var.clusterload_deploy ? 1 : 0
+  depends_on = [kubernetes_namespace.clusterload]
+  
+  source = "./modules/clusterload/"
+
+  namespace = var.clusterload_namespace
+  
+  clusterload_quota_pods = var.clusterload_quota_pods
+  clusterload_quota_cpu_request = var.clusterload_quota_cpu_request
+  clusterload_quota_cpu_limit = var.clusterload_quota_cpu_limit
+  clusterload_quota_memory_request = var.clusterload_quota_memory_request
+  clusterload_quota_memory_limit = var.clusterload_quota_memory_limit
+  clusterload_configurtions = var.clusterload_configurtions
 }
 
 

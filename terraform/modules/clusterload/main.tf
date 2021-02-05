@@ -1,13 +1,88 @@
 ############################################################
-# INSTALL CLUSTER LOAD APP
+# INPUT VARIABLES
+############################################################
+variable "namespace" {
+  type    = string
+  default = "clusterload"
+}
+
+variable "clusterload_quota_pods" {
+  type    = string
+  default = "20"
+}
+
+variable "clusterload_quota_cpu_request" {
+  type    = string
+  default = "2"
+}
+
+variable "clusterload_quota_cpu_limit" {
+  type    = string
+  default = "4"
+}
+
+variable "clusterload_quota_memory_request" {
+  type    = string
+  default = "16Gi"
+}
+
+variable "clusterload_quota_memory_limit" {
+  type    = string
+  default = "32Gi"
+}
+
+variable "clusterload_configurtions" {
+  type    = list(object({
+    name       = string
+    replicas   = number
+    containers = list(object({
+      name = string
+      run_type = string
+      run_scaler = string
+      run_value = string
+      cpu_request = string
+      cpu_limit = string
+      mem_request = string
+      mem_limit = string
+    }))
+  }))
+  default = [{
+    name = "clusterload"
+    replicas = 1
+    containers = [
+      {
+      name = "cpuload"
+      run_type = "cpu"
+      run_scaler = "CPU_PERCENT"
+      run_value = "10"
+      cpu_request = "240m"
+      cpu_limit = "250m"
+      mem_request = "100Mi"
+      mem_limit = "128Mi"
+      },
+      {
+      name = "memload"
+      run_type= "memory"
+      run_scaler = "MEMORY_NUM"
+      run_value = "250"
+      cpu_request = "50m"
+      cpu_limit = "1"
+      mem_request = "1Gi"
+      mem_limit = "1Gi"
+      },
+    ]
+  }]
+}
+
+
+############################################################
+# INSTALL CLUSTERLOAD APP
 ############################################################
 resource "kubernetes_resource_quota" "clusterload-quota" {
-  count = var.clusterload_deploy ? 1 : 0
-  depends_on = [kubernetes_namespace.clusterload]
   
   metadata {
     name = "clusterload-quota"
-    namespace = var.clusterload_namespace
+    namespace = var.namespace
   }
   spec {
     hard = {
@@ -26,7 +101,7 @@ resource "kubernetes_deployment" "clusterload" {
   
   metadata {
     name = each.value.name
-    namespace = var.clusterload_namespace
+    namespace = var.namespace
     labels = {
       app = each.value.name
     }

@@ -1,22 +1,46 @@
 ############################################################
+# REQUIRED PROVIDERS
+############################################################
+terraform {
+  required_providers {
+    helm = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.0.2"
+    }
+  }
+}
+
+
+############################################################
+# INPUT VARIABLES
+############################################################
+variable "namespace" {
+  type    = string
+  default = "iwo"
+}
+
+variable "app_name" {
+  type    = string
+  default = "brewery"
+}
+
+
+############################################################
 # INSTALL IWO
 ############################################################
 resource "kubernetes_service_account" "iwo-user" {
-  count = var.iwo_deploy ? 1 : 0
-  depends_on = [kubernetes_namespace.iwo]
   metadata {
     name = "iwo-user"
-    namespace = var.iwo_namespace
+    namespace = var.namespace
   }
 }
 
 
 resource "kubernetes_cluster_role_binding" "iwo-all-binding" {
-  count = var.iwo_deploy ? 1 : 0
   depends_on = [kubernetes_service_account.iwo-user]
   metadata {
     name = "iwo-all-binding"
-    #namespace = var.iwo_namespace
+    #namespace = var.namespace
   }
   role_ref {
     api_group = "rbac.authorization.k8s.io"
@@ -26,18 +50,16 @@ resource "kubernetes_cluster_role_binding" "iwo-all-binding" {
   subject {
     kind      = "ServiceAccount"
     name      = "iwo-user"
-    namespace = var.iwo_namespace
+    namespace = var.namespace
     #api_group = "rbac.authorization.k8s.io"
   }
 }
 
 
 resource "kubernetes_config_map" "iwo-config" {
-  count = var.iwo_deploy ? 1 : 0
-  depends_on = [kubernetes_namespace.iwo]
   metadata {
     name = "iwo-config"
-    namespace = var.iwo_namespace
+    namespace = var.namespace
   }
 
   data = {
@@ -67,11 +89,10 @@ resource "kubernetes_config_map" "iwo-config" {
 
 
 resource "kubernetes_deployment" "iwok8scollector" {
-  count = var.iwo_deploy ? 1 : 0
   depends_on = [kubernetes_config_map.iwo-config]
   metadata {
     name = "iwok8scollector"
-    namespace = var.iwo_namespace
+    namespace = var.namespace
   }
 
   spec {

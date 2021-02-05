@@ -3,13 +3,16 @@
 ############################################################
 variable "namespace" {
   type    = string
+  default = "hx"
 }
 
+
 ############################################################
-# INSTALL WORLD APP
+# INSTALL HX-CSI HELM CHART
 ############################################################
-resource "helm_release" "world_app" {
-  name       = "worldapp"
+resource "helm_release" "hxcsi" {
+  name       = "hxcsi"
+
   chart      = "${path.module}/helm/"
   
   namespace  = var.namespace

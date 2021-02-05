@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.component3 }}
+spec:
+  selector:
+    matchLabels:
+      name: world-portal
+  replicas: {{ .Values.component3_replicas }}
+  template:
+    metadata:
+      labels:
+        name: world-portal
+        tier-name: world-portal-tier
+        application-name: OS-App
+    spec:
+      serviceAccountName: appdynamics-cluster-agent
+      containers:
+        - name: {{ .Values.component3 }}
+          image: sashaz/java-services:v5
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 200m
+              memory: 900M
+            requests:
+              cpu: 100m
+              memory: 600M
+          ports:
+          - containerPort: 8080
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: world-portal
+spec:
+  selector:
+    name: world-portal
+  ports:
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
+status:
+  loadBalancer: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-front-end
+spec:
+  selector:
+    name: world-portal
+  ports:
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
+status:
+  loadBalancer: {}
