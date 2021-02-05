@@ -57,13 +57,45 @@ module "appdynamics" {
   proxy_port = var.proxy_port
 }
 
+module "appd_dbcollector" {
+  count      = var.appd_deploy ? 1 : 0
+  depends_on = [kubernetes_namespace.appdynamics]
+  
+  source = "./modules/appd_dbcollector/"
+  
+  app_name = var.app_name
+  
+  registry = var.registry
+  image_tag = var.image_tag
+  
+  namespace = var.appd_namespace
+  
+  appd_account_name = var.appd_account_name
+  #appd_username = var.appd_username
+  #appd_password = var.appd_password
+  appd_controller_key = var.appd_controller_key
+  #appd_controller_protocol = var.appd_controller_protocol
+  appd_controller_hostname = var.appd_controller_hostname
+  #appd_global_account = var.appd_global_account
+  #appd_controller_port = var.appd_controller_port
+  appd_controller_ssl = var.appd_controller_ssl
+  #appd_browserapp_beaconurl = var.appd_browserapp_beaconurl
+  #appd_token = var.appd_token
+  
+  #appd_ns_to_monitor = var.appd_ns_to_monitor
+  
+  #proxy_url = var.proxy_url
+  #proxy_host = var.proxy_host
+  #proxy_port = var.proxy_port
+}
+
 
 ############################################################
 # CREATE DB COLLECTOR IN APPD
 ############################################################
 resource "appdynamics_db_collector" "main" {
   depends_on = [module.appdynamics]
-  name = "Inventory DB"
+  name = "${var.app_name} DB"
   type = "MYSQL"
   hostname = "${var.app_name}-inventorydb-service.${var.app_namespace}"
   port = "80"
@@ -249,7 +281,7 @@ resource "helm_release" "extprod" {
 
 
 ############################################################
-# INSTALL APP HELM CHART
+# INSTALL APP
 ############################################################
 resource "helm_release" "app" {
   name       = "app"
@@ -710,7 +742,7 @@ resource "kubernetes_cron_job" "demo" {
             volume {
               name = "customization"
               config_map {
-                name = "customization"
+                name = var.trafficgen_name
               }
             }
           }
