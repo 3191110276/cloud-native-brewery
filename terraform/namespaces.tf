@@ -8,6 +8,13 @@ resource "kubernetes_namespace" "hxcsi" {
   }
 }
 
+resource "kubernetes_namespace" "mesh" {
+  count = var.mesh_deploy ? 1 : 0
+  metadata {
+    name = var.mesh_namespace
+  }
+}
+
 resource "kubernetes_namespace" "appdynamics" {
   count = var.appd_deploy ? 1 : 0
   metadata {

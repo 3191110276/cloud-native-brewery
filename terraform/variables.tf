@@ -63,6 +63,11 @@ variable "clusterload_deploy" {
 ############################################################
 variable "hxcsi_deploy" {
   type    = bool
+  default = false
+}
+
+variable "mesh_deploy" {
+  type    = bool
   default = true
 }
 
@@ -78,12 +83,12 @@ variable "iwo_deploy" {
 
 variable "observability_deploy" {
   type    = bool
-  default = true
+  default = false
 }
 
 variable "stealthwatch_deploy" {
   type    = bool
-  default = true
+  default = false
 }
 
 ############################################################
@@ -92,6 +97,11 @@ variable "stealthwatch_deploy" {
 variable "hxcsi_namespace" {
   type    = string
   default = "hx"
+}
+
+variable "mesh_namespace" {
+  type    = string
+  default = "mesh"
 }
 
 variable "appd_namespace" {

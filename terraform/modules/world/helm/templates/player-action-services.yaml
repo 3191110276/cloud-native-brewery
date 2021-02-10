@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.component9 }}
+spec:
+  selector:
+    matchLabels:
+      name: player-action-services
+  replicas: {{ .Values.component9_replicas }}
+  template:
+    metadata:
+      labels:
+        name: player-action-services
+        tier-name: player-action-services-tier
+        application-name: OS-App
+    spec:
+      serviceAccountName: appdynamics-cluster-agent
+      containers:
+        - name: {{ .Values.component9 }}
+          image: sashaz/java-services:v5
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 600M
+            limits:
+              cpu: 200m
+              memory: 900M
+      restartPolicy: Always
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: player-action-services
+spec:
+  selector:
+    name: player-action-services
+  ports:
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
+status:
+  loadBalancer: {}

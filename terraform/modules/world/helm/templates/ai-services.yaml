@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.component8 }}
+spec:
+  selector:
+    matchLabels:
+      name: ai-services
+  replicas: {{ .Values.component8_replicas }}
+  template:
+    metadata:
+      labels:
+        name: ai-services
+    spec:
+      serviceAccountName: appdynamics-cluster-agent
+      containers:
+        - name: {{ .Values.component8 }}
+          image: sashaz/java-services:v5
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 200m
+              memory: 900M
+            requests:
+              cpu: 100m
+              memory: 600M
+          ports:
+          - containerPort: 8080
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-services
+spec:
+  selector:
+    name: ai-services
+  ports:
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
+status:
+  loadBalancer: {}
