@@ -66,6 +66,11 @@ variable "hxcsi_deploy" {
   default = false
 }
 
+variable "mesh_deploy" {
+  type    = bool
+  default = true
+}
+
 variable "appd_deploy" {
   type    = bool
   default = true
@@ -92,6 +97,11 @@ variable "stealthwatch_deploy" {
 variable "hxcsi_namespace" {
   type    = string
   default = "hx"
+}
+
+variable "mesh_namespace" {
+  type    = string
+  default = "mesh"
 }
 
 variable "appd_namespace" {

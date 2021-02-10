@@ -50,7 +50,7 @@ spec:
           image: obsrvbl/ona:4.2
           env:
             - name: OBSRVBL_HOST
-              value: "https://sensor.staging.obsrvbl.com"
+              value: "https://sensor.eu-prod.obsrvbl.com"
             - name: OBSRVBL_SERVICE_KEY
               valueFrom:
                 secretKeyRef:
