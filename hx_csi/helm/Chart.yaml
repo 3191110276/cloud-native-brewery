@@ -1,6 +1,0 @@
-apiVersion: v2
-name: cloud-native-brewery-hxcsi
-description: Cloud-native brewery - HX CSI
-type: application
-version: 1.0.0
-appVersion: 1.0.0
