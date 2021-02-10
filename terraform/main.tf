@@ -248,66 +248,31 @@ module "extpayment" {
 
 
 ############################################################
-# INSTALL EXTPROD HELM CHART
+# INSTALL EXTPROD
 ############################################################
-resource "helm_release" "extprod" {
-  name       = "extprod"
-  depends_on = [kubernetes_namespace.extprod]
+module "extprod" {
   count      = var.brewery_deploy ? 1 : 0
-
-  chart      = "../app_extprod/helm"
+  depends_on = [kubernetes_namespace.extprod]
   
-  namespace  = var.extprod_namespace
+  source = "./modules/app_extprod/"
   
-  set {
-    name  = "registry"
-    value = var.registry
-  }
+  namespace = var.extprod_namespace
   
-  set {
-    name  = "version"
-    value = var.image_tag
-  }
+  registry = var.registry
+  image_tag = var.image_tag
+  extprod_tech = var.extprod_tech
   
-  set {
-    name  = "tech"
-    value = var.extprod_tech
-  }
+  extprod_name = var.extprod_name
   
-  set {
-    name  = "name"
-    value = var.extprod_name
-  }
+  extprod_replicas = var.extprod_replicas
   
-  set {
-    name  = "replicas"
-    value = var.extprod_replicas
-  }
+  extprod_min_delay = var.extprod_min_delay
+  extprod_max_delay = var.extprod_max_delay
   
-  set {
-    name  = "min_delay"
-    value = var.extprod_min_delay
-  }
+  extprod_job_min_delay = var.extprod_job_min_delay
+  extprod_job_max_delay = var.extprod_job_max_delay
   
-  set {
-    name  = "max_delay"
-    value = var.extprod_max_delay
-  }
-  
-  set {
-    name  = "job_min_delay"
-    value = var.extprod_job_min_delay
-  }
-  
-  set {
-    name  = "job_max_delay"
-    value = var.extprod_job_max_delay
-  }
-  
-  set {
-    name  = "production_svc"
-    value = var.production_svc
-  }
+  production_svc = var.production_svc
 }
 
 
