@@ -223,56 +223,27 @@ resource "helm_release" "observability" {
 
 
 ############################################################
-# INSTALL EXTPAYMENT HELM CHART
+# INSTALL EXTPAYMENT
 ############################################################
-resource "helm_release" "extpayment" {
-  name       = "extpayment"
-  depends_on = [kubernetes_namespace.extpayment]
+module "extpayment" {
   count      = var.brewery_deploy ? 1 : 0
-
-  chart      = "../app_extpayment/helm"
+  depends_on = [kubernetes_namespace.extpayment]
   
-  namespace  = var.extpayment_namespace
+  source = "./modules/app_extpayment/"
   
-  set {
-    name  = "registry"
-    value = var.registry
-  }
+  namespace = var.extpayment_namespace
   
-  set {
-    name  = "version"
-    value = var.image_tag
-  }
+  registry = var.registry
+  image_tag = var.image_tag
+  extpayment_tech = var.extpayment_tech
   
-  set {
-    name  = "tech"
-    value = var.extpayment_tech
-  }
+  extpayment_name = var.extpayment_name
   
-  set {
-    name  = "name"
-    value = var.extpayment_name
-  }
+  extpayment_replicas = var.extpayment_replicas
   
-  set {
-    name  = "replicas"
-    value = var.extpayment_replicas
-  }
-  
-  set {
-    name  = "min_random_delay"
-    value = var.extpayment_min_random_delay
-  }
-  
-  set {
-    name  = "max_random_delay"
-    value = var.extpayment_max_random_delay
-  }
-  
-  set {
-    name  = "lagspike_percentage"
-    value = var.extpayment_lagspike_percentage
-  }
+  extpayment_min_random_delay = var.extpayment_min_random_delay
+  extpayment_max_random_delay = var.extpayment_max_random_delay
+  extpayment_lagspike_percentage = var.extpayment_lagspike_percentage
 }
 
 
