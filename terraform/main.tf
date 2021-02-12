@@ -211,14 +211,13 @@ resource "appdynamics_db_collector" "main" {
 ############################################################
 # INSTALL OBSERVABILITY HELM CHART
 ############################################################
-resource "helm_release" "observability" {
-  name       = "observability"
-  depends_on = [kubernetes_namespace.observability]
+module "observability" {
   count      = var.observability_deploy ? 1 : 0
-
-  chart      = "../observability/helm"
+  depends_on = [kubernetes_namespace.observability]
   
-  namespace  = var.observability_namespace
+  source = "./modules/observability/"
+
+  namespace = var.observability_namespace
 }
 
 
