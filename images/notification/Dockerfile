@@ -13,7 +13,7 @@ WORKDIR /appdynamics/java-agent/
 COPY download.sh download.sh
 
 RUN chmod 744 download.sh \
-    && ./download.sh
+    && ./download.sh \
     && rm ./download.sh
 
 
