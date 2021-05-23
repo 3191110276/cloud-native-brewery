@@ -4,6 +4,8 @@ WORKDIR /code
 
 COPY . .
 
+RUN apt-get install -y libmysqlclient-dev
+
 RUN pip install -r requirements.txt
 
 EXPOSE 80
