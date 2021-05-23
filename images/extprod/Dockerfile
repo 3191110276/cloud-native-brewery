@@ -10,6 +10,7 @@ RUN apt-get update \
     && chmod +x ./kubectl \
     && mv ./kubectl /usr/local/bin/kubectl \
     && pip install -r requirements.txt \
+    && apt-get purge -y --auto-remove curl \
     && chmod 744 ./startup.sh
 
 EXPOSE 80
