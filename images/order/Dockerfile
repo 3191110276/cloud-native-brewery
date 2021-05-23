@@ -1,17 +1,16 @@
-FROM python:3.8
+FROM python:3.8-slim
 
 WORKDIR /code
 
-COPY requirements.txt .
-
-RUN pip install -r requirements.txt
-
 COPY . .
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends gcc \
+    && apt-get install -y default-libmysqlclient-dev \
+    && pip install -r requirements.txt \
+    && apt-get purge -y --auto-remove gcc \
+    && chmod 744 ./startup.sh
 
 EXPOSE 80
 
-RUN chmod 744 ./startup.sh
-
 ENTRYPOINT ["./startup.sh"]
-
-#ENTRYPOINT ["pyagent", "run", "-c", "appd_config", "--", "gunicorn", "--config", "gunicorn_config.py", "app.wsgi:app"]
