@@ -5,7 +5,7 @@ WORKDIR /code
 COPY . .
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends gcc and-build-dependencies \
+    && apt-get install -y --no-install-recommends gcc \
     && apt-get install -y default-libmysqlclient-dev
 
 RUN pip install -r requirements.txt
