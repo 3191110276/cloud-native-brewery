@@ -4,7 +4,7 @@ WORKDIR /code
 
 COPY . .
 
-RUN apt-get install -y libmysqlclient-dev
+RUN apt-get update && apt-get install -y libmysqlclient-dev
 
 RUN pip install -r requirements.txt
 
