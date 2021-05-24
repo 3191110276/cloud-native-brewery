@@ -1,5 +1,4 @@
-# FROM node:14.15.0-alpine3.10
-FROM node:10
+FROM node:10-slim
 
 #RUN apk update
 
@@ -11,11 +10,9 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install
-
-RUN npm install --appd_include_java_proxy=true appdynamics
-
-RUN chmod +x startup.sh
+RUN npm install \
+    && npm install --appd_include_java_proxy=true appdynamics \
+    && chmod +x startup.sh
 
 EXPOSE 80
 
