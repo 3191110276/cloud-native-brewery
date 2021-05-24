@@ -1,11 +1,5 @@
 FROM node:10-slim
 
-#RUN apk update
-
-#RUN apk add --no-cache bash
-
-#RUN apk add --no-cache shadow
-
 WORKDIR /app
 
 COPY . .
